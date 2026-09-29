@@ -1,0 +1,31 @@
+{
+  "version": "sensor-failure-v3-causal-neighbors-1",
+  "inputs_sha256": {
+    "channels.csv": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0",
+    "objects.csv": "0c5685966eb03a07cd87d2501fba8e9565f6b76cfbb605bc4cac8182b2112fa0",
+    "global_coverage.csv": "040bb1d60feffff40ad96811b2b1132d2119e5f985d3e98a11ec54cbcc0d6379",
+    "sensor_daily.parquet": "bcabf5bfee196a34295a0fbe98674e6352b4f5b2032234f474cb81e8bfa320df",
+    "fault_episodes.parquet": "31aed9ede31d82830bef3a1cce9a7514b7a5f6029632e9c4a5d09da5ccff37c5",
+    "smoke_events_2022_2026.parquet": "24f53d2f193a03914f1d8f198c08c429f535926058b9f017fd1aa9619dfeebd4",
+    "alarm_rows_washout24.parquet": "63ae6216dfea93d4795d7e616ef9ba13d62e64b5eca4de65f43e79cd756176b4"
+  },
+  "features_sha256": "ae5dbbd07f0870b66bc6a9930d2a6ecf684653bf189c294d9efcd3e83bcf8f4c",
+  "source_sha256": {
+    "src/baseline_core.py": "63f5e4c6cec9427c4270170b69f45eedb63dc24950a1cc2723e1961c8c2aff53",
+    "src/base_snapshot.py": "230c2a8a44cf69b1e14f26d47c3ebb460f3b7243fa4f446d8938f054cd43ca77",
+    "src/daily_context.py": "e507c6b024a8ea4cda77e9918831591a8d95aa5fb48c388cca351a021bc96155",
+    "src/event_model.py": "be425fd244852ec2b525cb7bfc45b307c50c5cec21298bdf6966a3f49f1e69db",
+    "src/features.py": "bc4f1d7edf4617dfd5b3865da91d09e8d67c1ded2a36ce0a4994066b5b7fd567",
+    "src/inference.py": "cffe730a6ae75f66fae41e225bb6f5861907bc811b861cfd7fb97a4fbb4da038",
+    "src/neighbors.py": "875367c6507e169bb404d4dde2d9082dfb20a59fe82ee1afdd6433fa1823ef87",
+    "src/training.py": "06609a714abfc66e7dd2b4795db98a304764d6b99b921ea2e6a4a6352260b9cd",
+    "src/verify_v3.py": "ef5c4e06a0d6e0e870381c0437ec116ca61e654ad08d9958eac7b103e208e28f"
+  },
+  "label_end_exclusive": "2026-06-30",
+  "source": "Prepared v2 real archive aggregates and complete smoke sequences; originals unchanged.",
+  "registry_warning": "Only current registry. Historical topology is unverified. No independently confirmed failures or repair records.",
+  "training_code_sha256": {
+    "train_alarm.py": "7ce2e57d29c0b06ad4c4b3e4efbb1d4f9e188e5c6009e2bb3cca86c2edbcce80",
+    "train_daily.py": "8d4d95a45cb952d15683e8bac89a1f8d1b6b1bf121c9e0195dbc445eceac8348"
+  }
+}

@@ -1,0 +1,99 @@
+{
+ "model": "pdm-failure-v0",
+ "dataset": "azure_pdm",
+ "decision_time": "2015-11-26T12:00:00+03:00",
+ "results": [
+  {
+   "target": 9040101,
+   "target_channel_id": 904000100,
+   "threshold": 0.173227,
+   "model": "pdm-failure-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 2e-05,
+   "alert": false,
+   "classes": null,
+   "class": null,
+   "factors": [
+    {
+     "feature": "rotate_min_24h",
+     "value": 442.5183,
+     "contribution": -0.6223
+    },
+    {
+     "feature": "volt_min_24h",
+     "value": 161.5155,
+     "contribution": 0.5744
+    },
+    {
+     "feature": "pressure_min_24h",
+     "value": 96.2527,
+     "contribution": 0.543
+    },
+    {
+     "feature": "rotate_max_24h",
+     "value": 457.6501,
+     "contribution": 0.3754
+    },
+    {
+     "feature": "age_years",
+     "value": 18.0,
+     "contribution": 0.2919
+    }
+   ]
+  },
+  {
+   "target": 9040102,
+   "target_channel_id": 904000200,
+   "threshold": 0.173227,
+   "model": "pdm-failure-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.989061,
+   "alert": true,
+   "classes": null,
+   "class": "failure",
+   "factors": [
+    {
+     "feature": "error1_24h",
+     "value": 1.0,
+     "contribution": 8.1003
+    },
+    {
+     "feature": "volt_mean_24h",
+     "value": 190.51290000000003,
+     "contribution": 6.3891
+    },
+    {
+     "feature": "volt_min_24h",
+     "value": 183.985,
+     "contribution": 1.0592
+    },
+    {
+     "feature": "rotate_min_24h",
+     "value": 444.1469,
+     "contribution": -0.4205
+    },
+    {
+     "feature": "pressure_min_24h",
+     "value": 93.7285,
+     "contribution": 0.3065
+    }
+   ]
+  },
+  {
+   "target": 9040103,
+   "target_channel_id": 904000300,
+   "threshold": 0.173227,
+   "model": "pdm-failure-v0",
+   "status": "skipped",
+   "skip_reason": "short_history",
+   "score": null,
+   "alert": null,
+   "classes": null,
+   "class": null,
+   "factors": []
+  }
+ ],
+ "elapsed_ms": 0
+}

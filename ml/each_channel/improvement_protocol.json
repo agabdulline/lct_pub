@@ -1,0 +1,58 @@
+{
+  "recipes": [
+    {
+      "name": "matured_d6",
+      "mode": "advanced",
+      "depth": 6,
+      "l2": 5,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "matured_weighted_d4",
+      "mode": "advanced",
+      "depth": 4,
+      "l2": 10,
+      "weight": "SqrtBalanced",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "matured_d8",
+      "mode": "advanced",
+      "depth": 8,
+      "l2": 10,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "matured_recent_d6",
+      "mode": "advanced",
+      "depth": 6,
+      "l2": 10,
+      "weight": "None",
+      "since": "2024-01-01"
+    },
+    {
+      "name": "matured_object_d6",
+      "mode": "advanced_identity",
+      "depth": 6,
+      "l2": 20,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "matured_channel_d6",
+      "mode": "channel_identity",
+      "depth": 6,
+      "l2": 20,
+      "weight": "None",
+      "since": "2022-01-01"
+    }
+  ],
+  "selection": "Same Q3 2025 rank, incumbent retained unless strictly improved; Q4 threshold",
+  "limitation": "2026 was previously inspected; it is a historical holdout, not a new blind test",
+  "skip": {
+    "switch": "insufficient training/early-stop classes",
+    "uir": "no positive validation or test outcomes"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "model": "pdm_failure_24h",
+  "family": "external",
+  "dataset": "azure_pdm",
+  "version": "v0",
+  "label": "pdm-failure-v0",
+  "title": "Отказ агрегата в ближайшие 24 ч",
+  "synthetic": true,
+  "trigger": "hourly",
+  "target": "object",
+  "target_tag": "machine",
+  "horizon": "24h",
+  "outcome": "label_in_horizon",
+  "positive_labels": [
+    "failure"
+  ],
+  "alert_class": "failure",
+  "ignore_labels": [],
+  "classes": null,
+  "features": [
+    "volt_last",
+    "volt_mean_3h",
+    "volt_std_3h",
+    "volt_mean_24h",
+    "volt_std_24h",
+    "volt_min_24h",
+    "volt_max_24h",
+    "volt_dev_24h",
+    "volt_trend",
+    "rotate_last",
+    "rotate_mean_3h",
+    "rotate_std_3h",
+    "rotate_mean_24h",
+    "rotate_std_24h",
+    "rotate_min_24h",
+    "rotate_max_24h",
+    "rotate_dev_24h",
+    "rotate_trend",
+    "pressure_last",
+    "pressure_mean_3h",
+    "pressure_std_3h",
+    "pressure_mean_24h",
+    "pressure_std_24h",
+    "pressure_min_24h",
+    "pressure_max_24h",
+    "pressure_dev_24h",
+    "pressure_trend",
+    "vibration_last",
+    "vibration_mean_3h",
+    "vibration_std_3h",
+    "vibration_mean_24h",
+    "vibration_std_24h",
+    "vibration_min_24h",
+    "vibration_max_24h",
+    "vibration_dev_24h",
+    "vibration_trend",
+    "error1_24h",
+    "error2_24h",
+    "error3_24h",
+    "error4_24h",
+    "error5_24h",
+    "errors_72h",
+    "errors_7d",
+    "age_years",
+    "model"
+  ],
+  "categorical": [
+    "model"
+  ],
+  "variant": "no_schedule",
+  "threshold": 0.173227,
+  "history_minutes": 10080,
+  "history_minutes_by_tag": {
+    "volt": 1440,
+    "rotate": 1440,
+    "pressure": 1440,
+    "vibration": 1440,
+    "errors": 10080
+  },
+  "eval_scheme": "out-of-time",
+  "periods": {
+    "train": [
+      "2015-01-01",
+      "2015-09-01"
+    ],
+    "threshold": [
+      "2015-09-01",
+      "2015-11-01"
+    ],
+    "test": [
+      "2015-11-01",
+      "2016-01-01"
+    ]
+  },
+  "params": {
+    "iterations": 600,
+    "depth": 6,
+    "learning_rate": 0.05,
+    "random_seed": 42,
+    "verbose": false
+  },
+  "sha256": "a59a10601fe65d95eb2af75e7e8317f6d8f4175ba919ae8c83e3ce3de7a2e2e1",
+  "trained_at": "2026-09-27T01:28:12+00:00",
+  "source": "Azure AI Predictive Maintenance (синтетика Microsoft)"
+}

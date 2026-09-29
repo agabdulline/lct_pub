@@ -1,0 +1,11 @@
+{
+ "run_id": 28,
+ "model": "magdeburg_fire",
+ "decision_time": "2023-07-13T12:25:00+03:00",
+ "targets": [
+  9010106,
+  9010108,
+  1
+ ],
+ "explain": false
+}

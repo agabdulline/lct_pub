@@ -1,0 +1,54 @@
+# Исходные данные хакатона — не в git: ~7 ГБ, лимит GitHub 100 МБ на файл, данные выданы участникам
+data/raw
+data/archive
+data/interim
+data/processed
+data/uploads
+# Внешние открытые наборы (этап 14) — скачиваются скриптом, sha256 в backend/config/external_datasets.yaml
+data/external
+*.7z
+*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+
+# Секреты и окружение
+.env
+.env.*
+!.env.example
+
+# ML-артефакты локальных запусков
+ml/.cache/
+ml/artifacts/
+catboost_info/
+
+# Docker-тома
+pgdata/
+redisdata/
+
+# ОС и IDE
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+# Крупные выводы разовых разборов в tech/ — воспроизводятся скриптами
+tech/**/report.json
+# Пароль на сайт прода — только на сервере (DEPLOY.md)
+infra/caddy-auth/
+infra/site-auth.txt

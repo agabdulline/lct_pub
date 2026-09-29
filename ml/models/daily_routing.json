@@ -1,0 +1,237 @@
+{
+ "version": "2026-09-29",
+ "rule": "модель ML-разработчика, если на общих с v0 строках P > 0.7, R > 0.5 и не хуже v0; иначе v0 (A21)",
+ "report": "ml/reports/daily-routing/REPORT.md",
+ "test": {
+  "from": "2026-01-01",
+  "to": "2026-05-02",
+  "label": "I полугодие 2026: T с 1.01 по 2.05, горизонт до 1.06"
+ },
+ "models": {
+  "baseline-v0": {
+   "config": "baseline-v0-daily/config.json"
+  },
+  "ups_ensemble": {
+   "config": "each-channel/ups/config.json",
+   "adapter": "ensemble"
+  },
+  "manual_alarm": {
+   "config": "each-channel/manual-alarm/config.json",
+   "adapter": "manual_alarm"
+  }
+ },
+ "routes": [
+  {
+   "sensor_type": "Датчик дыма",
+   "model": "baseline-v0",
+   "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+   "offline": {
+    "decisions": 441067,
+    "positives": 17679,
+    "alerts": 2,
+    "tp": 0,
+    "fp": 2,
+    "precision": 0.0,
+    "recall": 0.0,
+    "lead_days": null,
+    "episodes": 1206,
+    "caught_episodes": 0
+   }
+  },
+  {
+   "sensor_type": "Состояние насоса",
+   "model": "baseline-v0",
+   "why": "его совет — оставить v0: R 95.7% против 83.0% у его модели",
+   "offline": {
+    "decisions": 19748,
+    "positives": 15935,
+    "alerts": 18739,
+    "tp": 15258,
+    "fp": 3481,
+    "precision": 0.814237686109184,
+    "recall": 0.9575149042987136,
+    "lead_days": {
+     "p10": 1.7707523148148148,
+     "p50": 7.929965277777778,
+     "p90": 22.408995370370377
+    },
+    "episodes": 1996,
+    "caught_episodes": 1973
+   }
+  },
+  {
+   "sensor_type": "Состояние вентилятора",
+   "model": "baseline-v0",
+   "why": "его совет — оставить v0: R 93.1% против 78.2% у его модели",
+   "offline": {
+    "decisions": 35606,
+    "positives": 20818,
+    "alerts": 24006,
+    "tp": 19371,
+    "fp": 4635,
+    "precision": 0.8069232691827043,
+    "recall": 0.930492842732251,
+    "lead_days": {
+     "p10": 1.7939351851851852,
+     "p50": 8.429675925925926,
+     "p90": 22.913344907407406
+    },
+    "episodes": 2400,
+    "caught_episodes": 2344
+   }
+  },
+  {
+   "sensor_type": "Датчик температуры",
+   "model": "baseline-v0",
+   "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+   "offline": {
+    "decisions": 66746,
+    "positives": 69,
+    "alerts": 0,
+    "tp": 0,
+    "fp": 0,
+    "precision": null,
+    "recall": 0.0,
+    "lead_days": null,
+    "episodes": 20,
+    "caught_episodes": 0
+   }
+  },
+  {
+   "sensor_type": "Газовый датчик",
+   "model": "baseline-v0",
+   "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+   "offline": {
+    "decisions": 42870,
+    "positives": 1853,
+    "alerts": 0,
+    "tp": 0,
+    "fp": 0,
+    "precision": null,
+    "recall": 0.0,
+    "lead_days": null,
+    "episodes": 89,
+    "caught_episodes": 0
+   }
+  },
+  {
+   "sensor_type": "Состояние фазы",
+   "model": "baseline-v0",
+   "why": "другой модели нет",
+   "offline": {
+    "decisions": 98079,
+    "positives": 14445,
+    "alerts": 7879,
+    "tp": 4695,
+    "fp": 3184,
+    "precision": 0.5958878030206879,
+    "recall": 0.32502596053997923,
+    "lead_days": {
+     "p10": 2.2961087962962963,
+     "p50": 9.105138888888888,
+     "p90": 23.14736111111111
+    },
+    "episodes": 1087,
+    "caught_episodes": 572
+   }
+  },
+  {
+   "sensor_type": "Ручной извещатель",
+   "model": "manual_alarm",
+   "why": "его модель проходит пороги на общих строках, v0 — нет",
+   "offline": {
+    "decisions": 12468,
+    "positives": 3469,
+    "alerts": 2562,
+    "tp": 1795,
+    "fp": 767,
+    "precision": 0.7006245120999219,
+    "recall": 0.5174401844912079,
+    "lead_days": {
+     "p10": 2.4327060185185183,
+     "p50": 11.470902777777777,
+     "p90": 23.64490740740741
+    },
+    "episodes": 301,
+    "caught_episodes": 235
+   }
+  },
+  {
+   "sensor_type": "ИБП",
+   "model": "ups_ensemble",
+   "why": "его модель проходит пороги на общих строках, v0 — нет",
+   "offline": {
+    "decisions": 8266,
+    "positives": 388,
+    "alerts": 329,
+    "tp": 255,
+    "fp": 74,
+    "precision": 0.7750759878419453,
+    "recall": 0.6572164948453608,
+    "lead_days": {
+     "p10": 2.435576388888889,
+     "p50": 7.489259259259259,
+     "p90": 14.201011574074075
+    },
+    "episodes": 27,
+    "caught_episodes": 22
+   }
+  }
+ ],
+ "unrouted": [
+  {
+   "sensor_type": "Тепловой датчик",
+   "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+  },
+  {
+   "sensor_type": "Датчик движения",
+   "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+  },
+  {
+   "sensor_type": "КД Дверь",
+   "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+  },
+  {
+   "sensor_type": "КД Люк",
+   "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+  },
+  {
+   "sensor_type": "КД АВ",
+   "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+  }
+ ],
+ "offline": {
+  "routing": {
+   "decisions": 731945,
+   "positives": 75605,
+   "alerts": 53763,
+   "tp": 41619,
+   "fp": 12144,
+   "precision": 0.7741197477819318,
+   "recall": 0.5504794656438067,
+   "lead_days": {
+    "p10": 1.8311574074074075,
+    "p50": 8.420231481481482,
+    "p90": 22.65303240740741
+   },
+   "episodes": 7201,
+   "caught_episodes": 5177
+  },
+  "v0_only": {
+   "decisions": 731642,
+   "positives": 75313,
+   "alerts": 50628,
+   "tp": 39326,
+   "fp": 11302,
+   "precision": 0.776763846093071,
+   "recall": 0.5221674876847291,
+   "lead_days": {
+    "p10": 1.8184953703703703,
+    "p50": 8.384814814814815,
+    "p90": 22.665011574074075
+   },
+   "episodes": 7172,
+   "caught_episodes": 4891
+  }
+ }
+}

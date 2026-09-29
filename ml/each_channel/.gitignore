@@ -1,0 +1,2 @@
+# Local fitted weights are bundled with config.json but never committed.
+*.cbm

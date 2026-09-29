@@ -1,0 +1,92 @@
+{
+ "model": "baseline-v0",
+ "routing": "2026-09-29",
+ "date": "2026-03-02",
+ "results": [
+  {
+   "channel_id": 1001,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 0.639263,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "baseline-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.01531,
+   "alert": false,
+   "factors": []
+  },
+  {
+   "channel_id": 1004,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 0.301596,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "ups_ensemble",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.306797,
+   "alert": true,
+   "factors": []
+  },
+  {
+   "channel_id": 1005,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 1.000001,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "manual_alarm",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.004522,
+   "alert": false,
+   "factors": []
+  },
+  {
+   "channel_id": 1006,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 0.301596,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "ups_ensemble",
+   "status": "skipped",
+   "skip_reason": "in_fault",
+   "score": null,
+   "alert": null,
+   "factors": []
+  },
+  {
+   "channel_id": 1007,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 0.639263,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "baseline-v0",
+   "status": "skipped",
+   "skip_reason": "unsupported_type",
+   "score": null,
+   "alert": null,
+   "factors": []
+  },
+  {
+   "channel_id": 99,
+   "target_start": "2026-03-03T00:00:00+03:00",
+   "target_end": "2026-04-01T00:00:00+03:00",
+   "threshold": 0.639263,
+   "seen_channel": null,
+   "object_history": null,
+   "model": "baseline-v0",
+   "status": "skipped",
+   "skip_reason": "unknown_channel",
+   "score": null,
+   "alert": null,
+   "factors": []
+  }
+ ],
+ "elapsed_ms": 0
+}

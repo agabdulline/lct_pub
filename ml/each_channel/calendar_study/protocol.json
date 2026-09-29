@@ -1,0 +1,117 @@
+{
+  "parameters": {
+    "iterations": 180,
+    "depth": 5,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 20,
+    "loss_function": "Logloss",
+    "random_seed": 42,
+    "thread_count": 6,
+    "has_time": true,
+    "cat_features": [
+      "sensor_type"
+    ],
+    "verbose": false,
+    "allow_writing_files": false
+  },
+  "features": [
+    "sensor_type",
+    "events_1d",
+    "events_7d",
+    "events_30d",
+    "events_90d",
+    "days_active_30d",
+    "days_active_90d",
+    "alarms_7d",
+    "alarms_30d",
+    "alarms_90d",
+    "faults_msg_7d",
+    "faults_msg_30d",
+    "faults_msg_90d",
+    "num_mean_7d",
+    "num_mean_30d",
+    "num_max_7d",
+    "onsets_7d",
+    "onsets_30d",
+    "onsets_90d",
+    "onsets_365d",
+    "days_since_onset",
+    "days_since_recovery",
+    "fault_hours_30d",
+    "mean_episode_hours_365d",
+    "obj_in_fault",
+    "obj_onsets_7d",
+    "month_sin",
+    "month_cos",
+    "weekday"
+  ],
+  "calendar_features": [
+    "ru_day_off",
+    "ru_short_day",
+    "ru_off_prev1",
+    "ru_off_prev7",
+    "ru_off_prev30"
+  ],
+  "sources": [
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2022/calendar.json",
+      "sha256": "a3a0000443721de499b6df534f3db4704c80d8542657c5bab62cc405cfd1e91a"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2023/calendar.json",
+      "sha256": "b2de192996bbeb4804f05641fddcae1a0362dbee885978a5b3af91cbe287ca4a"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2024/calendar.json",
+      "sha256": "e7dfc9c1bec9c8493653cbf21d6207393990d2ebb9797e491370fe6e55d2f070"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2025/calendar.json",
+      "sha256": "c1ef56ec60453728d4f4cd51a9206d34ce10d9c0cb68d7a765c32562c5413f77"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2026/calendar.json",
+      "sha256": "84bee6de7a19f5cd599488671d377936f749afe87621c7a84f3951e511531d01"
+    }
+  ],
+  "v0_sha256": "1c1f26144726b6ca920517a2c143289487f30d9c8f9d6d7a5d8d998fb8d2a44b",
+  "train": "Mondays 2022-2024 plus every eligible day H1 2025; 30-day purge",
+  "selection": "Q3 2025; max(passes_both, min(P/.7,R/.5), AP)",
+  "threshold": "Q4 2025; min 10 alerts; fixed before test",
+  "diagnostic_fold": "train 2022-2024, calibrate Q1 2025, audit Q2 2025",
+  "test": "2026-01-01 through 2026-05-02; previously viewed",
+  "source_manifest": {
+    "prepared_source": "C:\\Users\\makar\\Documents\\Codex\\2026-09-23\\ext-journal-csv-6-1-2\\outputs\\sensor_failure_v3\\data",
+    "archive": "C:\\Users\\makar\\Downloads\\dataset.zip",
+    "restored_types": [
+      "9-секционный люк",
+      "Датчик затопления",
+      "ИБП",
+      "Переключатель",
+      "Ручной извещатель",
+      "Состояние УИР-Р",
+      "Состояние вентилятора",
+      "Состояние насоса",
+      "Состояние охраны",
+      "Состояние фазы",
+      "Стекло"
+    ],
+    "restored_years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "daily_rows": 3508095,
+    "extra_daily_rows": 1284540,
+    "extra_episodes": 184573,
+    "dedup": "channel,event_id,ts,alarm,value within year",
+    "channels_sha256": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0"
+  },
+  "source_hashes": {
+    "fault_episodes.parquet": "2419c72c6844bebd0046cd8bbaca58ddf0760b4e15666723a133b5f842f47fbb",
+    "sensor_daily.parquet": "d9f93ba66138eb3a277cd9f2f565d648a96d47682d24480639a1335e03a06a47"
+  }
+}

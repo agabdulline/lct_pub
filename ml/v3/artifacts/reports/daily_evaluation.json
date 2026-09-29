@@ -1,0 +1,79 @@
+{
+  "selected": "base_d6",
+  "task_type": "CPU",
+  "threshold": {
+    "threshold": 0.26985680599820294,
+    "precision": 0.38725602755453503,
+    "recall": 0.2770203679369251,
+    "alerts": 8710,
+    "criterion_fraction": 0.5532228965064786,
+    "both_criteria": false,
+    "rule": "maximize min(precision/0.70, recall/0.50), min 30 alerts"
+  },
+  "calibration": {
+    "rows": 448564,
+    "positives": 12176,
+    "prevalence": 0.027144398569657842,
+    "alerts": 8710,
+    "tp": 3373,
+    "fp": 5337,
+    "fn": 8803,
+    "tn": 431051,
+    "precision": 0.38725602755453503,
+    "recall": 0.2770203679369251,
+    "f1": 0.3229914775447668,
+    "average_precision": 0.2612365955511209,
+    "roc_auc": 0.7406281495859748,
+    "false_alerts_per_1000_channel_days": 11.897967737045327,
+    "meets_precision_recall": false
+  },
+  "test_is_pristine": false,
+  "test": {
+    "rows": 967488,
+    "positives": 28191,
+    "prevalence": 0.029138345901964676,
+    "alerts": 11158,
+    "tp": 8227,
+    "fp": 2931,
+    "fn": 19964,
+    "tn": 936366,
+    "precision": 0.7373185158630579,
+    "recall": 0.2918307261182647,
+    "f1": 0.4181554804442298,
+    "average_precision": 0.40973505009408984,
+    "roc_auc": 0.8667960932382648,
+    "false_alerts_per_1000_channel_days": 3.0294949394721176,
+    "meets_precision_recall": false
+  },
+  "test_episodes": {
+    "forecastable_first_next_onsets": 1279,
+    "detected_unique_onsets": 438,
+    "recall_among_forecastable_onsets": 0.3424550430023456,
+    "positive_alert_rows": 8227,
+    "lead_hours_quantiles": {
+      "0.0": 32.03194444444444,
+      "0.25": 155.28972222222222,
+      "0.5": 299.0697222222222,
+      "0.75": 465.8722222222222,
+      "1.0": 710.0125
+    },
+    "warning": "Not a metric over all raw oscillations; repeated daily alerts counted separately in primary precision."
+  },
+  "frozen_v2": {
+    "rows": 967488,
+    "positives": 28191,
+    "prevalence": 0.029138345901964676,
+    "alerts": 8327,
+    "tp": 6435,
+    "fp": 1892,
+    "fn": 21756,
+    "tn": 937405,
+    "precision": 0.7727873183619551,
+    "recall": 0.22826433968287752,
+    "f1": 0.35242893915329426,
+    "average_precision": 0.40973505009408984,
+    "roc_auc": 0.8667960932382648,
+    "false_alerts_per_1000_channel_days": 1.955579810809023,
+    "meets_precision_recall": false
+  }
+}

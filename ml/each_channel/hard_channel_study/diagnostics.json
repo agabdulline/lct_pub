@@ -1,0 +1,470 @@
+[
+  {
+    "key": "smoke",
+    "model": "incumbent",
+    "dates": [
+      "2026-01-01",
+      "2026-05-02"
+    ],
+    "fixed": {
+      "decisions": 446048,
+      "positives": 18168,
+      "alerts": 20862,
+      "tp": 8501,
+      "fp": 12361,
+      "fn": 9667,
+      "precision": 0.40748729747866935,
+      "recall": 0.46791061206516954,
+      "f1": 0.4356136305406098,
+      "ap": 0.3584683314705657,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 4.552326202392578,
+        "0.5": 10.447500228881836,
+        "0.75": 18.5610408782959
+      },
+      "channels": 4337,
+      "positive_channels": 559,
+      "caught_channels": 333,
+      "represented_episodes": 1236,
+      "caught_represented_episodes": 754,
+      "represented_episode_recall": 0.610032362459547,
+      "episode_first_alert_median_days": 11.530914306640625
+    },
+    "adaptive_threshold": {
+      "decisions": 446048,
+      "positives": 18168,
+      "alerts": 40612,
+      "tp": 9366,
+      "fp": 31246,
+      "fn": 8802,
+      "precision": 0.23062149118487146,
+      "recall": 0.5155217965653897,
+      "f1": 0.3186798230690711,
+      "ap": 0.3584683314705657,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 4.563211798667908,
+        "0.5": 10.552245140075684,
+        "0.75": 19.4734206199646
+      },
+      "channels": 4337,
+      "positive_channels": 559,
+      "caught_channels": 391,
+      "represented_episodes": 1236,
+      "caught_represented_episodes": 830,
+      "represented_episode_recall": 0.6715210355987055,
+      "episode_first_alert_median_days": 13.301261901855469
+    },
+    "fixed_score_ceiling_post_hoc": {
+      "precision": 0.38746110898009634,
+      "recall": 0.5003852928225452,
+      "threshold": 0.3251023485467711
+    }
+  },
+  {
+    "key": "phase",
+    "model": "dense_base",
+    "dates": [
+      "2026-01-01",
+      "2026-05-02"
+    ],
+    "fixed": {
+      "decisions": 98078,
+      "positives": 14444,
+      "alerts": 11074,
+      "tp": 6159,
+      "fp": 4915,
+      "fn": 8285,
+      "precision": 0.5561675997832761,
+      "recall": 0.42640542785931873,
+      "f1": 0.48271808135433814,
+      "ap": 0.5649953802897559,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 4.681250095367432,
+        "0.5": 10.369884490966797,
+        "0.75": 17.778900146484375
+      },
+      "channels": 939,
+      "positive_channels": 261,
+      "caught_channels": 160,
+      "represented_episodes": 1086,
+      "caught_represented_episodes": 680,
+      "represented_episode_recall": 0.6261510128913443,
+      "episode_first_alert_median_days": 10.64037036895752
+    },
+    "adaptive_threshold": {
+      "decisions": 98078,
+      "positives": 14444,
+      "alerts": 9127,
+      "tp": 5142,
+      "fp": 3985,
+      "fn": 9302,
+      "precision": 0.5633833680289252,
+      "recall": 0.3559955690944337,
+      "f1": 0.4362988417971236,
+      "ap": 0.5649953802897559,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 4.597060203552246,
+        "0.5": 10.091156959533691,
+        "0.75": 17.57027244567871
+      },
+      "channels": 939,
+      "positive_channels": 261,
+      "caught_channels": 137,
+      "represented_episodes": 1086,
+      "caught_represented_episodes": 594,
+      "represented_episode_recall": 0.5469613259668509,
+      "episode_first_alert_median_days": 10.422719955444336
+    },
+    "fixed_score_ceiling_post_hoc": {
+      "precision": 0.5517531128256054,
+      "recall": 0.5000692328994738,
+      "threshold": 0.5434130671310067
+    }
+  },
+  {
+    "key": "manual_alarm",
+    "model": "dense_calendar",
+    "dates": [
+      "2026-01-01",
+      "2026-05-02"
+    ],
+    "fixed": {
+      "decisions": 12771,
+      "positives": 3772,
+      "alerts": 9347,
+      "tp": 3723,
+      "fp": 5624,
+      "fn": 49,
+      "precision": 0.39830961805927034,
+      "recall": 0.9870095440084835,
+      "f1": 0.5675737479990853,
+      "ap": 0.3909372500261725,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 5.52891206741333,
+        "0.5": 12.609768867492676,
+        "0.75": 20.6446533203125
+      },
+      "channels": 130,
+      "positive_channels": 92,
+      "caught_channels": 92,
+      "represented_episodes": 332,
+      "caught_represented_episodes": 332,
+      "represented_episode_recall": 1.0,
+      "episode_first_alert_median_days": 14.501805305480957
+    },
+    "adaptive_threshold": {
+      "decisions": 12771,
+      "positives": 3772,
+      "alerts": 9569,
+      "tp": 3677,
+      "fp": 5892,
+      "fn": 95,
+      "precision": 0.38426167833629427,
+      "recall": 0.9748144220572641,
+      "f1": 0.5512330410014242,
+      "ap": 0.3909372500261725,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": 5.551701545715332,
+        "0.5": 12.59282398223877,
+        "0.75": 20.6446533203125
+      },
+      "channels": 130,
+      "positive_channels": 92,
+      "caught_channels": 92,
+      "represented_episodes": 332,
+      "caught_represented_episodes": 332,
+      "represented_episode_recall": 1.0,
+      "episode_first_alert_median_days": 14.501805305480957
+    },
+    "fixed_score_ceiling_post_hoc": {
+      "precision": 0.41851599727705924,
+      "recall": 0.8149522799575822,
+      "threshold": 0.03024481980638609
+    },
+    "readiness_sweep_post_hoc": {
+      "0": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 9569,
+        "tp": 3677,
+        "fp": 5892,
+        "fn": 95,
+        "precision": 0.38426167833629427,
+        "recall": 0.9748144220572641,
+        "f1": 0.5512330410014242,
+        "ap": 0.3909372500261725,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": 5.551701545715332,
+          "0.5": 12.59282398223877,
+          "0.75": 20.6446533203125
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 92,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 332,
+        "represented_episode_recall": 1.0,
+        "episode_first_alert_median_days": 14.501805305480957
+      },
+      "500": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 6387,
+        "tp": 3095,
+        "fp": 3292,
+        "fn": 677,
+        "precision": 0.484578049162361,
+        "recall": 0.8205196182396607,
+        "f1": 0.6093119401515897,
+        "ap": 0.4569169095365666,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": 4.6259605884552,
+          "0.5": 11.14869213104248,
+          "0.75": 19.644838333129883
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 91,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 326,
+        "represented_episode_recall": 0.9819277108433735,
+        "episode_first_alert_median_days": 9.720104217529297
+      },
+      "1000": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 4118,
+        "tp": 2567,
+        "fp": 1551,
+        "fn": 1205,
+        "precision": 0.6233608547838757,
+        "recall": 0.6805408271474019,
+        "f1": 0.6506970849176172,
+        "ap": 0.5393299639839151,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": 4.553645610809326,
+          "0.5": 10.518078804016113,
+          "0.75": 19.6446533203125
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 91,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 294,
+        "represented_episode_recall": 0.8855421686746988,
+        "episode_first_alert_median_days": 11.560497283935547
+      },
+      "1500": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 2808,
+        "tp": 2040,
+        "fp": 768,
+        "fn": 1732,
+        "precision": 0.7264957264957265,
+        "recall": 0.5408271474019088,
+        "f1": 0.6200607902735562,
+        "ap": 0.5219800579062942,
+        "passes_both": true,
+        "lead_days": {
+          "0.25": 4.461898326873779,
+          "0.5": 9.501805305480957,
+          "0.75": 19.470903396606445
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 91,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 268,
+        "represented_episode_recall": 0.8072289156626506,
+        "episode_first_alert_median_days": 8.059392929077148
+      },
+      "1750": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 2620,
+        "tp": 1906,
+        "fp": 714,
+        "fn": 1866,
+        "precision": 0.7274809160305343,
+        "recall": 0.5053022269353128,
+        "f1": 0.5963704630788486,
+        "ap": 0.505822954388127,
+        "passes_both": true,
+        "lead_days": {
+          "0.25": 3.6391175389289856,
+          "0.5": 8.625971794128418,
+          "0.75": 19.6446533203125
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 91,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 268,
+        "represented_episode_recall": 0.8072289156626506,
+        "episode_first_alert_median_days": 8.059392929077148
+      },
+      "2000": {
+        "decisions": 12771,
+        "positives": 3772,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 3772,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "ap": 0.2953566674496907,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": null,
+          "0.5": null,
+          "0.75": null
+        },
+        "channels": 130,
+        "positive_channels": 92,
+        "caught_channels": 0,
+        "represented_episodes": 332,
+        "caught_represented_episodes": 0,
+        "represented_episode_recall": 0.0,
+        "episode_first_alert_median_days": null
+      }
+    },
+    "readiness_1500_by_month_post_hoc": {
+      "2026-01": {
+        "decisions": 3672,
+        "positives": 582,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 582,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "ap": 0.15849673202614378,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": null,
+          "0.5": null,
+          "0.75": null
+        },
+        "channels": 130,
+        "positive_channels": 30,
+        "caught_channels": 0,
+        "represented_episodes": 32,
+        "caught_represented_episodes": 0,
+        "represented_episode_recall": 0.0,
+        "episode_first_alert_median_days": null
+      },
+      "2026-02": {
+        "decisions": 3348,
+        "positives": 545,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 545,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "ap": 0.1627837514934289,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": null,
+          "0.5": null,
+          "0.75": null
+        },
+        "channels": 128,
+        "positive_channels": 30,
+        "caught_channels": 0,
+        "represented_episodes": 48,
+        "caught_represented_episodes": 0,
+        "represented_episode_recall": 0.0,
+        "episode_first_alert_median_days": null
+      },
+      "2026-03": {
+        "decisions": 2334,
+        "positives": 555,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 555,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "ap": 0.2377892030848329,
+        "passes_both": false,
+        "lead_days": {
+          "0.25": null,
+          "0.5": null,
+          "0.75": null
+        },
+        "channels": 130,
+        "positive_channels": 37,
+        "caught_channels": 0,
+        "represented_episodes": 58,
+        "caught_represented_episodes": 0,
+        "represented_episode_recall": 0.0,
+        "episode_first_alert_median_days": null
+      },
+      "2026-04": {
+        "decisions": 3197,
+        "positives": 1956,
+        "alerts": 2620,
+        "tp": 1906,
+        "fp": 714,
+        "fn": 50,
+        "precision": 0.7274809160305343,
+        "recall": 0.9744376278118609,
+        "f1": 0.833041958041958,
+        "ap": 0.7012251921591903,
+        "passes_both": true,
+        "lead_days": {
+          "0.25": 3.6391175389289856,
+          "0.5": 8.625971794128418,
+          "0.75": 19.6446533203125
+        },
+        "channels": 130,
+        "positive_channels": 91,
+        "caught_channels": 91,
+        "represented_episodes": 268,
+        "caught_represented_episodes": 268,
+        "represented_episode_recall": 1.0,
+        "episode_first_alert_median_days": 8.059392929077148
+      },
+      "2026-05": {
+        "decisions": 220,
+        "positives": 134,
+        "alerts": 188,
+        "tp": 134,
+        "fp": 54,
+        "fn": 0,
+        "precision": 0.7127659574468085,
+        "recall": 1.0,
+        "f1": 0.8322981366459627,
+        "ap": 0.7487769704647242,
+        "passes_both": true,
+        "lead_days": {
+          "0.25": 17.6446533203125,
+          "0.5": 17.644895553588867,
+          "0.75": 18.6446533203125
+        },
+        "channels": 110,
+        "positive_channels": 67,
+        "caught_channels": 67,
+        "represented_episodes": 67,
+        "caught_represented_episodes": 67,
+        "represented_episode_recall": 1.0,
+        "episode_first_alert_median_days": 18.6446533203125
+      }
+    }
+  }
+]

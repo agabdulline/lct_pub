@@ -1,0 +1,114 @@
+{
+  "selected": "all_d7",
+  "task_type": "CPU",
+  "calibration_period": "2025 Q4",
+  "test_is_pristine": false,
+  "task": "At eligible smoke alarm, first next logged fault in [T,T+24h); no minimum warning time.",
+  "modes": {
+    "balanced": {
+      "threshold": 0.48862178270017925,
+      "calibration": {
+        "rows": 4718,
+        "positives": 330,
+        "prevalence": 0.06994489190334888,
+        "alerts": 237,
+        "tp": 199,
+        "fp": 38,
+        "fn": 131,
+        "tn": 4350,
+        "precision": 0.8396624472573839,
+        "recall": 0.603030303030303,
+        "f1": 0.7019400352733687,
+        "average_precision": 0.6813753788926097,
+        "roc_auc": 0.8692508494240491,
+        "meets_precision_recall": true,
+        "false_alerts_per_1000_alarm_decisions": 8.054260279779568
+      },
+      "test": {
+        "rows": 6512,
+        "positives": 434,
+        "prevalence": 0.06664619164619165,
+        "alerts": 382,
+        "tp": 324,
+        "fp": 58,
+        "fn": 110,
+        "tn": 6020,
+        "precision": 0.8481675392670157,
+        "recall": 0.7465437788018433,
+        "f1": 0.7941176470588236,
+        "average_precision": 0.7877224069359483,
+        "roc_auc": 0.958356647757342,
+        "meets_precision_recall": true,
+        "false_alerts_per_1000_alarm_decisions": 8.906633906633907
+      },
+      "true_alert_lead_hours": {
+        "0.0": 0.0002777777777777778,
+        "0.1": 0.00877777777777778,
+        "0.5": 0.03861111111111111,
+        "0.9": 0.1106944444444444,
+        "1.0": 5.373055555555555
+      }
+    },
+    "recall": {
+      "threshold": 0.5287891531204895,
+      "calibration": {
+        "rows": 4718,
+        "positives": 330,
+        "prevalence": 0.06994489190334888,
+        "alerts": 197,
+        "tp": 171,
+        "fp": 26,
+        "fn": 159,
+        "tn": 4362,
+        "precision": 0.868020304568528,
+        "recall": 0.5181818181818182,
+        "f1": 0.6489563567362429,
+        "average_precision": 0.6813753788926097,
+        "roc_auc": 0.8692508494240491,
+        "meets_precision_recall": true,
+        "false_alerts_per_1000_alarm_decisions": 5.510809665112336
+      },
+      "test": {
+        "rows": 6512,
+        "positives": 434,
+        "prevalence": 0.06664619164619165,
+        "alerts": 366,
+        "tp": 312,
+        "fp": 54,
+        "fn": 122,
+        "tn": 6024,
+        "precision": 0.8524590163934426,
+        "recall": 0.7188940092165899,
+        "f1": 0.7799999999999999,
+        "average_precision": 0.7877224069359483,
+        "roc_auc": 0.958356647757342,
+        "meets_precision_recall": true,
+        "false_alerts_per_1000_alarm_decisions": 8.292383292383292
+      },
+      "true_alert_lead_hours": {
+        "0.0": 0.0002777777777777778,
+        "0.1": 0.008666666666666668,
+        "0.5": 0.03861111111111111,
+        "0.9": 0.11444444444444454,
+        "1.0": 5.373055555555555
+      }
+    }
+  },
+  "frozen_v2_recall": {
+    "rows": 6512,
+    "positives": 434,
+    "prevalence": 0.06664619164619165,
+    "alerts": 341,
+    "tp": 300,
+    "fp": 41,
+    "fn": 134,
+    "tn": 6037,
+    "precision": 0.8797653958944281,
+    "recall": 0.6912442396313364,
+    "f1": 0.7741935483870969,
+    "average_precision": 0.7760602239506306,
+    "roc_auc": 0.9436063888345518,
+    "meets_precision_recall": true,
+    "false_alerts_per_1000_alarm_decisions": 6.296068796068796
+  }
+}

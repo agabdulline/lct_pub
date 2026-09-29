@@ -1,0 +1,66 @@
+{
+  "selected": {
+    "Датчик дыма": "smoke",
+    "Состояние фазы": "phase",
+    "ИБП": "ups",
+    "Состояние насоса": "pump",
+    "Состояние вентилятора": "fan",
+    "Ручной извещатель": "manual_alarm"
+  },
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "threshold_a": [
+      "2025-01-01",
+      "2025-04-01"
+    ],
+    "audit_a": [
+      "2025-04-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-01"
+    ]
+  },
+  "parameters": {
+    "iterations": 160,
+    "depth": 5,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 20,
+    "loss_function": "Logloss",
+    "random_seed": 42,
+    "thread_count": 6,
+    "has_time": true,
+    "verbose": false,
+    "allow_writing_files": false
+  },
+  "recipes": [
+    "extended_plain",
+    "hierarchy_plain",
+    "hierarchy_episode_balanced"
+  ],
+  "postprocessors": [
+    "raw",
+    "mean_3d",
+    "confirm_2d"
+  ],
+  "selection": "recipe on Q2 audit after Q1 threshold; postprocessor on Q3; threshold on Q4",
+  "test": "2026-01-01 through 2026-05-02; previously viewed",
+  "source_hashes": {
+    "channels.csv": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0",
+    "fault_episodes.parquet": "2419c72c6844bebd0046cd8bbaca58ddf0760b4e15666723a133b5f842f47fbb",
+    "objects.csv": "0c5685966eb03a07cd87d2501fba8e9565f6b76cfbb605bc4cac8182b2112fa0"
+  },
+  "objects_note": "78 anonymized level-3 objects and 16 parents; no addresses"
+}

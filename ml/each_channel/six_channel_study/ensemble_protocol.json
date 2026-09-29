@@ -1,0 +1,20 @@
+{
+  "selected": {
+    "Датчик дыма": "smoke",
+    "Состояние фазы": "phase",
+    "ИБП": "ups",
+    "Состояние насоса": "pump",
+    "Состояние вентилятора": "fan",
+    "Ручной извещатель": "manual_alarm"
+  },
+  "weights": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "selection": "blend weight on Q3 2025; threshold on Q4 2025",
+  "test": "2026-01-01 through 2026-05-02; previously viewed",
+  "warning": "adaptive follow-up after earlier 2026 diagnostics; not an independent blind test"
+}

@@ -1,0 +1,385 @@
+{
+  "source_load_seconds": 0.5432902000029571,
+  "python": "3.12.0",
+  "catboost": "1.2.10",
+  "pandas": "2.3.2",
+  "numpy": "2.3.2",
+  "models": {
+    "door": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 857,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 24.370074100006605
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 797,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 25.405541100015398
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 823,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 25.29096899999422
+        }
+      ]
+    },
+    "motion": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 716,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 22.63125839998247
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 706,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 22.530850299983285
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 725,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 23.321140399988508
+        }
+      ]
+    },
+    "phase": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 850,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 26.216217400011374
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 810,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 25.632092900021235
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 842,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 26.68372120001004
+        }
+      ]
+    },
+    "smoke": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 4209,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 167.68946180000785
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 3692,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 174.30917210000916
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 3519,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 164.88187629997265
+        }
+      ]
+    },
+    "temperature": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 580,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 39.78643460001331
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 535,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 40.07231179997325
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 564,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 39.34203689999413
+        }
+      ]
+    },
+    "uir": {
+      "sha256_ok": true,
+      "frozen_selection_ok": true,
+      "parity": [
+        {
+          "date": "2026-01-01",
+          "rows": 720,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 21.285091400000965
+        },
+        {
+          "date": "2026-03-01",
+          "rows": 632,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 21.506621400010772
+        },
+        {
+          "date": "2026-05-01",
+          "rows": 506,
+          "max_score_difference": 0.0,
+          "build_and_score_seconds": 21.4697906000074
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "each_channel\\advanced.py": "d33fe9bedd87cb2102055329f30eeed7b648e352337e3c63f6f9bd85c918f9cd",
+    "each_channel\\features.py": "48be8747e98e2ab5ac310525ae9ed0ee3a0fa0a5b0a2008c0731f1d4e8b66902",
+    "each_channel\\improve.py": "d746944fd081f51eaca1d6f63c1dc5a8cb28c601c01d6724e551071786733f6c",
+    "each_channel\\improve_dense.py": "438a032a3943a9cf5d567b21811c5e67c884657a95b7de3007c4599ca24635ab",
+    "each_channel\\predict.py": "6b7f2c39d5b89b129599eb58077532fd7a68d42ec79f7a259f7e3110da69954f",
+    "each_channel\\prepare.py": "0ac9cd2d1f3149dd97b9e20a8d82e5371b5bf09b514ba96c182fedd59b7ed07c",
+    "each_channel\\report.py": "6ac41a11782bb40b96cd5910e8e9aa3e56e586094ae5264f697e24051bd0d177",
+    "each_channel\\test_pipeline.py": "44ef20a176813d9f109d115f86dd527b22199a0c7ef858f5ae38892d4f8637d4",
+    "each_channel\\train.py": "8906c617c3408273571420d7d4fac83506045298877b655092a6095377aea8f0",
+    "each_channel\\verify.py": "c275b0156087d670183e39c1e2b4697d685e561b37679f2e1c95642abf046995",
+    "each_channel\\__init__.py": "744d35b0f1cf3a341321c4c39d79a865b13dd7643657d88b88348fda5ef4676d",
+    "baseline\\daily.py": "647c944f26b335ea75c5e94ad4ea2e4f270a8eb70c5f871d9bdef5116093f646"
+  },
+  "input_sha256": {
+    "channels.csv": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0",
+    "sensor_daily.parquet": "d9f93ba66138eb3a277cd9f2f565d648a96d47682d24480639a1335e03a06a47",
+    "fault_episodes.parquet": "2419c72c6844bebd0046cd8bbaca58ddf0760b4e15666723a133b5f842f47fbb"
+  },
+  "data_manifest": {
+    "prepared_source": "C:\\Users\\makar\\Documents\\Codex\\2026-09-23\\ext-journal-csv-6-1-2\\outputs\\sensor_failure_v3\\data",
+    "archive": "C:\\Users\\makar\\Downloads\\dataset.zip",
+    "restored_types": [
+      "9-секционный люк",
+      "Датчик затопления",
+      "ИБП",
+      "Переключатель",
+      "Ручной извещатель",
+      "Состояние УИР-Р",
+      "Состояние вентилятора",
+      "Состояние насоса",
+      "Состояние охраны",
+      "Состояние фазы",
+      "Стекло"
+    ],
+    "restored_years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "daily_rows": 3508095,
+    "extra_daily_rows": 1284540,
+    "extra_episodes": 184573,
+    "dedup": "channel,event_id,ts,alarm,value within year",
+    "channels_sha256": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0"
+  },
+  "data_range": [
+    "2019-01-01 00:00:00",
+    "2026-06-30 00:00:00"
+  ],
+  "source_distribution": [
+    {
+      "name": "9-секционный люк",
+      "catalog_channels": 9,
+      "active_channels": 9,
+      "daily_rows": 178,
+      "events": 502,
+      "fault_messages": 14
+    },
+    {
+      "name": "Газовый датчик",
+      "catalog_channels": 529,
+      "active_channels": 529,
+      "daily_rows": 482648,
+      "events": 224012118,
+      "fault_messages": 49031
+    },
+    {
+      "name": "Датчик движения",
+      "catalog_channels": 804,
+      "active_channels": 804,
+      "daily_rows": 365629,
+      "events": 51473736,
+      "fault_messages": 1816
+    },
+    {
+      "name": "Датчик дыма",
+      "catalog_channels": 4337,
+      "active_channels": 4337,
+      "daily_rows": 456148,
+      "events": 3961622,
+      "fault_messages": 1169182
+    },
+    {
+      "name": "Датчик затопления",
+      "catalog_channels": 25,
+      "active_channels": 25,
+      "daily_rows": 1487,
+      "events": 10437,
+      "fault_messages": 8
+    },
+    {
+      "name": "Датчик температуры",
+      "catalog_channels": 600,
+      "active_channels": 600,
+      "daily_rows": 383583,
+      "events": 1409472,
+      "fault_messages": 40388
+    },
+    {
+      "name": "ИБП",
+      "catalog_channels": 80,
+      "active_channels": 80,
+      "daily_rows": 12575,
+      "events": 75021,
+      "fault_messages": 1774
+    },
+    {
+      "name": "КД АВ",
+      "catalog_channels": 397,
+      "active_channels": 397,
+      "daily_rows": 90143,
+      "events": 620739,
+      "fault_messages": 916
+    },
+    {
+      "name": "КД Дверь",
+      "catalog_channels": 917,
+      "active_channels": 917,
+      "daily_rows": 398751,
+      "events": 4986555,
+      "fault_messages": 360
+    },
+    {
+      "name": "КД Люк",
+      "catalog_channels": 55,
+      "active_channels": 55,
+      "daily_rows": 6028,
+      "events": 36059,
+      "fault_messages": 120
+    },
+    {
+      "name": "Переключатель",
+      "catalog_channels": 801,
+      "active_channels": 801,
+      "daily_rows": 416135,
+      "events": 2346526,
+      "fault_messages": 0
+    },
+    {
+      "name": "Ручной извещатель",
+      "catalog_channels": 130,
+      "active_channels": 130,
+      "daily_rows": 4975,
+      "events": 40145,
+      "fault_messages": 10651
+    },
+    {
+      "name": "Состояние УИР-Р",
+      "catalog_channels": 762,
+      "active_channels": 762,
+      "daily_rows": 81485,
+      "events": 3554791,
+      "fault_messages": 84
+    },
+    {
+      "name": "Состояние вентилятора",
+      "catalog_channels": 354,
+      "active_channels": 354,
+      "daily_rows": 263546,
+      "events": 1473876,
+      "fault_messages": 64892
+    },
+    {
+      "name": "Состояние насоса",
+      "catalog_channels": 180,
+      "active_channels": 180,
+      "daily_rows": 77294,
+      "events": 1678086,
+      "fault_messages": 83447
+    },
+    {
+      "name": "Состояние охраны",
+      "catalog_channels": 47,
+      "active_channels": 47,
+      "daily_rows": 48789,
+      "events": 265832,
+      "fault_messages": 0
+    },
+    {
+      "name": "Состояние фазы",
+      "catalog_channels": 957,
+      "active_channels": 957,
+      "daily_rows": 373505,
+      "events": 2628584,
+      "fault_messages": 23925
+    },
+    {
+      "name": "Стекло",
+      "catalog_channels": 29,
+      "active_channels": 29,
+      "daily_rows": 4571,
+      "events": 23519,
+      "fault_messages": 0
+    },
+    {
+      "name": "Тепловой датчик",
+      "catalog_channels": 472,
+      "active_channels": 472,
+      "daily_rows": 40625,
+      "events": 501064,
+      "fault_messages": 22
+    }
+  ],
+  "restored_event_count": 12097319,
+  "restored_fault_messages": 184795,
+  "checks": [
+    "source totals",
+    "model hashes",
+    "frozen selection",
+    "feature schema",
+    "as-of parity: three dates",
+    "object-history partitions reconcile after exact fitting-row correction"
+  ],
+  "final_source_sha256": {
+    "each_channel\\advanced.py": "d33fe9bedd87cb2102055329f30eeed7b648e352337e3c63f6f9bd85c918f9cd",
+    "each_channel\\features.py": "48be8747e98e2ab5ac310525ae9ed0ee3a0fa0a5b0a2008c0731f1d4e8b66902",
+    "each_channel\\improve.py": "d746944fd081f51eaca1d6f63c1dc5a8cb28c601c01d6724e551071786733f6c",
+    "each_channel\\improve_dense.py": "438a032a3943a9cf5d567b21811c5e67c884657a95b7de3007c4599ca24635ab",
+    "each_channel\\predict.py": "6b7f2c39d5b89b129599eb58077532fd7a68d42ec79f7a259f7e3110da69954f",
+    "each_channel\\prepare.py": "0ac9cd2d1f3149dd97b9e20a8d82e5371b5bf09b514ba96c182fedd59b7ed07c",
+    "each_channel\\report.py": "2259a214f3cc8ccb15b5649719468a44cf25139fb7023fa224771b404553b0ca",
+    "each_channel\\test_pipeline.py": "44ef20a176813d9f109d115f86dd527b22199a0c7ef858f5ae38892d4f8637d4",
+    "each_channel\\train.py": "565c9e381d2f69598fea3de6356170ebeab8503a571ea550a96af1f02066946c",
+    "each_channel\\verify.py": "c275b0156087d670183e39c1e2b4697d685e561b37679f2e1c95642abf046995",
+    "each_channel\\__init__.py": "744d35b0f1cf3a341321c4c39d79a865b13dd7643657d88b88348fda5ef4676d",
+    "baseline\\daily.py": "647c944f26b335ea75c5e94ad4ea2e4f270a8eb70c5f871d9bdef5116093f646"
+  },
+  "post_check_changes": "Only the object-history report grouping and report rendering changed after as-of parity. Feature and inference source hashes are unchanged."
+}

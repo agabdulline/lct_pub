@@ -1,0 +1,135 @@
+{
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "candidates": [
+    {
+      "name": "v0_d6",
+      "mode": "base",
+      "depth": 6,
+      "l2": 3,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "extended_d6",
+      "mode": "extended",
+      "depth": 6,
+      "l2": 5,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "weighted_d4",
+      "mode": "extended",
+      "depth": 4,
+      "l2": 10,
+      "weight": "SqrtBalanced",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "weighted_d8",
+      "mode": "extended",
+      "depth": 8,
+      "l2": 10,
+      "weight": "SqrtBalanced",
+      "since": "2022-01-01"
+    },
+    {
+      "name": "recent_d6",
+      "mode": "extended",
+      "depth": 6,
+      "l2": 10,
+      "weight": "None",
+      "since": "2024-01-01"
+    },
+    {
+      "name": "recent_weighted",
+      "mode": "extended",
+      "depth": 5,
+      "l2": 10,
+      "weight": "SqrtBalanced",
+      "since": "2024-01-01"
+    },
+    {
+      "name": "object_context",
+      "mode": "identity",
+      "depth": 6,
+      "l2": 20,
+      "weight": "None",
+      "since": "2022-01-01"
+    }
+  ],
+  "common": {
+    "iterations": 1500,
+    "learning_rate": 0.05,
+    "loss_function": "Logloss",
+    "eval_metric": "PRAUC",
+    "od_type": "Iter",
+    "od_wait": 120,
+    "random_seed": 42,
+    "has_time": true,
+    "thread_count": 6,
+    "verbose": false,
+    "allow_writing_files": false
+  },
+  "selection": "max(min(P/0.7,R/0.5)) on Q3 2025; separate Q4 calibration",
+  "types": {
+    "motion": {
+      "name": "Датчик движения",
+      "channels": 804,
+      "share": 0.07000435350457118
+    },
+    "smoke": {
+      "name": "Датчик дыма",
+      "channels": 4337,
+      "share": 0.37762298650413584
+    },
+    "temperature": {
+      "name": "Датчик температуры",
+      "channels": 600,
+      "share": 0.052242054854157595
+    },
+    "door": {
+      "name": "КД Дверь",
+      "channels": 917,
+      "share": 0.07984327383543753
+    },
+    "switch": {
+      "name": "Переключатель",
+      "channels": 801,
+      "share": 0.0697431432303004
+    },
+    "uir": {
+      "name": "Состояние УИР-Р",
+      "channels": 762,
+      "share": 0.06634740966478014
+    },
+    "phase": {
+      "name": "Состояние фазы",
+      "channels": 957,
+      "share": 0.08332607749238137
+    }
+  },
+  "target": "observed onset of Неисправен in [T+1d,T+30d)",
+  "data": "data\\interim\\each_channel\\source"
+}

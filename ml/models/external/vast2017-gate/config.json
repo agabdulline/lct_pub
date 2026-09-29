@@ -1,0 +1,48 @@
+{
+  "model": "vast_gate",
+  "family": "external",
+  "dataset": "vast2017",
+  "version": "v0",
+  "label": "vast-gate-v0",
+  "title": "Проезд без допуска и необычный проезд",
+  "artifact": "vast_gate.json",
+  "module": "ml.external.vast2017.gate",
+  "synthetic": true,
+  "trigger": "on_event",
+  "target": "event",
+  "target_tag": null,
+  "horizon": "now",
+  "outcome": "label_at_event",
+  "label_key": "credential_id",
+  "positive_labels": [
+    "violation",
+    "suspicious"
+  ],
+  "ignore_labels": [],
+  "classes": null,
+  "features": [
+    "no_permit",
+    "prev_gate",
+    "gate",
+    "class",
+    "segment_time"
+  ],
+  "categorical": [],
+  "threshold": 2.677447,
+  "history_minutes": 57600,
+  "decision_lag_s": 1,
+  "eval_scheme": "out-of-time",
+  "periods": {
+    "train": [
+      "2015-05-01 00:43:28+03:00",
+      "2015-07-01"
+    ],
+    "test": [
+      "2015-07-01",
+      "2016-05-31 23:56:06+03:00"
+    ]
+  },
+  "sha256": "143b77b4689f03d51844581848828b4eec1bdd15845fbd0e838a64cf3f06f70f",
+  "trained_at": "2026-09-27T00:54:43+00:00",
+  "source": "VAST Challenge 2017 MC1 (синтетика, IEEE VIS; лицензия не указана — исследования и обучение)"
+}

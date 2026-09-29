@@ -1,0 +1,565 @@
+{
+ "sha256": "dd65fc3c299287b4e454cff3c72e3d39bbf86861d3adebaaa725b734c2c4d53c",
+ "computed_at": "2026-09-27T06:21:50+00:00",
+ "model": "smoke_alarm",
+ "version": "v3",
+ "period": {
+  "from": "2026-01-01",
+  "to": "2026-06-30",
+  "label": "I полугодие 2026"
+ },
+ "threshold": 0.48862178270017925,
+ "test": {
+  "decisions": 6512,
+  "positives": 434,
+  "alerts": 382,
+  "tp": 324,
+  "fp": 58,
+  "fn": 110,
+  "tn": 6020,
+  "precision": 0.8482,
+  "recall": 0.7465,
+  "f1": 0.7941,
+  "ap": 0.7877,
+  "lead_time": {
+   "min_s": 1.0,
+   "p10_s": 31.6,
+   "p25_s": 72.8,
+   "p50_s": 139.0,
+   "p75_s": 223.5,
+   "p90_s": 398.5,
+   "max_s": 19343.0
+  }
+ },
+ "seen": {
+  "decisions": 5519,
+  "positives": 423,
+  "alerts": 382,
+  "tp": 324,
+  "fp": 58,
+  "fn": 99,
+  "tn": 5038,
+  "precision": 0.8482,
+  "recall": 0.766,
+  "f1": 0.805,
+  "ap": 0.8089,
+  "lead_time": {
+   "min_s": 1.0,
+   "p10_s": 31.6,
+   "p25_s": 72.8,
+   "p50_s": 139.0,
+   "p75_s": 223.5,
+   "p90_s": 398.5,
+   "max_s": 19343.0
+  }
+ },
+ "unseen": {
+  "decisions": 993,
+  "positives": 11,
+  "alerts": 0,
+  "tp": 0,
+  "fp": 0,
+  "fn": 11,
+  "tn": 982,
+  "precision": null,
+  "recall": 0.0,
+  "f1": null,
+  "ap": 0.0277,
+  "lead_time": null
+ },
+ "seen_rule": "каналы с решениями в обучении 2023-01 — 2025-07",
+ "lead_time": {
+  "min_s": 1.0,
+  "p10_s": 31.6,
+  "p25_s": 72.8,
+  "p50_s": 139.0,
+  "p75_s": 223.5,
+  "p90_s": 398.5,
+  "max_s": 19343.0
+ },
+ "pr_curve": [
+  {
+   "threshold": 0.6858,
+   "precision": 1.0,
+   "recall": 0.0023
+  },
+  {
+   "threshold": 0.6767,
+   "precision": 1.0,
+   "recall": 0.023
+  },
+  {
+   "threshold": 0.6646,
+   "precision": 1.0,
+   "recall": 0.0438
+  },
+  {
+   "threshold": 0.6568,
+   "precision": 1.0,
+   "recall": 0.0645
+  },
+  {
+   "threshold": 0.6419,
+   "precision": 1.0,
+   "recall": 0.0829
+  },
+  {
+   "threshold": 0.6272,
+   "precision": 1.0,
+   "recall": 0.1037
+  },
+  {
+   "threshold": 0.6236,
+   "precision": 1.0,
+   "recall": 0.1267
+  },
+  {
+   "threshold": 0.6176,
+   "precision": 0.9692,
+   "recall": 0.1452
+  },
+  {
+   "threshold": 0.6147,
+   "precision": 0.9351,
+   "recall": 0.1659
+  },
+  {
+   "threshold": 0.6127,
+   "precision": 0.9412,
+   "recall": 0.1843
+  },
+  {
+   "threshold": 0.6086,
+   "precision": 0.9368,
+   "recall": 0.2051
+  },
+  {
+   "threshold": 0.6039,
+   "precision": 0.9159,
+   "recall": 0.2258
+  },
+  {
+   "threshold": 0.6026,
+   "precision": 0.8992,
+   "recall": 0.2465
+  },
+  {
+   "threshold": 0.6006,
+   "precision": 0.9062,
+   "recall": 0.2673
+  },
+  {
+   "threshold": 0.5997,
+   "precision": 0.9124,
+   "recall": 0.288
+  },
+  {
+   "threshold": 0.5983,
+   "precision": 0.9041,
+   "recall": 0.3041
+  },
+  {
+   "threshold": 0.5969,
+   "precision": 0.9103,
+   "recall": 0.3272
+  },
+  {
+   "threshold": 0.596,
+   "precision": 0.9102,
+   "recall": 0.3502
+  },
+  {
+   "threshold": 0.5949,
+   "precision": 0.8989,
+   "recall": 0.3687
+  },
+  {
+   "threshold": 0.5941,
+   "precision": 0.8942,
+   "recall": 0.3894
+  },
+  {
+   "threshold": 0.5921,
+   "precision": 0.899,
+   "recall": 0.4101
+  },
+  {
+   "threshold": 0.5908,
+   "precision": 0.8905,
+   "recall": 0.4309
+  },
+  {
+   "threshold": 0.5893,
+   "precision": 0.895,
+   "recall": 0.4516
+  },
+  {
+   "threshold": 0.5874,
+   "precision": 0.887,
+   "recall": 0.47
+  },
+  {
+   "threshold": 0.5858,
+   "precision": 0.8694,
+   "recall": 0.4908
+  },
+  {
+   "threshold": 0.5842,
+   "precision": 0.8745,
+   "recall": 0.5138
+  },
+  {
+   "threshold": 0.5817,
+   "precision": 0.875,
+   "recall": 0.5323
+  },
+  {
+   "threshold": 0.5795,
+   "precision": 0.8633,
+   "recall": 0.553
+  },
+  {
+   "threshold": 0.5778,
+   "precision": 0.8581,
+   "recall": 0.5714
+  },
+  {
+   "threshold": 0.5745,
+   "precision": 0.8538,
+   "recall": 0.5922
+  },
+  {
+   "threshold": 0.572,
+   "precision": 0.8526,
+   "recall": 0.6129
+  },
+  {
+   "threshold": 0.5683,
+   "precision": 0.854,
+   "recall": 0.6336
+  },
+  {
+   "threshold": 0.5602,
+   "precision": 0.8529,
+   "recall": 0.6544
+  },
+  {
+   "threshold": 0.5514,
+   "precision": 0.8547,
+   "recall": 0.6774
+  },
+  {
+   "threshold": 0.5467,
+   "precision": 0.8575,
+   "recall": 0.6935
+  },
+  {
+   "threshold": 0.5311,
+   "precision": 0.854,
+   "recall": 0.7143
+  },
+  {
+   "threshold": 0.508,
+   "precision": 0.8462,
+   "recall": 0.735
+  },
+  {
+   "threshold": 0.4801,
+   "precision": 0.8262,
+   "recall": 0.7558
+  },
+  {
+   "threshold": 0.4658,
+   "precision": 0.7573,
+   "recall": 0.7765
+  },
+  {
+   "threshold": 0.3735,
+   "precision": 0.5081,
+   "recall": 0.7972
+  },
+  {
+   "threshold": 0.3348,
+   "precision": 0.4744,
+   "recall": 0.8111
+  },
+  {
+   "threshold": 0.3182,
+   "precision": 0.4618,
+   "recall": 0.8364
+  },
+  {
+   "threshold": 0.3004,
+   "precision": 0.4542,
+   "recall": 0.8571
+  },
+  {
+   "threshold": 0.2875,
+   "precision": 0.4383,
+   "recall": 0.8756
+  },
+  {
+   "threshold": 0.2606,
+   "precision": 0.43,
+   "recall": 0.8986
+  },
+  {
+   "threshold": 0.2143,
+   "precision": 0.3778,
+   "recall": 0.9194
+  },
+  {
+   "threshold": 0.1682,
+   "precision": 0.2423,
+   "recall": 0.9378
+  },
+  {
+   "threshold": 0.1559,
+   "precision": 0.1933,
+   "recall": 0.9585
+  },
+  {
+   "threshold": 0.147,
+   "precision": 0.155,
+   "recall": 0.9793
+  },
+  {
+   "threshold": 0.1094,
+   "precision": 0.073,
+   "recall": 1.0
+  }
+ ],
+ "by_quarter": [
+  {
+   "quarter": "2025Q1",
+   "role": "early_stop",
+   "decisions": 3949,
+   "positives": 401,
+   "alerts": 208,
+   "tp": 183,
+   "fp": 25,
+   "fn": 218,
+   "tn": 3523,
+   "precision": 0.8798,
+   "recall": 0.4564,
+   "f1": 0.601,
+   "ap": 0.7848,
+   "lead_time": {
+    "min_s": 1.0,
+    "p10_s": 98.6,
+    "p25_s": 201.0,
+    "p50_s": 341.0,
+    "p75_s": 634.0,
+    "p90_s": 845.8,
+    "max_s": 2019.0
+   }
+  },
+  {
+   "quarter": "2025Q2",
+   "role": "early_stop",
+   "decisions": 2504,
+   "positives": 477,
+   "alerts": 336,
+   "tp": 302,
+   "fp": 34,
+   "fn": 175,
+   "tn": 1993,
+   "precision": 0.8988,
+   "recall": 0.6331,
+   "f1": 0.7429,
+   "ap": 0.9083,
+   "lead_time": {
+    "min_s": 0.0,
+    "p10_s": 47.1,
+    "p25_s": 85.0,
+    "p50_s": 193.0,
+    "p75_s": 1014.5,
+    "p90_s": 14039.6,
+    "max_s": 69711.0
+   }
+  },
+  {
+   "quarter": "2025Q3",
+   "role": "early_stop",
+   "decisions": 3463,
+   "positives": 274,
+   "alerts": 305,
+   "tp": 108,
+   "fp": 197,
+   "fn": 166,
+   "tn": 2992,
+   "precision": 0.3541,
+   "recall": 0.3942,
+   "f1": 0.3731,
+   "ap": 0.4742,
+   "lead_time": {
+    "min_s": 3.0,
+    "p10_s": 20.7,
+    "p25_s": 51.5,
+    "p50_s": 100.0,
+    "p75_s": 222.2,
+    "p90_s": 542.2,
+    "max_s": 2052.0
+   }
+  },
+  {
+   "quarter": "2025Q4",
+   "role": "threshold",
+   "decisions": 4718,
+   "positives": 330,
+   "alerts": 237,
+   "tp": 199,
+   "fp": 38,
+   "fn": 131,
+   "tn": 4350,
+   "precision": 0.8397,
+   "recall": 0.603,
+   "f1": 0.7019,
+   "ap": 0.6814,
+   "lead_time": {
+    "min_s": 0.0,
+    "p10_s": 34.0,
+    "p25_s": 73.5,
+    "p50_s": 155.0,
+    "p75_s": 304.5,
+    "p90_s": 517.8,
+    "max_s": 81267.0
+   }
+  },
+  {
+   "quarter": "2026Q1",
+   "role": "test",
+   "decisions": 4100,
+   "positives": 249,
+   "alerts": 177,
+   "tp": 160,
+   "fp": 17,
+   "fn": 89,
+   "tn": 3834,
+   "precision": 0.904,
+   "recall": 0.6426,
+   "f1": 0.7512,
+   "ap": 0.7784,
+   "lead_time": {
+    "min_s": 1.0,
+    "p10_s": 34.9,
+    "p25_s": 84.8,
+    "p50_s": 147.5,
+    "p75_s": 221.5,
+    "p90_s": 404.0,
+    "max_s": 7514.0
+   }
+  },
+  {
+   "quarter": "2026Q2",
+   "role": "test",
+   "decisions": 2412,
+   "positives": 185,
+   "alerts": 205,
+   "tp": 164,
+   "fp": 41,
+   "fn": 21,
+   "tn": 2186,
+   "precision": 0.8,
+   "recall": 0.8865,
+   "f1": 0.841,
+   "ap": 0.7965,
+   "lead_time": {
+    "min_s": 1.0,
+    "p10_s": 27.3,
+    "p25_s": 63.0,
+    "p50_s": 136.5,
+    "p75_s": 225.2,
+    "p90_s": 383.2,
+    "max_s": 19343.0
+   }
+  }
+ ],
+ "by_type": null,
+ "by_episode_kind": [
+  {
+   "kind": "ppr",
+   "decisions": 4905,
+   "positives": 225,
+   "alerts": 181,
+   "tp": 153,
+   "fp": 28,
+   "fn": 72,
+   "tn": 4652,
+   "precision": 0.8453,
+   "recall": 0.68,
+   "f1": 0.7537,
+   "ap": 0.6917,
+   "lead_time": {
+    "min_s": 7.0,
+    "p10_s": 59.2,
+    "p25_s": 92.0,
+    "p50_s": 139.0,
+    "p75_s": 202.0,
+    "p90_s": 266.4,
+    "max_s": 19343.0
+   }
+  },
+  {
+   "kind": "group",
+   "decisions": 1378,
+   "positives": 192,
+   "alerts": 170,
+   "tp": 157,
+   "fp": 13,
+   "fn": 35,
+   "tn": 1173,
+   "precision": 0.9235,
+   "recall": 0.8177,
+   "f1": 0.8674,
+   "ap": 0.9111,
+   "lead_time": {
+    "min_s": 1.0,
+    "p10_s": 20.6,
+    "p25_s": 55.0,
+    "p50_s": 142.0,
+    "p75_s": 297.0,
+    "p90_s": 570.2,
+    "max_s": 2762.0
+   }
+  },
+  {
+   "kind": "solitary",
+   "decisions": 229,
+   "positives": 17,
+   "alerts": 31,
+   "tp": 14,
+   "fp": 17,
+   "fn": 3,
+   "tn": 195,
+   "precision": 0.4516,
+   "recall": 0.8235,
+   "f1": 0.5833,
+   "ap": 0.4426,
+   "lead_time": {
+    "min_s": 1.0,
+    "p10_s": 6.3,
+    "p25_s": 23.5,
+    "p50_s": 65.0,
+    "p75_s": 145.2,
+    "p90_s": 901.5,
+    "max_s": 7514.0
+   }
+  }
+ ],
+ "rule": {
+  "name": "одиночная тревога на объекте за час → неисправность",
+  "decisions": 6512,
+  "positives": 434,
+  "alerts": 345,
+  "tp": 54,
+  "fp": 291,
+  "fn": 380,
+  "tn": 5787,
+  "precision": 0.1565,
+  "recall": 0.1244,
+  "f1": 0.1386,
+  "ap": null,
+  "lead_time": null
+ }
+}

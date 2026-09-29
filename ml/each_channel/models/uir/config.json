@@ -1,0 +1,673 @@
+{
+  "key": "uir",
+  "name": "Состояние УИР-Р",
+  "channels": 762,
+  "share": 0.06634740966478014,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "candidates": [
+    {
+      "recipe": {
+        "name": "v0_d6",
+        "mode": "base",
+        "depth": 6,
+        "l2": 3,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 10,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "extended_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 5,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 2,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "weighted_d4",
+        "mode": "extended",
+        "depth": 4,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 19,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "weighted_d8",
+        "mode": "extended",
+        "depth": 8,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 2,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "recent_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 10,
+        "weight": "None",
+        "since": "2024-01-01"
+      },
+      "trees": 6,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 28214,
+      "refit_positives": 53
+    },
+    {
+      "recipe": {
+        "name": "recent_weighted",
+        "mode": "extended",
+        "depth": 5,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2024-01-01"
+      },
+      "trees": 15,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 28214,
+      "refit_positives": 53
+    },
+    {
+      "recipe": {
+        "name": "object_context",
+        "mode": "identity",
+        "depth": 6,
+        "l2": 20,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 11,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    }
+  ],
+  "status": "trained",
+  "selected": {
+    "recipe": {
+      "name": "v0_d6",
+      "mode": "base",
+      "depth": 6,
+      "l2": 3,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    "trees": 10,
+    "selection_threshold": 1.000001,
+    "selection": {
+      "decisions": 21187,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "objective": 0.0,
+    "refit_rows": 74269,
+    "refit_positives": 146,
+    "features": [
+      "sensor_type",
+      "events_1d",
+      "events_7d",
+      "events_30d",
+      "events_90d",
+      "days_active_30d",
+      "days_active_90d",
+      "alarms_7d",
+      "alarms_30d",
+      "alarms_90d",
+      "faults_msg_7d",
+      "faults_msg_30d",
+      "faults_msg_90d",
+      "num_mean_7d",
+      "num_mean_30d",
+      "num_max_7d",
+      "onsets_7d",
+      "onsets_30d",
+      "onsets_90d",
+      "onsets_365d",
+      "days_since_onset",
+      "days_since_recovery",
+      "fault_hours_30d",
+      "mean_episode_hours_365d",
+      "obj_in_fault",
+      "obj_onsets_7d",
+      "month_sin",
+      "month_cos",
+      "weekday"
+    ],
+    "categorical": [
+      "sensor_type"
+    ],
+    "parameters": {
+      "iterations": 10,
+      "learning_rate": 0.05,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "random_seed": 42,
+      "has_time": true,
+      "thread_count": 6,
+      "verbose": false,
+      "allow_writing_files": false,
+      "depth": 6,
+      "l2_leaf_reg": 3,
+      "auto_class_weights": "None",
+      "cat_features": [
+        "sensor_type"
+      ]
+    }
+  },
+  "threshold": 1.000001,
+  "calibration": {
+    "decisions": 34304,
+    "positives": 0,
+    "alerts": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": 0.0,
+    "ap": null,
+    "passes_both": false,
+    "lead_days": {
+      "0.25": null,
+      "0.5": null,
+      "0.75": null
+    },
+    "channels": 762,
+    "positive_channels": 0,
+    "caught_channels": 0,
+    "represented_episodes": 0,
+    "caught_represented_episodes": 0,
+    "represented_episode_recall": null,
+    "episode_first_alert_median_days": null
+  },
+  "sha256": "5faaa3748a2b2265df460537bea8ef678bf82714baf3fb8f5c35c0ad08147f8d",
+  "test": {
+    "decisions": 74152,
+    "positives": 0,
+    "alerts": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": 0.0,
+    "ap": null,
+    "passes_both": false,
+    "lead_days": {
+      "0.25": null,
+      "0.5": null,
+      "0.75": null
+    },
+    "channels": 762,
+    "positive_channels": 0,
+    "caught_channels": 0,
+    "represented_episodes": 0,
+    "caught_represented_episodes": 0,
+    "represented_episode_recall": null,
+    "episode_first_alert_median_days": null
+  },
+  "test_by_fault_history": {
+    "with_history": {
+      "decisions": 3457,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 38,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "without_history": {
+      "decisions": 70695,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 724,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    }
+  },
+  "test_by_object_history": {
+    "known_object": {
+      "decisions": 74152,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 762,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "new_object": {
+      "decisions": 0,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 0,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    }
+  },
+  "test_by_month": {
+    "2026-01": {
+      "decisions": 16305,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 762,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "2026-02": {
+      "decisions": 19818,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 761,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "2026-03": {
+      "decisions": 20604,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 761,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "2026-04": {
+      "decisions": 16534,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 762,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "2026-05": {
+      "decisions": 891,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 506,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    }
+  },
+  "baselines": {
+    "always_alert": {
+      "decisions": 74152,
+      "positives": 0,
+      "alerts": 74152,
+      "tp": 0,
+      "fp": 74152,
+      "fn": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 762,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    },
+    "recent_fault": {
+      "decisions": 74152,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false,
+      "lead_days": {
+        "0.25": null,
+        "0.5": null,
+        "0.75": null
+      },
+      "channels": 762,
+      "positive_channels": 0,
+      "caught_channels": 0,
+      "represented_episodes": 0,
+      "caught_represented_episodes": 0,
+      "represented_episode_recall": null,
+      "episode_first_alert_median_days": null
+    }
+  },
+  "feature_importance": {
+    "obj_onsets_7d": 28.144662542960425,
+    "month_sin": 14.13879804810975,
+    "month_cos": 10.623389011545996,
+    "events_90d": 8.906956290209372,
+    "events_7d": 8.164954261471882,
+    "events_30d": 7.8280185657464525,
+    "alarms_90d": 5.793057842767396,
+    "mean_episode_hours_365d": 3.7960180225763454,
+    "obj_in_fault": 2.8200795162666696,
+    "onsets_365d": 1.7733893746447997,
+    "days_since_onset": 1.6948231399669798,
+    "alarms_30d": 1.230300857040392,
+    "onsets_90d": 1.1510042891648937,
+    "fault_hours_30d": 1.0200609092632835,
+    "days_active_90d": 0.7751162822989145,
+    "num_max_7d": 0.6577953794686611,
+    "onsets_30d": 0.40010526301303045,
+    "events_1d": 0.28383134526384435,
+    "alarms_7d": 0.2600667369844482,
+    "onsets_7d": 0.1875685277873819,
+    "days_active_30d": 0.17158188781623146,
+    "days_since_recovery": 0.11267713554386258,
+    "faults_msg_90d": 0.035053113093211095,
+    "faults_msg_7d": 0.01887902780162433,
+    "faults_msg_30d": 0.011812629194142636,
+    "sensor_type": 0.0,
+    "num_mean_7d": 0.0,
+    "num_mean_30d": 0.0,
+    "weekday": 0.0
+  },
+  "seconds": 31.0218867000076
+}

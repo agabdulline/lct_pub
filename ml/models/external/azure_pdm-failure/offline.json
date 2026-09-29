@@ -1,0 +1,353 @@
+{
+ "sha256": "a59a10601fe65d95eb2af75e7e8317f6d8f4175ba919ae8c83e3ce3de7a2e2e1",
+ "computed_at": "2026-09-27T01:28:12+00:00",
+ "model": "pdm_failure_24h",
+ "version": "v0",
+ "period": {
+  "from": "2015-11-01",
+  "to": "2016-01-01",
+  "label": "ноябрь–декабрь 2015"
+ },
+ "threshold": 0.173227,
+ "eval_scheme": "out-of-time",
+ "test": {
+  "decisions": 143990,
+  "positives": 2551,
+  "alerts": 2623,
+  "tp": 2546,
+  "fp": 77,
+  "fn": 5,
+  "tn": 141362,
+  "precision": 0.9706,
+  "recall": 0.998,
+  "f1": 0.9842,
+  "ap": 0.9954,
+  "lead_time": {
+   "min_s": 3600.0,
+   "p10_s": 10800.0,
+   "p25_s": 21600.0,
+   "p50_s": 43200.0,
+   "p75_s": 64800.0,
+   "p90_s": 75600.0,
+   "max_s": 82800.0
+  }
+ },
+ "seen": {
+  "decisions": 141108,
+  "positives": 2551,
+  "alerts": 2609,
+  "tp": 2546,
+  "fp": 63,
+  "fn": 5,
+  "tn": 138494,
+  "precision": 0.9759,
+  "recall": 0.998,
+  "f1": 0.9868,
+  "ap": 0.9957,
+  "lead_time": {
+   "min_s": 3600.0,
+   "p10_s": 10800.0,
+   "p25_s": 21600.0,
+   "p50_s": 43200.0,
+   "p75_s": 64800.0,
+   "p90_s": 75600.0,
+   "max_s": 82800.0
+  }
+ },
+ "unseen": {
+  "decisions": 2882,
+  "positives": 0,
+  "alerts": 14,
+  "tp": 0,
+  "fp": 14,
+  "fn": 0,
+  "tn": 2868,
+  "precision": 0.0,
+  "recall": null,
+  "f1": null,
+  "ap": null,
+  "lead_time": null
+ },
+ "seen_rule": "у агрегата был отказ в январе–августе 2015",
+ "lead_time": {
+  "min_s": 21600.0,
+  "p10_s": 82800.0,
+  "p25_s": 82800.0,
+  "p50_s": 82800.0,
+  "p75_s": 82800.0,
+  "p90_s": 82800.0,
+  "max_s": 82800.0
+ },
+ "pr_curve": [
+  {
+   "threshold": 1.0,
+   "precision": 1.0,
+   "recall": 0.0004
+  },
+  {
+   "threshold": 1.0,
+   "precision": 1.0,
+   "recall": 0.0208
+  },
+  {
+   "threshold": 1.0,
+   "precision": 1.0,
+   "recall": 0.0412
+  },
+  {
+   "threshold": 0.9999,
+   "precision": 1.0,
+   "recall": 0.0615
+  },
+  {
+   "threshold": 0.9998,
+   "precision": 1.0,
+   "recall": 0.0819
+  },
+  {
+   "threshold": 0.9997,
+   "precision": 1.0,
+   "recall": 0.1023
+  },
+  {
+   "threshold": 0.9997,
+   "precision": 1.0,
+   "recall": 0.1227
+  },
+  {
+   "threshold": 0.9997,
+   "precision": 1.0,
+   "recall": 0.1431
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.1635
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.1838
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.2042
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.2246
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.245
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.2658
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.2862
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.3065
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.3269
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.3473
+  },
+  {
+   "threshold": 0.9994,
+   "precision": 1.0,
+   "recall": 0.3677
+  },
+  {
+   "threshold": 0.9994,
+   "precision": 1.0,
+   "recall": 0.3881
+  },
+  {
+   "threshold": 0.9994,
+   "precision": 1.0,
+   "recall": 0.4085
+  },
+  {
+   "threshold": 0.9993,
+   "precision": 1.0,
+   "recall": 0.4289
+  },
+  {
+   "threshold": 0.9992,
+   "precision": 1.0,
+   "recall": 0.4492
+  },
+  {
+   "threshold": 0.9991,
+   "precision": 1.0,
+   "recall": 0.4696
+  },
+  {
+   "threshold": 0.9991,
+   "precision": 1.0,
+   "recall": 0.49
+  },
+  {
+   "threshold": 0.999,
+   "precision": 1.0,
+   "recall": 0.5104
+  },
+  {
+   "threshold": 0.9988,
+   "precision": 1.0,
+   "recall": 0.5308
+  },
+  {
+   "threshold": 0.9986,
+   "precision": 0.9993,
+   "recall": 0.5512
+  },
+  {
+   "threshold": 0.9984,
+   "precision": 0.9986,
+   "recall": 0.5715
+  },
+  {
+   "threshold": 0.9981,
+   "precision": 0.998,
+   "recall": 0.5919
+  },
+  {
+   "threshold": 0.9977,
+   "precision": 0.9981,
+   "recall": 0.6123
+  },
+  {
+   "threshold": 0.9973,
+   "precision": 0.9963,
+   "recall": 0.6327
+  },
+  {
+   "threshold": 0.9968,
+   "precision": 0.9958,
+   "recall": 0.6531
+  },
+  {
+   "threshold": 0.996,
+   "precision": 0.9954,
+   "recall": 0.6735
+  },
+  {
+   "threshold": 0.994,
+   "precision": 0.9933,
+   "recall": 0.6938
+  },
+  {
+   "threshold": 0.9923,
+   "precision": 0.9918,
+   "recall": 0.7142
+  },
+  {
+   "threshold": 0.9901,
+   "precision": 0.991,
+   "recall": 0.7346
+  },
+  {
+   "threshold": 0.9877,
+   "precision": 0.9913,
+   "recall": 0.7554
+  },
+  {
+   "threshold": 0.9842,
+   "precision": 0.9895,
+   "recall": 0.7758
+  },
+  {
+   "threshold": 0.9803,
+   "precision": 0.9888,
+   "recall": 0.7962
+  },
+  {
+   "threshold": 0.9754,
+   "precision": 0.9881,
+   "recall": 0.8165
+  },
+  {
+   "threshold": 0.9702,
+   "precision": 0.988,
+   "recall": 0.8369
+  },
+  {
+   "threshold": 0.9632,
+   "precision": 0.9874,
+   "recall": 0.8573
+  },
+  {
+   "threshold": 0.952,
+   "precision": 0.9868,
+   "recall": 0.8777
+  },
+  {
+   "threshold": 0.938,
+   "precision": 0.9858,
+   "recall": 0.8981
+  },
+  {
+   "threshold": 0.9123,
+   "precision": 0.9861,
+   "recall": 0.9185
+  },
+  {
+   "threshold": 0.8832,
+   "precision": 0.9856,
+   "recall": 0.9388
+  },
+  {
+   "threshold": 0.8187,
+   "precision": 0.9815,
+   "recall": 0.9592
+  },
+  {
+   "threshold": 0.6874,
+   "precision": 0.975,
+   "recall": 0.9796
+  },
+  {
+   "threshold": 0.001,
+   "precision": 0.9134,
+   "recall": 1.0
+  }
+ ],
+ "by_quarter": null,
+ "by_type": null,
+ "by_episode_kind": null,
+ "by_class": null,
+ "by_experiment": null,
+ "rule": {
+  "name": "была ошибка агрегата за 72 ч",
+  "decisions": 143990,
+  "positives": 2551,
+  "alerts": 35613,
+  "tp": 2551,
+  "fp": 33062,
+  "fn": 0,
+  "tn": 108377,
+  "precision": 0.0716,
+  "recall": 1.0,
+  "f1": 0.1337,
+  "ap": null,
+  "lead_time": null
+ }
+}

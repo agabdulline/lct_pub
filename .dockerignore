@@ -1,0 +1,9 @@
+# Контекст сборки из корня (ml-service): исходные данные и тяжёлое — не отправлять в Docker
+data
+tech
+docs
+.git
+**/node_modules
+**/.venv
+**/__pycache__
+web/dist

@@ -1,0 +1,135 @@
+# Локальный стенд: docker compose -f infra/docker-compose.yml up -d --build (см. DEPLOY.md)
+name: lct
+
+x-backend: &backend
+  build: ../backend
+  env_file: .env
+  environment:
+    DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    REDIS_URL: redis://redis:6379/0
+    ML_SERVICE_URL: http://ml-service:8000
+    OPCUA_ENDPOINT: opc.tcp://emulator:4840/lct/smvu
+    EMULATOR_URL: http://emulator:8000
+  depends_on:
+    postgres: { condition: service_healthy }
+    redis: { condition: service_healthy }
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    # Образ при первом запуске настраивает память под всю VM Docker (~2.4 ГБ shared_buffers); на машине разработчика
+    # несколько стендов делят 8 ГБ — ограничиваем. Параметры командной строки сильнее postgresql.conf и ALTER SYSTEM.
+    command: ["postgres", "-c", "shared_buffers=${PG_SHARED_BUFFERS:-512MB}", "-c", "effective_cache_size=${PG_EFFECTIVE_CACHE_SIZE:-2GB}",
+              "-c", "maintenance_work_mem=${PG_MAINTENANCE_WORK_MEM:-256MB}"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TIMESCALEDB_TELEMETRY: "off"
+    ports: ["127.0.0.1:${POSTGRES_PORT}:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:${REDIS_PORT}:6379"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    <<: *backend
+    ports: ["127.0.0.1:${API_PORT}:8000"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      ML_SERVICE_URL: http://ml-service:8000
+      OPCUA_ENDPOINT: opc.tcp://emulator:4840/lct/smvu
+      EMULATOR_URL: http://emulator:8000
+      UPLOADS_DIR: /data/uploads
+      EMULATOR_DIR: /data/processed/emulator
+    # загруженные журналы и сценарии из них — на запись; эмулятор читает uploaded/ только на чтение
+    volumes:
+      - ../data/uploads:/data/uploads
+      - ../data/processed/emulator/uploaded:/data/processed/emulator/uploaded
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health/live')"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  worker:
+    <<: *backend
+    command: ["celery", "-A", "app.tasks.celery_app", "worker", "--loglevel=info", "--concurrency=4"]
+    # archive_run пишет сырые события завершённых прогонов в общий архив Parquet (docs/architecture/data.md §2)
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      ML_SERVICE_URL: http://ml-service:8000
+      ARCHIVE_DIR: /data/archive
+    volumes: ["../data/archive:/data/archive"]
+
+  beat:
+    <<: *backend
+    command: ["celery", "-A", "app.tasks.celery_app", "beat", "--loglevel=info", "--schedule=/tmp/celerybeat-schedule"]
+
+  gateway:
+    <<: *backend
+    command: ["python", "-m", "app.gateway"]
+    depends_on:
+      redis: { condition: service_healthy }
+      emulator: { condition: service_started }
+
+  ml-service:
+    build:
+      context: ..
+      dockerfile: ml-service/Dockerfile
+    environment:
+      # Рабочая база только на чтение (D2): роль lct_ml создаёт миграция 0006, пароль — ML_DB_PASSWORD
+      DATABASE_URL: postgresql+psycopg://lct_ml:${ML_DB_PASSWORD:-lct_ml_dev}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports: ["127.0.0.1:${ML_SERVICE_PORT}:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  emulator:
+    build: ../emulator
+    environment:
+      OPCUA_ENDPOINT: opc.tcp://0.0.0.0:4840/lct/smvu
+      OBJECTS_CSV: /data/raw/справочник_объектов_диспетчер.csv
+      CHANNELS_CSV: /data/raw/справочник_каналов_датчиков.csv
+      SLICES_DIR: /data/processed/emulator
+      CHANNEL_PROPERTIES: ${EMULATOR_CHANNEL_PROPERTIES:-true}
+    # Справочники и срезы сценариев — только на чтение; без справочников эмулятор поднимается со служебными узлами.
+    # Срезы готовит `make emulator-slices` (docs/architecture/emulator.md §4)
+    volumes:
+      - ../data/raw:/data/raw:ro
+      - ../data/processed/emulator:/data/processed/emulator:ro
+    # OPC UA наружу не публикуется (docs/architecture/emulator.md §8); управление — через api
+    restart: unless-stopped
+
+  web:
+    build: ../web
+    ports: ["127.0.0.1:${WEB_PORT}:80"]
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:

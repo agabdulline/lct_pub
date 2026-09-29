@@ -1,0 +1,92 @@
+{
+  "family": "each_channel",
+  "version": "ups-ensemble-75-25",
+  "label": "ИБП: ансамбль 75/25",
+  "type": "ИБП",
+  "operation": "weighted_score_mean",
+  "components": [
+    {
+      "path": "old/ups_old.cbm",
+      "config": "old/config.json",
+      "sha256": "41bd4a0f11edac68efaffaa8fed3c9c96624fb31dcb6916d01057aa1887ccede",
+      "weight": 0.75
+    },
+    {
+      "path": "new/ups_context.cbm",
+      "config": "new/config.json",
+      "sha256": "41dcd1553330cc2a77a560b86d1af33642613b9daa9cdbbf2f461ef048ad51a7",
+      "weight": 0.25,
+      "postprocess": "mean_3d"
+    }
+  ],
+  "threshold": 0.30159646707305565,
+  "periods": {
+    "weight_selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "threshold": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-05-03"
+    ]
+  },
+  "metrics": {
+    "calibration": {
+      "decisions": 3822,
+      "positives": 378,
+      "alerts": 297,
+      "tp": 213,
+      "fp": 84,
+      "fn": 165,
+      "precision": 0.7171717171717171,
+      "recall": 0.5634920634920635,
+      "f1": 0.6311111111111111,
+      "ap": 0.7115096376408239,
+      "passes_both": true,
+      "lead_days": {
+        "0.25": 4.5958333015441895,
+        "0.5": 8.544051170349121,
+        "0.75": 12.872210502624512
+      },
+      "channels": 79,
+      "positive_channels": 14,
+      "caught_channels": 10,
+      "represented_episodes": 36,
+      "caught_represented_episodes": 27,
+      "represented_episode_recall": 0.75,
+      "episode_first_alert_median_days": 13.872233390808105
+    },
+    "test": {
+      "decisions": 8266,
+      "positives": 388,
+      "alerts": 329,
+      "tp": 255,
+      "fp": 74,
+      "fn": 133,
+      "precision": 0.7750759878419453,
+      "recall": 0.6572164948453608,
+      "f1": 0.7112970711297071,
+      "ap": 0.7142091853483711,
+      "passes_both": true,
+      "lead_days": {
+        "0.25": 4.435717582702637,
+        "0.5": 7.489259243011475,
+        "0.75": 11.48901653289795
+      },
+      "channels": 80,
+      "positive_channels": 8,
+      "caught_channels": 4,
+      "represented_episodes": 27,
+      "caught_represented_episodes": 22,
+      "represented_episode_recall": 0.8148148148148148,
+      "episode_first_alert_median_days": 14.200983047485352
+    }
+  },
+  "report": "ml/each_channel/SIX_CHANNEL_REPORT.md",
+  "deployment_status": "candidate_waiting_service_adapter",
+  "warning": "2026 was viewed in earlier experiments; confirm on a future continuous holdout."
+}

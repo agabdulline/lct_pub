@@ -1,0 +1,395 @@
+{
+ "model": "magdeburg-fire-v0",
+ "dataset": "magdeburg",
+ "decision_time": "2023-07-13T12:45:00+03:00",
+ "results": [
+  {
+   "target": 9010106,
+   "target_channel_id": 901000600,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999328,
+   "alert": true,
+   "classes": {
+    "background": 0.000376,
+    "nuisance": 0.000296,
+    "fire": 0.999328
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3088
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6548
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.948725,
+     "contribution": 0.5705
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1750000000000003,
+     "contribution": 0.5639
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.802,
+     "contribution": 0.4032
+    }
+   ]
+  },
+  {
+   "target": 9010107,
+   "target_channel_id": 901000700,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999143,
+   "alert": true,
+   "classes": {
+    "background": 0.000559,
+    "nuisance": 0.000298,
+    "fire": 0.999143
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3338
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6374
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1331250000000002,
+     "contribution": 0.5743
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.9488500000000002,
+     "contribution": 0.5578
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.8352,
+     "contribution": 0.412
+    }
+   ]
+  },
+  {
+   "target": 9010108,
+   "target_channel_id": 901000800,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.998753,
+   "alert": true,
+   "classes": {
+    "background": 0.000531,
+    "nuisance": 0.000715,
+    "fire": 0.998753
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 1801.675,
+     "contribution": 1.1895
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 0.9116500000000001,
+     "contribution": 0.6246
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.8034124999999999,
+     "contribution": 0.5685
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 2.9966,
+     "contribution": 0.421
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 0.9387500000000002,
+     "contribution": 0.297
+    }
+   ]
+  },
+  {
+   "target": 9010109,
+   "target_channel_id": 901000900,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999118,
+   "alert": true,
+   "classes": {
+    "background": 0.000521,
+    "nuisance": 0.000361,
+    "fire": 0.999118
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3086
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6434
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1043750000000006,
+     "contribution": 0.5548
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.95185625,
+     "contribution": 0.5486
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.752,
+     "contribution": 0.4011
+    }
+   ]
+  },
+  {
+   "target": 9010110,
+   "target_channel_id": 901001000,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999389,
+   "alert": true,
+   "classes": {
+    "background": 0.00031,
+    "nuisance": 0.000301,
+    "fire": 0.999389
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3262
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6472
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.135625,
+     "contribution": 0.5622
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.9491875,
+     "contribution": 0.5621
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.7719999999999998,
+     "contribution": 0.4011
+    }
+   ]
+  },
+  {
+   "target": 9010111,
+   "target_channel_id": 901001100,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999438,
+   "alert": true,
+   "classes": {
+    "background": 0.000282,
+    "nuisance": 0.00028,
+    "fire": 0.999438
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3221
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6471
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1950000000000003,
+     "contribution": 0.5951
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.94765625,
+     "contribution": 0.5626
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.8150000000000002,
+     "contribution": 0.4013
+    }
+   ]
+  },
+  {
+   "target": 9010112,
+   "target_channel_id": 901001200,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999199,
+   "alert": true,
+   "classes": {
+    "background": 0.000428,
+    "nuisance": 0.000373,
+    "fire": 0.999199
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.2961
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6502
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.9486625,
+     "contribution": 0.5544
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.0275000000000003,
+     "contribution": 0.4086
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.8133,
+     "contribution": 0.4052
+    }
+   ]
+  },
+  {
+   "target": 9010113,
+   "target_channel_id": 901001300,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.999385,
+   "alert": true,
+   "classes": {
+    "background": 0.000285,
+    "nuisance": 0.00033,
+    "fire": 0.999385
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3169
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.6217
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.9461625,
+     "contribution": 0.5804
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1418750000000002,
+     "contribution": 0.5627
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.8140000000000003,
+     "contribution": 0.3971
+    }
+   ]
+  },
+  {
+   "target": 9010115,
+   "target_channel_id": 901001500,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.99953,
+   "alert": true,
+   "classes": {
+    "background": 0.00017,
+    "nuisance": 0.0003,
+    "fire": 0.99953
+   },
+   "class": "fire",
+   "factors": [
+    {
+     "feature": "room_PM_Total_Room_max_d_base",
+     "value": 2997.94,
+     "contribution": 1.3081
+    },
+    {
+     "feature": "room_CO_Room_max_d_base",
+     "value": 1.4983,
+     "contribution": 0.629
+    },
+    {
+     "feature": "room_VOC_Room_RAW_mean_d_base",
+     "value": 1.9537875,
+     "contribution": 0.5524
+    },
+    {
+     "feature": "room_Temperature_Room_mean_d_base",
+     "value": 1.1187500000000004,
+     "contribution": 0.5518
+    },
+    {
+     "feature": "VOC_Room_RAW_d_15m",
+     "value": 1.7812999999999999,
+     "contribution": 0.3899
+    }
+   ]
+  }
+ ],
+ "elapsed_ms": 0
+}

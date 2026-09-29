@@ -1,0 +1,91 @@
+{
+  "date": "2026-02-01 00:00:00",
+  "models_hashed": 53,
+  "comparisons": [
+    {
+      "key": "smoke",
+      "model": "v0",
+      "decisions": 4264,
+      "max_difference": 0.0
+    },
+    {
+      "key": "phase",
+      "model": "v0",
+      "decisions": 825,
+      "max_difference": 0.0
+    },
+    {
+      "key": "phase",
+      "model": "dense_base",
+      "decisions": 825,
+      "max_difference": 0.0
+    },
+    {
+      "key": "temperature",
+      "model": "v0",
+      "decisions": 546,
+      "max_difference": 0.0
+    },
+    {
+      "key": "gas",
+      "model": "v0",
+      "decisions": 375,
+      "max_difference": 0.0
+    },
+    {
+      "key": "flood",
+      "model": "dense_calendar",
+      "decisions": 25,
+      "max_difference": 0.0
+    },
+    {
+      "key": "ups",
+      "model": "v0",
+      "decisions": 74,
+      "max_difference": 0.0
+    },
+    {
+      "key": "ups",
+      "model": "dense_base",
+      "decisions": 74,
+      "max_difference": 0.0
+    },
+    {
+      "key": "kd_av",
+      "model": "dense_calendar",
+      "decisions": 349,
+      "max_difference": 0.0
+    },
+    {
+      "key": "kd_hatch",
+      "model": "dense_calendar",
+      "decisions": 55,
+      "max_difference": 0.0
+    },
+    {
+      "key": "manual_alarm",
+      "model": "v0",
+      "decisions": 124,
+      "max_difference": 0.0
+    },
+    {
+      "key": "manual_alarm",
+      "model": "dense_calendar",
+      "decisions": 124,
+      "max_difference": 0.0
+    },
+    {
+      "key": "fan",
+      "model": "v0",
+      "decisions": 249,
+      "max_difference": 0.0
+    },
+    {
+      "key": "pump",
+      "model": "v0",
+      "decisions": 153,
+      "max_difference": 0.0
+    }
+  ],
+  "verification_seconds": 61.648756400012644
+}

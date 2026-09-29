@@ -1,0 +1,97 @@
+{
+  "key": "switch",
+  "name": "Переключатель",
+  "channels": 801,
+  "share": 0.0697431432303004,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "candidates": [],
+  "status": "insufficient_classes",
+  "counts": {
+    "train": {
+      "decisions": 77608,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "early_stop": {
+      "decisions": 78895,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "selection": {
+      "decisions": 35275,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "calibration": {
+      "decisions": 37501,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "test": {
+      "decisions": 74214,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+ "model": "v3",
+ "results": [
+  {
+   "channel_id": 11,
+   "alarm_ts": "2025-03-23T10:00:00+03:00",
+   "decision_time": "2025-03-23T10:00:01+03:00",
+   "threshold": 0.48862178270017925,
+   "seen_channel": false,
+   "object_history": false,
+   "model": "v3",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.204687,
+   "alert": false,
+   "factors": [
+    {
+     "feature": "history_object_rate_3650d",
+     "value": 0.10000000149011612,
+     "contribution": 0.1237
+    },
+    {
+     "feature": "object_isolated_3600s",
+     "value": 1.0,
+     "contribution": 0.0497
+    },
+    {
+     "feature": "history_loop_rate_3650d",
+     "value": 0.10000000149011612,
+     "contribution": 0.0446
+    },
+    {
+     "feature": "history_object_rate_365d",
+     "value": 0.10000000149011612,
+     "contribution": 0.0442
+    },
+    {
+     "feature": "object_events_3600s_count",
+     "value": 0.0,
+     "contribution": 0.042
+    }
+   ]
+  },
+  {
+   "channel_id": 11,
+   "alarm_ts": "2025-03-23T10:30:00+03:00",
+   "decision_time": "2025-03-23T10:30:01+03:00",
+   "threshold": 0.48862178270017925,
+   "seen_channel": false,
+   "object_history": null,
+   "model": "v3",
+   "status": "skipped",
+   "skip_reason": "decided_within_24h",
+   "score": null,
+   "alert": null,
+   "factors": []
+  },
+  {
+   "channel_id": 13,
+   "alarm_ts": "2025-04-02T09:01:00+03:00",
+   "decision_time": "2025-04-02T09:01:01+03:00",
+   "threshold": 0.48862178270017925,
+   "seen_channel": false,
+   "object_history": true,
+   "model": "v3",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.342058,
+   "alert": false,
+   "factors": [
+    {
+     "feature": "history_loop_rate_3650d",
+     "value": 0.25,
+     "contribution": 0.3945
+    },
+    {
+     "feature": "history_loop_rate_365d",
+     "value": 0.25,
+     "contribution": 0.3638
+    },
+    {
+     "feature": "history_object_rate_3650d",
+     "value": 0.25,
+     "contribution": 0.188
+    },
+    {
+     "feature": "history_loop_rate_90d",
+     "value": 0.25,
+     "contribution": 0.0455
+    },
+    {
+     "feature": "object_smoke_86400s_distinct",
+     "value": 1.0,
+     "contribution": -0.0409
+    }
+   ]
+  },
+  {
+   "channel_id": 12,
+   "alarm_ts": "2025-04-07T12:30:00+03:00",
+   "decision_time": "2025-04-07T12:30:01+03:00",
+   "threshold": 0.48862178270017925,
+   "seen_channel": false,
+   "object_history": null,
+   "model": "v3",
+   "status": "skipped",
+   "skip_reason": "fault_recent_24h",
+   "score": null,
+   "alert": null,
+   "factors": []
+  },
+  {
+   "channel_id": 14,
+   "alarm_ts": "2025-03-06T10:00:00+03:00",
+   "decision_time": "2025-03-06T10:00:01+03:00",
+   "threshold": 0.48862178270017925,
+   "seen_channel": false,
+   "object_history": null,
+   "model": "v3",
+   "status": "skipped",
+   "skip_reason": "coverage_gap",
+   "score": null,
+   "alert": null,
+   "factors": []
+  },
+  {
+   "channel_id": 99,
+   "alarm_ts": "2025-04-02T09:00:00+03:00",
+   "status": "skipped",
+   "skip_reason": "unknown_channel"
+  }
+ ],
+ "elapsed_ms": 0
+}

@@ -1,0 +1,601 @@
+{
+  "key": "phase",
+  "name": "Состояние фазы",
+  "channels": 957,
+  "share": 0.08332607749238137,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "candidates": [
+    {
+      "recipe": {
+        "name": "v0_d6",
+        "mode": "base",
+        "depth": 6,
+        "l2": 3,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 25,
+      "selection_threshold": 0.5772623103695065,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4958,
+        "tp": 3733,
+        "fp": 1225,
+        "fn": 2684,
+        "precision": 0.7529245663574021,
+        "recall": 0.5817360137135733,
+        "f1": 0.6563516483516484,
+        "ap": 0.7479631780142871,
+        "passes_both": true
+      },
+      "objective": 1.0756065233677174,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "extended_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 5,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 5,
+      "selection_threshold": 0.5230378554373442,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4696,
+        "tp": 3429,
+        "fp": 1267,
+        "fn": 2988,
+        "precision": 0.7301959114139693,
+        "recall": 0.5343618513323983,
+        "f1": 0.6171150904346261,
+        "ap": 0.7535962178682207,
+        "passes_both": true
+      },
+      "objective": 1.0431370163056706,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "weighted_d4",
+        "mode": "extended",
+        "depth": 4,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 35,
+      "selection_threshold": 0.7654003722509295,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4581,
+        "tp": 3380,
+        "fp": 1201,
+        "fn": 3037,
+        "precision": 0.7378301680855708,
+        "recall": 0.5267258843696432,
+        "f1": 0.6146572104018913,
+        "ap": 0.746354805275018,
+        "passes_both": true
+      },
+      "objective": 1.0534517687392864,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "weighted_d8",
+        "mode": "extended",
+        "depth": 8,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 24,
+      "selection_threshold": 0.7366048824129996,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4587,
+        "tp": 3376,
+        "fp": 1211,
+        "fn": 3041,
+        "precision": 0.735993023762808,
+        "recall": 0.5261025401277856,
+        "f1": 0.6135950563431479,
+        "ap": 0.7603722134841265,
+        "passes_both": true
+      },
+      "objective": 1.05141860537544,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "recent_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 10,
+        "weight": "None",
+        "since": "2024-01-01"
+      },
+      "trees": 14,
+      "selection_threshold": 0.5816694941240366,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 5037,
+        "tp": 3636,
+        "fp": 1401,
+        "fn": 2781,
+        "precision": 0.7218582489577129,
+        "recall": 0.5666199158485273,
+        "f1": 0.6348873755893137,
+        "ap": 0.7538271647550594,
+        "passes_both": true
+      },
+      "objective": 1.0312260699395899,
+      "refit_rows": 45243,
+      "refit_positives": 6814
+    },
+    {
+      "recipe": {
+        "name": "recent_weighted",
+        "mode": "extended",
+        "depth": 5,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2024-01-01"
+      },
+      "trees": 19,
+      "selection_threshold": 0.7197700010924533,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4678,
+        "tp": 3448,
+        "fp": 1230,
+        "fn": 2969,
+        "precision": 0.7370671227020094,
+        "recall": 0.5373227364812218,
+        "f1": 0.6215412347904461,
+        "ap": 0.7414861134808898,
+        "passes_both": true
+      },
+      "objective": 1.052953032431442,
+      "refit_rows": 45243,
+      "refit_positives": 6814
+    },
+    {
+      "recipe": {
+        "name": "object_context",
+        "mode": "identity",
+        "depth": 6,
+        "l2": 20,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 11,
+      "selection_threshold": 0.5475167080790244,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4583,
+        "tp": 3414,
+        "fp": 1169,
+        "fn": 3003,
+        "precision": 0.74492690377482,
+        "recall": 0.5320243104254324,
+        "f1": 0.6207272727272727,
+        "ap": 0.7506450636138371,
+        "passes_both": true
+      },
+      "objective": 1.0640486208508648,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "matured_d6",
+        "mode": "advanced",
+        "depth": 6,
+        "l2": 5,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 10,
+      "selection_threshold": 0.5464819611048425,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4585,
+        "tp": 3339,
+        "fp": 1246,
+        "fn": 3078,
+        "precision": 0.7282442748091603,
+        "recall": 0.520336605890603,
+        "f1": 0.6069805489910926,
+        "ap": 0.7450611779113044,
+        "passes_both": true
+      },
+      "objective": 1.0403489640130863,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "matured_weighted_d4",
+        "mode": "advanced",
+        "depth": 4,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 23,
+      "selection_threshold": 0.7305138689899296,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4570,
+        "tp": 3441,
+        "fp": 1129,
+        "fn": 2976,
+        "precision": 0.7529540481400437,
+        "recall": 0.5362318840579711,
+        "f1": 0.6263766269227269,
+        "ap": 0.7694510934807531,
+        "passes_both": true
+      },
+      "objective": 1.0724637681159421,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "matured_d8",
+        "mode": "advanced",
+        "depth": 8,
+        "l2": 10,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 15,
+      "selection_threshold": 0.5571020814487591,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4614,
+        "tp": 3459,
+        "fp": 1155,
+        "fn": 2958,
+        "precision": 0.7496749024707412,
+        "recall": 0.53903693314633,
+        "f1": 0.6271416915964101,
+        "ap": 0.7613967315807213,
+        "passes_both": true
+      },
+      "objective": 1.0709641463867732,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "matured_recent_d6",
+        "mode": "advanced",
+        "depth": 6,
+        "l2": 10,
+        "weight": "None",
+        "since": "2024-01-01"
+      },
+      "trees": 23,
+      "selection_threshold": 0.6360127681245643,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4627,
+        "tp": 3319,
+        "fp": 1308,
+        "fn": 3098,
+        "precision": 0.7173114328938838,
+        "recall": 0.5172198846813153,
+        "f1": 0.6010503440782325,
+        "ap": 0.7518038290116602,
+        "passes_both": true
+      },
+      "objective": 1.024730618419834,
+      "refit_rows": 45243,
+      "refit_positives": 6814
+    },
+    {
+      "recipe": {
+        "name": "matured_object_d6",
+        "mode": "advanced_identity",
+        "depth": 6,
+        "l2": 20,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 43,
+      "selection_threshold": 0.5923410386729941,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4588,
+        "tp": 3414,
+        "fp": 1174,
+        "fn": 3003,
+        "precision": 0.7441150828247602,
+        "recall": 0.5320243104254324,
+        "f1": 0.62044525215811,
+        "ap": 0.7682617527434024,
+        "passes_both": true
+      },
+      "objective": 1.0630215468925146,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "matured_channel_d6",
+        "mode": "channel_identity",
+        "depth": 6,
+        "l2": 20,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 31,
+      "selection_threshold": 0.5874753140494994,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4583,
+        "tp": 3428,
+        "fp": 1155,
+        "fn": 2989,
+        "precision": 0.7479816713942832,
+        "recall": 0.5342060152719339,
+        "f1": 0.6232727272727273,
+        "ap": 0.7656930897410552,
+        "passes_both": true
+      },
+      "objective": 1.0684120305438678,
+      "refit_rows": 114239,
+      "refit_positives": 14355
+    },
+    {
+      "recipe": {
+        "name": "winner_daily_refit",
+        "mode": "base",
+        "depth": 6,
+        "l2": 3,
+        "weight": "None",
+        "since": "2022-01-01",
+        "refit_all_days": true,
+        "fixed_trees": 25,
+        "feature_names": [
+          "sensor_type",
+          "events_1d",
+          "events_7d",
+          "events_30d",
+          "events_90d",
+          "days_active_30d",
+          "days_active_90d",
+          "alarms_7d",
+          "alarms_30d",
+          "alarms_90d",
+          "faults_msg_7d",
+          "faults_msg_30d",
+          "faults_msg_90d",
+          "num_mean_7d",
+          "num_mean_30d",
+          "num_max_7d",
+          "onsets_7d",
+          "onsets_30d",
+          "onsets_90d",
+          "onsets_365d",
+          "days_since_onset",
+          "days_since_recovery",
+          "fault_hours_30d",
+          "mean_episode_hours_365d",
+          "obj_in_fault",
+          "obj_onsets_7d",
+          "month_sin",
+          "month_cos",
+          "weekday"
+        ],
+        "categorical": [
+          "sensor_type"
+        ]
+      },
+      "trees": 25,
+      "selection_threshold": 0.6273776551617424,
+      "selection": {
+        "decisions": 44751,
+        "positives": 6417,
+        "alerts": 4627,
+        "tp": 3521,
+        "fp": 1106,
+        "fn": 2896,
+        "precision": 0.7609682299546142,
+        "recall": 0.5486987688951224,
+        "f1": 0.637631293009779,
+        "ap": 0.7659871619468008,
+        "passes_both": true
+      },
+      "objective": 1.0870974713637347,
+      "refit_rows": 205152,
+      "refit_positives": 27981
+    }
+  ],
+  "status": "trained",
+  "selected": {
+    "recipe": {
+      "name": "winner_daily_refit",
+      "mode": "base",
+      "depth": 6,
+      "l2": 3,
+      "weight": "None",
+      "since": "2022-01-01",
+      "refit_all_days": true,
+      "fixed_trees": 25,
+      "feature_names": [
+        "sensor_type",
+        "events_1d",
+        "events_7d",
+        "events_30d",
+        "events_90d",
+        "days_active_30d",
+        "days_active_90d",
+        "alarms_7d",
+        "alarms_30d",
+        "alarms_90d",
+        "faults_msg_7d",
+        "faults_msg_30d",
+        "faults_msg_90d",
+        "num_mean_7d",
+        "num_mean_30d",
+        "num_max_7d",
+        "onsets_7d",
+        "onsets_30d",
+        "onsets_90d",
+        "onsets_365d",
+        "days_since_onset",
+        "days_since_recovery",
+        "fault_hours_30d",
+        "mean_episode_hours_365d",
+        "obj_in_fault",
+        "obj_onsets_7d",
+        "month_sin",
+        "month_cos",
+        "weekday"
+      ],
+      "categorical": [
+        "sensor_type"
+      ]
+    },
+    "trees": 25,
+    "selection_threshold": 0.6273776551617424,
+    "selection": {
+      "decisions": 44751,
+      "positives": 6417,
+      "alerts": 4627,
+      "tp": 3521,
+      "fp": 1106,
+      "fn": 2896,
+      "precision": 0.7609682299546142,
+      "recall": 0.5486987688951224,
+      "f1": 0.637631293009779,
+      "ap": 0.7659871619468008,
+      "passes_both": true
+    },
+    "objective": 1.0870974713637347,
+    "refit_rows": 205152,
+    "refit_positives": 27981,
+    "features": [
+      "sensor_type",
+      "events_1d",
+      "events_7d",
+      "events_30d",
+      "events_90d",
+      "days_active_30d",
+      "days_active_90d",
+      "alarms_7d",
+      "alarms_30d",
+      "alarms_90d",
+      "faults_msg_7d",
+      "faults_msg_30d",
+      "faults_msg_90d",
+      "num_mean_7d",
+      "num_mean_30d",
+      "num_max_7d",
+      "onsets_7d",
+      "onsets_30d",
+      "onsets_90d",
+      "onsets_365d",
+      "days_since_onset",
+      "days_since_recovery",
+      "fault_hours_30d",
+      "mean_episode_hours_365d",
+      "obj_in_fault",
+      "obj_onsets_7d",
+      "month_sin",
+      "month_cos",
+      "weekday"
+    ],
+    "categorical": [
+      "sensor_type"
+    ],
+    "parameters": {
+      "iterations": 25,
+      "learning_rate": 0.05,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "random_seed": 42,
+      "has_time": true,
+      "thread_count": 6,
+      "verbose": false,
+      "allow_writing_files": false,
+      "depth": 6,
+      "l2_leaf_reg": 3,
+      "auto_class_weights": "None",
+      "cat_features": [
+        "sensor_type"
+      ]
+    }
+  },
+  "threshold": 0.5566650355747058,
+  "calibration": {
+    "decisions": 44448,
+    "positives": 4905,
+    "alerts": 3767,
+    "tp": 2292,
+    "fp": 1475,
+    "fn": 2613,
+    "precision": 0.6084417308202814,
+    "recall": 0.4672782874617737,
+    "f1": 0.5285977859778598,
+    "ap": 0.6008504764756537,
+    "passes_both": false,
+    "lead_days": {
+      "0.25": 4.499687671661377,
+      "0.5": 9.434641361236572,
+      "0.75": 16.708425521850586
+    },
+    "channels": 859,
+    "positive_channels": 182,
+    "caught_channels": 65,
+    "represented_episodes": 410,
+    "caught_represented_episodes": 243,
+    "represented_episode_recall": 0.5926829268292683,
+    "episode_first_alert_median_days": 10.409895896911621
+  },
+  "sha256": "ad6c4a771e60af1425bb6dc580d5ee93de6dafc0832ba17da0fd6250d90e8cb2"
+}

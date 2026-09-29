@@ -1,0 +1,664 @@
+{
+ "sha256": "1c1f26144726b6ca920517a2c143289487f30d9c8f9d6d7a5d8d998fb8d2a44b",
+ "computed_at": "2026-09-26T04:30:28+00:00",
+ "model": "daily",
+ "version": "v0",
+ "period": {
+  "from": "2026-01-01",
+  "to": "2026-07-01",
+  "label": "1 января — 2 мая 2026"
+ },
+ "threshold": 0.639263,
+ "test": {
+  "decisions": 731642,
+  "positives": 75313,
+  "alerts": 50628,
+  "tp": 39326,
+  "fp": 11302,
+  "fn": 35987,
+  "tn": 645027,
+  "precision": 0.7768,
+  "recall": 0.5222,
+  "f1": 0.6245,
+  "ap": 0.7161,
+  "lead_time": {
+   "min_s": 86405.0,
+   "p10_s": 157118.0,
+   "p25_s": 315622.0,
+   "p50_s": 724448.0,
+   "p75_s": 1342387.8,
+   "p90_s": 1958257.0,
+   "max_s": 2586409.0
+  }
+ },
+ "seen": {
+  "decisions": 310864,
+  "positives": 56179,
+  "alerts": 45687,
+  "tp": 36023,
+  "fp": 9664,
+  "fn": 20156,
+  "tn": 245021,
+  "precision": 0.7885,
+  "recall": 0.6412,
+  "f1": 0.7073,
+  "ap": 0.7926,
+  "lead_time": {
+   "min_s": 86405.0,
+   "p10_s": 158908.4,
+   "p25_s": 317143.0,
+   "p50_s": 718900.0,
+   "p75_s": 1331260.0,
+   "p90_s": 1942491.8,
+   "max_s": 2586409.0
+  }
+ },
+ "unseen": {
+  "decisions": 420778,
+  "positives": 19134,
+  "alerts": 4941,
+  "tp": 3303,
+  "fp": 1638,
+  "fn": 15831,
+  "tn": 400006,
+  "precision": 0.6685,
+  "recall": 0.1726,
+  "f1": 0.2744,
+  "ap": 0.3969,
+  "lead_time": {
+   "min_s": 87455.0,
+   "p10_s": 137383.0,
+   "p25_s": 303063.5,
+   "p50_s": 812380.0,
+   "p75_s": 1602501.0,
+   "p90_s": 2129296.0,
+   "max_s": 2553764.0
+  }
+ },
+ "seen_rule": "каналы с началами «Неисправен» в обучении 2022–2024",
+ "lead_time": {
+  "min_s": 86405.0,
+  "p10_s": 157118.0,
+  "p25_s": 315622.0,
+  "p50_s": 724448.0,
+  "p75_s": 1342387.8,
+  "p90_s": 1958257.0,
+  "max_s": 2586409.0
+ },
+ "pr_curve": [
+  {
+   "threshold": 0.9558,
+   "precision": 1.0,
+   "recall": 0.0
+  },
+  {
+   "threshold": 0.8863,
+   "precision": 0.9771,
+   "recall": 0.0204
+  },
+  {
+   "threshold": 0.8702,
+   "precision": 0.9594,
+   "recall": 0.0408
+  },
+  {
+   "threshold": 0.8567,
+   "precision": 0.9453,
+   "recall": 0.0612
+  },
+  {
+   "threshold": 0.844,
+   "precision": 0.9279,
+   "recall": 0.0816
+  },
+  {
+   "threshold": 0.8318,
+   "precision": 0.9136,
+   "recall": 0.1021
+  },
+  {
+   "threshold": 0.8226,
+   "precision": 0.8997,
+   "recall": 0.1225
+  },
+  {
+   "threshold": 0.8136,
+   "precision": 0.8899,
+   "recall": 0.1429
+  },
+  {
+   "threshold": 0.8042,
+   "precision": 0.8854,
+   "recall": 0.1633
+  },
+  {
+   "threshold": 0.7964,
+   "precision": 0.8826,
+   "recall": 0.1837
+  },
+  {
+   "threshold": 0.7883,
+   "precision": 0.8791,
+   "recall": 0.2041
+  },
+  {
+   "threshold": 0.7793,
+   "precision": 0.8732,
+   "recall": 0.2245
+  },
+  {
+   "threshold": 0.7708,
+   "precision": 0.869,
+   "recall": 0.2449
+  },
+  {
+   "threshold": 0.762,
+   "precision": 0.8611,
+   "recall": 0.2653
+  },
+  {
+   "threshold": 0.7532,
+   "precision": 0.851,
+   "recall": 0.2857
+  },
+  {
+   "threshold": 0.7446,
+   "precision": 0.8422,
+   "recall": 0.3061
+  },
+  {
+   "threshold": 0.7356,
+   "precision": 0.8384,
+   "recall": 0.3265
+  },
+  {
+   "threshold": 0.7273,
+   "precision": 0.8347,
+   "recall": 0.347
+  },
+  {
+   "threshold": 0.7183,
+   "precision": 0.8283,
+   "recall": 0.3674
+  },
+  {
+   "threshold": 0.7094,
+   "precision": 0.8225,
+   "recall": 0.3878
+  },
+  {
+   "threshold": 0.7007,
+   "precision": 0.8169,
+   "recall": 0.4082
+  },
+  {
+   "threshold": 0.6926,
+   "precision": 0.8121,
+   "recall": 0.4286
+  },
+  {
+   "threshold": 0.6827,
+   "precision": 0.8059,
+   "recall": 0.449
+  },
+  {
+   "threshold": 0.6735,
+   "precision": 0.8007,
+   "recall": 0.4694
+  },
+  {
+   "threshold": 0.6632,
+   "precision": 0.7952,
+   "recall": 0.4898
+  },
+  {
+   "threshold": 0.6494,
+   "precision": 0.7851,
+   "recall": 0.5102
+  },
+  {
+   "threshold": 0.6304,
+   "precision": 0.7699,
+   "recall": 0.5306
+  },
+  {
+   "threshold": 0.6057,
+   "precision": 0.7599,
+   "recall": 0.5511
+  },
+  {
+   "threshold": 0.5752,
+   "precision": 0.7482,
+   "recall": 0.5714
+  },
+  {
+   "threshold": 0.531,
+   "precision": 0.7382,
+   "recall": 0.5919
+  },
+  {
+   "threshold": 0.4617,
+   "precision": 0.7208,
+   "recall": 0.6122
+  },
+  {
+   "threshold": 0.3892,
+   "precision": 0.6966,
+   "recall": 0.6327
+  },
+  {
+   "threshold": 0.3354,
+   "precision": 0.6798,
+   "recall": 0.6531
+  },
+  {
+   "threshold": 0.2885,
+   "precision": 0.666,
+   "recall": 0.6735
+  },
+  {
+   "threshold": 0.2081,
+   "precision": 0.6319,
+   "recall": 0.6939
+  },
+  {
+   "threshold": 0.1647,
+   "precision": 0.6039,
+   "recall": 0.7143
+  },
+  {
+   "threshold": 0.1379,
+   "precision": 0.588,
+   "recall": 0.7347
+  },
+  {
+   "threshold": 0.1182,
+   "precision": 0.5662,
+   "recall": 0.7551
+  },
+  {
+   "threshold": 0.1069,
+   "precision": 0.5544,
+   "recall": 0.7755
+  },
+  {
+   "threshold": 0.0965,
+   "precision": 0.5439,
+   "recall": 0.7959
+  },
+  {
+   "threshold": 0.0889,
+   "precision": 0.5363,
+   "recall": 0.8164
+  },
+  {
+   "threshold": 0.0844,
+   "precision": 0.5296,
+   "recall": 0.8365
+  },
+  {
+   "threshold": 0.0806,
+   "precision": 0.5174,
+   "recall": 0.8571
+  },
+  {
+   "threshold": 0.072,
+   "precision": 0.4847,
+   "recall": 0.8776
+  },
+  {
+   "threshold": 0.0663,
+   "precision": 0.4635,
+   "recall": 0.898
+  },
+  {
+   "threshold": 0.0582,
+   "precision": 0.4349,
+   "recall": 0.9184
+  },
+  {
+   "threshold": 0.0407,
+   "precision": 0.3781,
+   "recall": 0.9387
+  },
+  {
+   "threshold": 0.0166,
+   "precision": 0.205,
+   "recall": 0.958
+  },
+  {
+   "threshold": 0.0106,
+   "precision": 0.1285,
+   "recall": 0.9796
+  },
+  {
+   "threshold": 0.0035,
+   "precision": 0.103,
+   "recall": 1.0
+  }
+ ],
+ "by_quarter": [
+  {
+   "quarter": "2025Q1",
+   "role": "early_stop",
+   "decisions": 377159,
+   "positives": 45394,
+   "alerts": 32849,
+   "tp": 26081,
+   "fp": 6768,
+   "fn": 19313,
+   "tn": 324997,
+   "precision": 0.794,
+   "recall": 0.5745,
+   "f1": 0.6667,
+   "ap": 0.7671,
+   "lead_time": {
+    "min_s": 86756.0,
+    "p10_s": 178860.0,
+    "p25_s": 321838.0,
+    "p50_s": 727944.0,
+    "p75_s": 1354534.0,
+    "p90_s": 1972322.0,
+    "max_s": 2589566.0
+   }
+  },
+  {
+   "quarter": "2025Q2",
+   "role": "early_stop",
+   "decisions": 386631,
+   "positives": 53106,
+   "alerts": 35773,
+   "tp": 28123,
+   "fp": 7650,
+   "fn": 24983,
+   "tn": 325875,
+   "precision": 0.7862,
+   "recall": 0.5296,
+   "f1": 0.6328,
+   "ap": 0.7308,
+   "lead_time": {
+    "min_s": 86518.0,
+    "p10_s": 192332.0,
+    "p25_s": 378170.0,
+    "p50_s": 766538.0,
+    "p75_s": 1390851.0,
+    "p90_s": 1995641.0,
+    "max_s": 2590708.0
+   }
+  },
+  {
+   "quarter": "2025Q3",
+   "role": "threshold",
+   "decisions": 427087,
+   "positives": 44866,
+   "alerts": 33625,
+   "tp": 24727,
+   "fp": 8898,
+   "fn": 20139,
+   "tn": 373323,
+   "precision": 0.7354,
+   "recall": 0.5511,
+   "f1": 0.6301,
+   "ap": 0.6886,
+   "lead_time": {
+    "min_s": 86596.0,
+    "p10_s": 169497.2,
+    "p25_s": 318817.0,
+    "p50_s": 723952.0,
+    "p75_s": 1378804.0,
+    "p90_s": 1994012.0,
+    "max_s": 2588645.0
+   }
+  },
+  {
+   "quarter": "2025Q4",
+   "role": "threshold",
+   "decisions": 473893,
+   "positives": 41006,
+   "alerts": 29196,
+   "tp": 19531,
+   "fp": 9665,
+   "fn": 21475,
+   "tn": 423222,
+   "precision": 0.669,
+   "recall": 0.4763,
+   "f1": 0.5564,
+   "ap": 0.5941,
+   "lead_time": {
+    "min_s": 86450.0,
+    "p10_s": 204158.0,
+    "p25_s": 381812.0,
+    "p50_s": 758679.0,
+    "p75_s": 1431178.0,
+    "p90_s": 2062415.0,
+    "max_s": 2590650.0
+   }
+  },
+  {
+   "quarter": "2026Q1",
+   "role": "test",
+   "decisions": 548231,
+   "positives": 52151,
+   "alerts": 36522,
+   "tp": 27103,
+   "fp": 9419,
+   "fn": 25048,
+   "tn": 486661,
+   "precision": 0.7421,
+   "recall": 0.5197,
+   "f1": 0.6113,
+   "ap": 0.701,
+   "lead_time": {
+    "min_s": 86405.0,
+    "p10_s": 173385.0,
+    "p25_s": 354837.0,
+    "p50_s": 763279.0,
+    "p75_s": 1383327.0,
+    "p90_s": 2021443.6,
+    "max_s": 2585757.0
+   }
+  },
+  {
+   "quarter": "2026Q2",
+   "role": "test",
+   "decisions": 183411,
+   "positives": 23162,
+   "alerts": 14106,
+   "tp": 12223,
+   "fp": 1883,
+   "fn": 10939,
+   "tn": 158366,
+   "precision": 0.8665,
+   "recall": 0.5277,
+   "f1": 0.656,
+   "ap": 0.7573,
+   "lead_time": {
+    "min_s": 87016.0,
+    "p10_s": 138648.0,
+    "p25_s": 284784.0,
+    "p50_s": 580011.0,
+    "p75_s": 1246214.0,
+    "p90_s": 1870096.0,
+    "max_s": 2586409.0
+   }
+  }
+ ],
+ "by_type": [
+  {
+   "sensor_type": "Состояние вентилятора",
+   "base_rate": 0.5847,
+   "decisions": 35606,
+   "positives": 20818,
+   "alerts": 24006,
+   "tp": 19371,
+   "fp": 4635,
+   "fn": 1447,
+   "tn": 10153,
+   "precision": 0.8069,
+   "recall": 0.9305,
+   "f1": 0.8643,
+   "ap": 0.8824,
+   "lead_time": {
+    "min_s": 86486.0,
+    "p10_s": 154996.0,
+    "p25_s": 315402.0,
+    "p50_s": 728324.0,
+    "p75_s": 1343812.0,
+    "p90_s": 1979713.0,
+    "max_s": 2578289.0
+   }
+  },
+  {
+   "sensor_type": "Датчик дыма",
+   "base_rate": 0.0405,
+   "decisions": 445806,
+   "positives": 18062,
+   "alerts": 2,
+   "tp": 0,
+   "fp": 2,
+   "fn": 18062,
+   "tn": 427742,
+   "precision": 0.0,
+   "recall": 0.0,
+   "f1": 0.0,
+   "ap": 0.2057,
+   "lead_time": null
+  },
+  {
+   "sensor_type": "Состояние насоса",
+   "base_rate": 0.8069,
+   "decisions": 19748,
+   "positives": 15935,
+   "alerts": 18739,
+   "tp": 15258,
+   "fp": 3481,
+   "fn": 677,
+   "tn": 332,
+   "precision": 0.8142,
+   "recall": 0.9575,
+   "f1": 0.8801,
+   "ap": 0.8733,
+   "lead_time": {
+    "min_s": 86405.0,
+    "p10_s": 152993.0,
+    "p25_s": 304281.0,
+    "p50_s": 685149.0,
+    "p75_s": 1330489.0,
+    "p90_s": 1936137.2,
+    "max_s": 2586409.0
+   }
+  },
+  {
+   "sensor_type": "Состояние фазы",
+   "base_rate": 0.1473,
+   "decisions": 98079,
+   "positives": 14445,
+   "alerts": 7879,
+   "tp": 4695,
+   "fp": 3184,
+   "fn": 9750,
+   "tn": 80450,
+   "precision": 0.5959,
+   "recall": 0.325,
+   "f1": 0.4206,
+   "ap": 0.5747,
+   "lead_time": {
+    "min_s": 87937.0,
+    "p10_s": 198383.8,
+    "p25_s": 377440.0,
+    "p50_s": 786684.0,
+    "p75_s": 1412563.0,
+    "p90_s": 1999932.0,
+    "max_s": 2572897.0
+   }
+  },
+  {
+   "sensor_type": "Ручной извещатель",
+   "base_rate": 0.2782,
+   "decisions": 12468,
+   "positives": 3469,
+   "alerts": 2,
+   "tp": 2,
+   "fp": 0,
+   "fn": 3467,
+   "tn": 8999,
+   "precision": 1.0,
+   "recall": 0.0006,
+   "f1": 0.0012,
+   "ap": 0.5739,
+   "lead_time": {
+    "min_s": 2550362.0,
+    "p10_s": 2550362.0,
+    "p25_s": 2550362.0,
+    "p50_s": 2550362.0,
+    "p75_s": 2550362.0,
+    "p90_s": 2550362.0,
+    "max_s": 2550362.0
+   }
+  },
+  {
+   "sensor_type": "Газовый датчик",
+   "base_rate": 0.0483,
+   "decisions": 43802,
+   "positives": 2117,
+   "alerts": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 2117,
+   "tn": 41685,
+   "precision": null,
+   "recall": 0.0,
+   "f1": null,
+   "ap": 0.0289,
+   "lead_time": null
+  },
+  {
+   "sensor_type": "ИБП",
+   "base_rate": 0.0469,
+   "decisions": 8266,
+   "positives": 388,
+   "alerts": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 388,
+   "tn": 7878,
+   "precision": null,
+   "recall": 0.0,
+   "f1": null,
+   "ap": 0.5825,
+   "lead_time": null
+  },
+  {
+   "sensor_type": "Датчик температуры",
+   "base_rate": 0.0012,
+   "decisions": 67867,
+   "positives": 79,
+   "alerts": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 79,
+   "tn": 67788,
+   "precision": null,
+   "recall": 0.0,
+   "f1": null,
+   "ap": 0.2734,
+   "lead_time": null
+  }
+ ],
+ "by_episode_kind": null,
+ "rule": {
+  "name": "у канала были начала «Неисправен» за 30 суток",
+  "decisions": 731642,
+  "positives": 75313,
+  "alerts": 82649,
+  "tp": 45532,
+  "fp": 37117,
+  "fn": 29781,
+  "tn": 619212,
+  "precision": 0.5509,
+  "recall": 0.6046,
+  "f1": 0.5765,
+  "ap": null,
+  "lead_time": null
+ }
+}

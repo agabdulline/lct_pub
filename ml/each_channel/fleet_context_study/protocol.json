@@ -1,0 +1,268 @@
+{
+  "created_before_test_scoring": true,
+  "types": {
+    "Датчик дыма": "smoke",
+    "Состояние фазы": "phase",
+    "Ручной извещатель": "manual_alarm"
+  },
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "threshold_a": [
+      "2025-01-01",
+      "2025-04-01"
+    ],
+    "audit_a": [
+      "2025-04-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-01"
+    ]
+  },
+  "fleet_features": [
+    "fleet_onsets_7d",
+    "fleet_onsets_30d",
+    "fleet_onsets_90d",
+    "fleet_onsets_365d",
+    "fleet_channel_days_7d",
+    "fleet_channel_days_30d",
+    "fleet_channel_days_90d",
+    "fleet_channel_days_365d",
+    "fleet_object_days_7d",
+    "fleet_object_days_30d",
+    "fleet_object_days_90d",
+    "fleet_object_days_365d",
+    "fleet_in_fault",
+    "fleet_days_since_onset",
+    "fleet_onset_acceleration",
+    "fleet_active_fraction",
+    "all_type_onsets_7d",
+    "all_type_onsets_30d"
+  ],
+  "recipes": {
+    "fleet_base": {
+      "features": [
+        "sensor_type",
+        "events_1d",
+        "events_7d",
+        "events_30d",
+        "events_90d",
+        "days_active_30d",
+        "days_active_90d",
+        "alarms_7d",
+        "alarms_30d",
+        "alarms_90d",
+        "faults_msg_7d",
+        "faults_msg_30d",
+        "faults_msg_90d",
+        "num_mean_7d",
+        "num_mean_30d",
+        "num_max_7d",
+        "onsets_7d",
+        "onsets_30d",
+        "onsets_90d",
+        "onsets_365d",
+        "days_since_onset",
+        "days_since_recovery",
+        "fault_hours_30d",
+        "mean_episode_hours_365d",
+        "obj_in_fault",
+        "obj_onsets_7d",
+        "month_sin",
+        "month_cos",
+        "weekday",
+        "fleet_onsets_7d",
+        "fleet_onsets_30d",
+        "fleet_onsets_90d",
+        "fleet_onsets_365d",
+        "fleet_channel_days_7d",
+        "fleet_channel_days_30d",
+        "fleet_channel_days_90d",
+        "fleet_channel_days_365d",
+        "fleet_object_days_7d",
+        "fleet_object_days_30d",
+        "fleet_object_days_90d",
+        "fleet_object_days_365d",
+        "fleet_in_fault",
+        "fleet_days_since_onset",
+        "fleet_onset_acceleration",
+        "fleet_active_fraction",
+        "all_type_onsets_7d",
+        "all_type_onsets_30d"
+      ],
+      "since": "2022-01-01"
+    },
+    "fleet_calendar": {
+      "features": [
+        "sensor_type",
+        "events_1d",
+        "events_7d",
+        "events_30d",
+        "events_90d",
+        "days_active_30d",
+        "days_active_90d",
+        "alarms_7d",
+        "alarms_30d",
+        "alarms_90d",
+        "faults_msg_7d",
+        "faults_msg_30d",
+        "faults_msg_90d",
+        "num_mean_7d",
+        "num_mean_30d",
+        "num_max_7d",
+        "onsets_7d",
+        "onsets_30d",
+        "onsets_90d",
+        "onsets_365d",
+        "days_since_onset",
+        "days_since_recovery",
+        "fault_hours_30d",
+        "mean_episode_hours_365d",
+        "obj_in_fault",
+        "obj_onsets_7d",
+        "month_sin",
+        "month_cos",
+        "weekday",
+        "fleet_onsets_7d",
+        "fleet_onsets_30d",
+        "fleet_onsets_90d",
+        "fleet_onsets_365d",
+        "fleet_channel_days_7d",
+        "fleet_channel_days_30d",
+        "fleet_channel_days_90d",
+        "fleet_channel_days_365d",
+        "fleet_object_days_7d",
+        "fleet_object_days_30d",
+        "fleet_object_days_90d",
+        "fleet_object_days_365d",
+        "fleet_in_fault",
+        "fleet_days_since_onset",
+        "fleet_onset_acceleration",
+        "fleet_active_fraction",
+        "all_type_onsets_7d",
+        "all_type_onsets_30d",
+        "ru_day_off",
+        "ru_short_day",
+        "ru_off_prev1",
+        "ru_off_prev7",
+        "ru_off_prev30"
+      ],
+      "since": "2022-01-01"
+    },
+    "fleet_recent": {
+      "features": [
+        "sensor_type",
+        "events_1d",
+        "events_7d",
+        "events_30d",
+        "events_90d",
+        "days_active_30d",
+        "days_active_90d",
+        "alarms_7d",
+        "alarms_30d",
+        "alarms_90d",
+        "faults_msg_7d",
+        "faults_msg_30d",
+        "faults_msg_90d",
+        "num_mean_7d",
+        "num_mean_30d",
+        "num_max_7d",
+        "onsets_7d",
+        "onsets_30d",
+        "onsets_90d",
+        "onsets_365d",
+        "days_since_onset",
+        "days_since_recovery",
+        "fault_hours_30d",
+        "mean_episode_hours_365d",
+        "obj_in_fault",
+        "obj_onsets_7d",
+        "month_sin",
+        "month_cos",
+        "weekday",
+        "fleet_onsets_7d",
+        "fleet_onsets_30d",
+        "fleet_onsets_90d",
+        "fleet_onsets_365d",
+        "fleet_channel_days_7d",
+        "fleet_channel_days_30d",
+        "fleet_channel_days_90d",
+        "fleet_channel_days_365d",
+        "fleet_object_days_7d",
+        "fleet_object_days_30d",
+        "fleet_object_days_90d",
+        "fleet_object_days_365d",
+        "fleet_in_fault",
+        "fleet_days_since_onset",
+        "fleet_onset_acceleration",
+        "fleet_active_fraction",
+        "all_type_onsets_7d",
+        "all_type_onsets_30d"
+      ],
+      "since": "2024-01-01"
+    }
+  },
+  "parameters": {
+    "iterations": 160,
+    "depth": 5,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 20,
+    "loss_function": "Logloss",
+    "random_seed": 42,
+    "thread_count": 6,
+    "has_time": true,
+    "cat_features": [
+      "sensor_type"
+    ],
+    "verbose": false,
+    "allow_writing_files": false
+  },
+  "old_weights": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "selection": "recipe on Q2 after Q1 threshold; ensemble weight on Q3; threshold on Q4",
+  "test": "2026-01-01 through 2026-05-02; previously viewed",
+  "calendar_sources": [
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2022/calendar.json",
+      "sha256": "a3a0000443721de499b6df534f3db4704c80d8542657c5bab62cc405cfd1e91a"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2023/calendar.json",
+      "sha256": "b2de192996bbeb4804f05641fddcae1a0362dbee885978a5b3af91cbe287ca4a"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2024/calendar.json",
+      "sha256": "e7dfc9c1bec9c8493653cbf21d6207393990d2ebb9797e491370fe6e55d2f070"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2025/calendar.json",
+      "sha256": "c1ef56ec60453728d4f4cd51a9206d34ce10d9c0cb68d7a765c32562c5413f77"
+    },
+    {
+      "url": "https://xmlcalendar.ru/data/ru/2026/calendar.json",
+      "sha256": "84bee6de7a19f5cd599488671d377936f749afe87621c7a84f3951e511531d01"
+    }
+  ],
+  "source_hashes": {
+    "channels.csv": "d59cc4d38bfa59674dce439e64e6e1b0cbf131eb5090196069cf31acc22692c0",
+    "fault_episodes.parquet": "2419c72c6844bebd0046cd8bbaca58ddf0760b4e15666723a133b5f842f47fbb",
+    "sensor_daily.parquet": "d9f93ba66138eb3a277cd9f2f565d648a96d47682d24480639a1335e03a06a47"
+  }
+}

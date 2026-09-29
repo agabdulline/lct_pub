@@ -1,0 +1,110 @@
+{
+  "family": "each_channel",
+  "version": "manual-alarm-readiness-90d",
+  "label": "Ручной извещатель: исследовательский режим готовности",
+  "type": "Ручной извещатель",
+  "artifact": "manual_alarm.cbm",
+  "sha256": "a1177ea934b102ccb5514562fdde7d475d737ed09a2c2d51e6ba6a2fd566aea3",
+  "features": [
+    "sensor_type",
+    "events_1d",
+    "events_7d",
+    "events_30d",
+    "events_90d",
+    "days_active_30d",
+    "days_active_90d",
+    "alarms_7d",
+    "alarms_30d",
+    "alarms_90d",
+    "faults_msg_7d",
+    "faults_msg_30d",
+    "faults_msg_90d",
+    "num_mean_7d",
+    "num_mean_30d",
+    "num_max_7d",
+    "onsets_7d",
+    "onsets_30d",
+    "onsets_90d",
+    "onsets_365d",
+    "days_since_onset",
+    "days_since_recovery",
+    "fault_hours_30d",
+    "mean_episode_hours_365d",
+    "obj_in_fault",
+    "obj_onsets_7d",
+    "month_sin",
+    "month_cos",
+    "weekday",
+    "ru_day_off",
+    "ru_short_day",
+    "ru_off_prev1",
+    "ru_off_prev7",
+    "ru_off_prev30"
+  ],
+  "categorical": [
+    "sensor_type"
+  ],
+  "threshold": 0.013155972033956975,
+  "threshold_as_of": "2026-05-01",
+  "threshold_policy": {
+    "kind": "causal_monthly_calibration",
+    "calibration_window_days": 90,
+    "label_maturity_days": 30,
+    "recompute": "at_month_start",
+    "selection": "choose_threshold from fully matured rows in [month_start-30d-window, month_start-30d)"
+  },
+  "readiness": {
+    "minimum_matured_positive_rows": 1500,
+    "action_below_minimum": "suppress_alerts"
+  },
+  "periods": {
+    "model_train": "Mondays 2022-2024 plus every eligible day H1 2025; 30-day purge",
+    "model_selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "base_threshold": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "retrospective_test": [
+      "2026-01-01",
+      "2026-05-03"
+    ]
+  },
+  "history_days": 400,
+  "horizon_days": [
+    1,
+    30
+  ],
+  "metrics": {
+    "retrospective_test": {
+      "decisions": 12771,
+      "positives": 3772,
+      "alerts": 2808,
+      "tp": 2040,
+      "fp": 768,
+      "fn": 1732,
+      "precision": 0.7264957264957265,
+      "recall": 0.5408271474019088,
+      "f1": 0.6200607902735562,
+      "ap": 0.5219800579062942,
+      "passes_both": true,
+      "lead_days": {
+        "0.25": 4.461898326873779,
+        "0.5": 9.501805305480957,
+        "0.75": 19.470903396606445
+      },
+      "channels": 130,
+      "positive_channels": 92,
+      "caught_channels": 91,
+      "represented_episodes": 332,
+      "caught_represented_episodes": 268,
+      "represented_episode_recall": 0.8072289156626506,
+      "episode_first_alert_median_days": 8.059392929077148
+    }
+  },
+  "report": "ml/each_channel/HARD_CHANNEL_REPORT.md",
+  "deployment_status": "post_hoc_candidate_requires_explicit_experimental_flag",
+  "warning": "chosen after viewing Jan-May 2, 2026; candidate requires the unused holdout"
+}

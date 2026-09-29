@@ -1,0 +1,333 @@
+{
+  "key": "uir",
+  "name": "Состояние УИР-Р",
+  "channels": 762,
+  "share": 0.06634740966478014,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "candidates": [
+    {
+      "recipe": {
+        "name": "v0_d6",
+        "mode": "base",
+        "depth": 6,
+        "l2": 3,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 10,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "extended_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 5,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 2,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "weighted_d4",
+        "mode": "extended",
+        "depth": 4,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 19,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "weighted_d8",
+        "mode": "extended",
+        "depth": 8,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2022-01-01"
+      },
+      "trees": 2,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    },
+    {
+      "recipe": {
+        "name": "recent_d6",
+        "mode": "extended",
+        "depth": 6,
+        "l2": 10,
+        "weight": "None",
+        "since": "2024-01-01"
+      },
+      "trees": 6,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 28214,
+      "refit_positives": 53
+    },
+    {
+      "recipe": {
+        "name": "recent_weighted",
+        "mode": "extended",
+        "depth": 5,
+        "l2": 10,
+        "weight": "SqrtBalanced",
+        "since": "2024-01-01"
+      },
+      "trees": 15,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 28214,
+      "refit_positives": 53
+    },
+    {
+      "recipe": {
+        "name": "object_context",
+        "mode": "identity",
+        "depth": 6,
+        "l2": 20,
+        "weight": "None",
+        "since": "2022-01-01"
+      },
+      "trees": 11,
+      "selection_threshold": 1.000001,
+      "selection": {
+        "decisions": 21187,
+        "positives": 0,
+        "alerts": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "f1": 0.0,
+        "ap": null,
+        "passes_both": false
+      },
+      "objective": 0.0,
+      "refit_rows": 74269,
+      "refit_positives": 146
+    }
+  ],
+  "status": "trained",
+  "selected": {
+    "recipe": {
+      "name": "v0_d6",
+      "mode": "base",
+      "depth": 6,
+      "l2": 3,
+      "weight": "None",
+      "since": "2022-01-01"
+    },
+    "trees": 10,
+    "selection_threshold": 1.000001,
+    "selection": {
+      "decisions": 21187,
+      "positives": 0,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": 0.0,
+      "ap": null,
+      "passes_both": false
+    },
+    "objective": 0.0,
+    "refit_rows": 74269,
+    "refit_positives": 146,
+    "features": [
+      "sensor_type",
+      "events_1d",
+      "events_7d",
+      "events_30d",
+      "events_90d",
+      "days_active_30d",
+      "days_active_90d",
+      "alarms_7d",
+      "alarms_30d",
+      "alarms_90d",
+      "faults_msg_7d",
+      "faults_msg_30d",
+      "faults_msg_90d",
+      "num_mean_7d",
+      "num_mean_30d",
+      "num_max_7d",
+      "onsets_7d",
+      "onsets_30d",
+      "onsets_90d",
+      "onsets_365d",
+      "days_since_onset",
+      "days_since_recovery",
+      "fault_hours_30d",
+      "mean_episode_hours_365d",
+      "obj_in_fault",
+      "obj_onsets_7d",
+      "month_sin",
+      "month_cos",
+      "weekday"
+    ],
+    "categorical": [
+      "sensor_type"
+    ],
+    "parameters": {
+      "iterations": 10,
+      "learning_rate": 0.05,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "random_seed": 42,
+      "has_time": true,
+      "thread_count": 6,
+      "verbose": false,
+      "allow_writing_files": false,
+      "depth": 6,
+      "l2_leaf_reg": 3,
+      "auto_class_weights": "None",
+      "cat_features": [
+        "sensor_type"
+      ]
+    }
+  },
+  "threshold": 1.000001,
+  "calibration": {
+    "decisions": 34304,
+    "positives": 0,
+    "alerts": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": 0.0,
+    "ap": null,
+    "passes_both": false,
+    "lead_days": {
+      "0.25": null,
+      "0.5": null,
+      "0.75": null
+    },
+    "channels": 762,
+    "positive_channels": 0,
+    "caught_channels": 0,
+    "represented_episodes": 0,
+    "caught_represented_episodes": 0,
+    "represented_episode_recall": null,
+    "episode_first_alert_median_days": null
+  },
+  "sha256": "5faaa3748a2b2265df460537bea8ef678bf82714baf3fb8f5c35c0ad08147f8d"
+}

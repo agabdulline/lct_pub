@@ -1,0 +1,105 @@
+{
+  "family": "each_channel",
+  "version": "fan-separate",
+  "label": "Состояние вентилятора: отдельная модель",
+  "type": "Состояние вентилятора",
+  "artifact": "fan.cbm",
+  "sha256": "d5a0e407179c2ee5d2f4e9ba316e9b33680ab0cd9866f103961d49726791b54a",
+  "features": [
+    "sensor_type",
+    "events_1d",
+    "events_7d",
+    "events_30d",
+    "events_90d",
+    "days_active_30d",
+    "days_active_90d",
+    "alarms_7d",
+    "alarms_30d",
+    "alarms_90d",
+    "faults_msg_7d",
+    "faults_msg_30d",
+    "faults_msg_90d",
+    "num_mean_7d",
+    "num_mean_30d",
+    "num_max_7d",
+    "onsets_7d",
+    "onsets_30d",
+    "onsets_90d",
+    "onsets_365d",
+    "days_since_onset",
+    "days_since_recovery",
+    "fault_hours_30d",
+    "mean_episode_hours_365d",
+    "obj_in_fault",
+    "obj_onsets_7d",
+    "month_sin",
+    "month_cos",
+    "weekday"
+  ],
+  "categorical": [
+    "sensor_type"
+  ],
+  "threshold": 0.6711490998050569,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "history_days": 400,
+  "horizon_days": [
+    1,
+    30
+  ],
+  "metrics": {
+    "test": {
+      "decisions": 35606,
+      "positives": 20818,
+      "alerts": 19946,
+      "tp": 16278,
+      "fp": 3668,
+      "fn": 4540,
+      "precision": 0.8161034793943648,
+      "recall": 0.7819194927466615,
+      "f1": 0.798645863997645,
+      "ap": 0.8770561487679185,
+      "passes_both": true,
+      "lead_days": {
+        "0.25": 3.5008246898651123,
+        "0.5": 7.61075234413147,
+        "0.75": 14.669290781021118
+      },
+      "channels": 354,
+      "positive_channels": 233,
+      "caught_channels": 224,
+      "represented_episodes": 2400,
+      "caught_represented_episodes": 2239,
+      "represented_episode_recall": 0.9329166666666666,
+      "episode_first_alert_median_days": 5.570196628570557
+    }
+  },
+  "report": "ml/remaining_channels/REPORT.md",
+  "deployment_status": "delivered_not_recommended",
+  "recommendation": "Keep baseline v0: it has higher recall on the same rows (93.1%); separate model recall is 78.2%.",
+  "baseline_v0_same_rows": {
+    "precision": 0.806,
+    "recall": 0.931
+  },
+  "warning": "High prevalence means daily rows are not independent physical failures."
+}

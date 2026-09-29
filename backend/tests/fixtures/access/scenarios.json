@@ -1,0 +1,98 @@
+{
+ "guard-hatch-night": {
+  "period": {
+   "start": "2026-04-16T22:00:00+03:00",
+   "end": "2026-04-16T23:10:00+03:00"
+  },
+  "events_until": "2026-04-16T22:52:28+03:00",
+  "incidents": [
+   {
+    "object_id": 8,
+    "sub_object_id": 5113,
+    "status": "closed",
+    "start_ts": "2026-04-16T22:17:10+03:00",
+    "qualified_ts": "2026-04-16T22:22:10+03:00",
+    "end_ts": "2026-04-16T22:33:59+03:00",
+    "end_reason": "disarmed",
+    "armed_since": "2026-04-16T16:58:23+03:00",
+    "disarmed_ts": "2026-04-16T22:33:59+03:00",
+    "openings": 3,
+    "hatch_openings": 3,
+    "channels": [
+     {
+      "id": 212188,
+      "name": "КД люк 4-с ПК45"
+     }
+    ],
+    "flags": {
+     "off_hours": true,
+     "motion": false,
+     "guard_faulty": false,
+     "repeated": false
+    },
+    "priority": "high"
+   }
+  ]
+ },
+ "guard-late-disarm": {
+  "period": {
+   "start": "2026-04-10T02:20:00+03:00",
+   "end": "2026-04-10T07:10:00+03:00"
+  },
+  "events_until": "2026-04-10T07:08:46+03:00",
+  "incidents": [
+   {
+    "object_id": 8,
+    "sub_object_id": 5113,
+    "status": "dismissed",
+    "start_ts": "2026-04-10T02:33:06+03:00",
+    "qualified_ts": null,
+    "end_ts": "2026-04-10T02:34:32+03:00",
+    "end_reason": "disarmed",
+    "armed_since": "2026-04-09T15:42:49+03:00",
+    "disarmed_ts": "2026-04-10T02:34:32+03:00",
+    "openings": 1,
+    "hatch_openings": 0,
+    "channels": [
+     {
+      "id": 212187,
+      "name": "КД дверь отс. ПК50"
+     }
+    ],
+    "flags": {
+     "off_hours": true,
+     "motion": false,
+     "guard_faulty": false,
+     "repeated": false
+    },
+    "priority": null
+   },
+   {
+    "object_id": 8,
+    "sub_object_id": 5113,
+    "status": "closed",
+    "start_ts": "2026-04-10T06:39:36+03:00",
+    "qualified_ts": "2026-04-10T06:44:36+03:00",
+    "end_ts": "2026-04-10T07:01:37+03:00",
+    "end_reason": "disarmed",
+    "armed_since": "2026-04-10T03:19:01+03:00",
+    "disarmed_ts": "2026-04-10T07:01:37+03:00",
+    "openings": 13,
+    "hatch_openings": 0,
+    "channels": [
+     {
+      "id": 212187,
+      "name": "КД дверь отс. ПК50"
+     }
+    ],
+    "flags": {
+     "off_hours": false,
+     "motion": false,
+     "guard_faulty": false,
+     "repeated": false
+    },
+    "priority": "medium"
+   }
+  ]
+ }
+}

@@ -1,0 +1,4784 @@
+{
+ "models": [
+  {
+   "name": "smoke_alarm",
+   "task": "smoke_alarm",
+   "active": true,
+   "version": "baseline-v0",
+   "label": "baseline-v0",
+   "family": "baseline",
+   "file": "smoke_alarm.cbm",
+   "sha256": "0d2ee22ffaacc3f066d40e9df6107a4713f367c00b86415a5b55fc02602d5bb3",
+   "trees": 14,
+   "features": 38,
+   "features_used": 29,
+   "categorical": [],
+   "threshold": 0.431091,
+   "scoring": "available",
+   "periods": {
+    "train": [
+     "2023-01-01",
+     "2025-01-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "threshold": [
+     "2025-07-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-07-01"
+    ]
+   },
+   "metrics": {
+    "early_stop": {
+     "decisions": 6453,
+     "positives": 878,
+     "tp": 246,
+     "fp": 146,
+     "fn": 632,
+     "precision": 0.6276,
+     "recall": 0.2802,
+     "f1": 0.3874,
+     "average_precision": 0.5603
+    },
+    "threshold": {
+     "decisions": 8181,
+     "positives": 604,
+     "tp": 329,
+     "fp": 103,
+     "fn": 275,
+     "precision": 0.7616,
+     "recall": 0.5447,
+     "f1": 0.6351,
+     "average_precision": 0.6434
+    },
+    "test": {
+     "decisions": 8258,
+     "positives": 542,
+     "tp": 442,
+     "fp": 78,
+     "fn": 100,
+     "precision": 0.85,
+     "recall": 0.8155,
+     "f1": 0.8324,
+     "average_precision": 0.8553
+    },
+    "test_seen": {
+     "decisions": 7254,
+     "positives": 531,
+     "tp": 442,
+     "fp": 73,
+     "fn": 89,
+     "precision": 0.8583,
+     "recall": 0.8324,
+     "f1": 0.8451,
+     "average_precision": 0.8742
+    },
+    "test_unseen": {
+     "decisions": 1004,
+     "positives": 11,
+     "tp": 0,
+     "fp": 5,
+     "fn": 11,
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "average_precision": 0.0208
+    },
+    "test_lead_hours": {
+     "0": 0.0,
+     "0.25": 0.023,
+     "0.5": 0.038,
+     "0.75": 0.063,
+     "1": 23.719
+    },
+    "test_rule_solitary": {
+     "decisions": 8258,
+     "positives": 542,
+     "tp": 57,
+     "fp": 314,
+     "fn": 485,
+     "precision": 0.1536,
+     "recall": 0.1052,
+     "f1": 0.1249,
+     "average_precision": 0.0749
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": {
+    "computed_at": "2026-09-26T04:27:58+00:00",
+    "model": "smoke_alarm",
+    "version": "v0",
+    "period": {
+     "from": "2026-01-01",
+     "to": "2026-07-01",
+     "label": "I полугодие 2026"
+    },
+    "threshold": 0.431091,
+    "test": {
+     "decisions": 8258,
+     "positives": 542,
+     "alerts": 520,
+     "tp": 442,
+     "fp": 78,
+     "fn": 100,
+     "tn": 7638,
+     "precision": 0.85,
+     "recall": 0.8155,
+     "f1": 0.8324,
+     "ap": 0.8553,
+     "lead_time": {
+      "min_s": 1.0,
+      "p10_s": 37.0,
+      "p25_s": 82.2,
+      "p50_s": 138.0,
+      "p75_s": 226.0,
+      "p90_s": 427.0,
+      "max_s": 85388.0
+     }
+    },
+    "seen": {
+     "decisions": 7254,
+     "positives": 531,
+     "alerts": 515,
+     "tp": 442,
+     "fp": 73,
+     "fn": 89,
+     "tn": 6650,
+     "precision": 0.8583,
+     "recall": 0.8324,
+     "f1": 0.8451,
+     "ap": 0.8742,
+     "lead_time": {
+      "min_s": 1.0,
+      "p10_s": 37.0,
+      "p25_s": 82.2,
+      "p50_s": 138.0,
+      "p75_s": 226.0,
+      "p90_s": 427.0,
+      "max_s": 85388.0
+     }
+    },
+    "unseen": {
+     "decisions": 1004,
+     "positives": 11,
+     "alerts": 5,
+     "tp": 0,
+     "fp": 5,
+     "fn": 11,
+     "tn": 988,
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "ap": 0.0208,
+     "lead_time": null
+    },
+    "seen_rule": "каналы с решениями в обучении 2023–2024",
+    "lead_time": {
+     "min_s": 1.0,
+     "p10_s": 37.0,
+     "p25_s": 82.2,
+     "p50_s": 138.0,
+     "p75_s": 226.0,
+     "p90_s": 427.0,
+     "max_s": 85388.0
+    },
+    "pr_curve": [
+     {
+      "threshold": 0.5955,
+      "precision": 1.0,
+      "recall": 0.0018
+     },
+     {
+      "threshold": 0.5838,
+      "precision": 1.0,
+      "recall": 0.024
+     },
+     {
+      "threshold": 0.5795,
+      "precision": 1.0,
+      "recall": 0.0424
+     },
+     {
+      "threshold": 0.5701,
+      "precision": 1.0,
+      "recall": 0.0646
+     },
+     {
+      "threshold": 0.5639,
+      "precision": 1.0,
+      "recall": 0.0886
+     },
+     {
+      "threshold": 0.5541,
+      "precision": 1.0,
+      "recall": 0.0996
+     },
+     {
+      "threshold": 0.5433,
+      "precision": 0.9714,
+      "recall": 0.1255
+     },
+     {
+      "threshold": 0.5426,
+      "precision": 0.9634,
+      "recall": 0.1458
+     },
+     {
+      "threshold": 0.5398,
+      "precision": 0.9674,
+      "recall": 0.1642
+     },
+     {
+      "threshold": 0.5356,
+      "precision": 0.9706,
+      "recall": 0.1827
+     },
+     {
+      "threshold": 0.5297,
+      "precision": 0.9739,
+      "recall": 0.2066
+     },
+     {
+      "threshold": 0.5262,
+      "precision": 0.976,
+      "recall": 0.2251
+     },
+     {
+      "threshold": 0.5253,
+      "precision": 0.9778,
+      "recall": 0.2435
+     },
+     {
+      "threshold": 0.5239,
+      "precision": 0.9795,
+      "recall": 0.2638
+     },
+     {
+      "threshold": 0.5221,
+      "precision": 0.981,
+      "recall": 0.286
+     },
+     {
+      "threshold": 0.5212,
+      "precision": 0.9824,
+      "recall": 0.3081
+     },
+     {
+      "threshold": 0.5192,
+      "precision": 0.9727,
+      "recall": 0.3284
+     },
+     {
+      "threshold": 0.5178,
+      "precision": 0.9692,
+      "recall": 0.3487
+     },
+     {
+      "threshold": 0.5168,
+      "precision": 0.9662,
+      "recall": 0.369
+     },
+     {
+      "threshold": 0.5151,
+      "precision": 0.9679,
+      "recall": 0.3893
+     },
+     {
+      "threshold": 0.513,
+      "precision": 0.961,
+      "recall": 0.4096
+     },
+     {
+      "threshold": 0.5122,
+      "precision": 0.9628,
+      "recall": 0.4299
+     },
+     {
+      "threshold": 0.5101,
+      "precision": 0.9349,
+      "recall": 0.4502
+     },
+     {
+      "threshold": 0.509,
+      "precision": 0.9275,
+      "recall": 0.4723
+     },
+     {
+      "threshold": 0.5086,
+      "precision": 0.9298,
+      "recall": 0.4889
+     },
+     {
+      "threshold": 0.5077,
+      "precision": 0.9295,
+      "recall": 0.5111
+     },
+     {
+      "threshold": 0.5074,
+      "precision": 0.932,
+      "recall": 0.5314
+     },
+     {
+      "threshold": 0.5047,
+      "precision": 0.9259,
+      "recall": 0.5535
+     },
+     {
+      "threshold": 0.5031,
+      "precision": 0.9284,
+      "recall": 0.5738
+     },
+     {
+      "threshold": 0.5011,
+      "precision": 0.9306,
+      "recall": 0.5941
+     },
+     {
+      "threshold": 0.4987,
+      "precision": 0.9276,
+      "recall": 0.6144
+     },
+     {
+      "threshold": 0.4941,
+      "precision": 0.922,
+      "recall": 0.6328
+     },
+     {
+      "threshold": 0.4918,
+      "precision": 0.9173,
+      "recall": 0.655
+     },
+     {
+      "threshold": 0.4874,
+      "precision": 0.9104,
+      "recall": 0.6753
+     },
+     {
+      "threshold": 0.4853,
+      "precision": 0.8995,
+      "recall": 0.6937
+     },
+     {
+      "threshold": 0.4832,
+      "precision": 0.8935,
+      "recall": 0.7122
+     },
+     {
+      "threshold": 0.477,
+      "precision": 0.8884,
+      "recall": 0.7343
+     },
+     {
+      "threshold": 0.4741,
+      "precision": 0.8836,
+      "recall": 0.7565
+     },
+     {
+      "threshold": 0.4708,
+      "precision": 0.8805,
+      "recall": 0.7749
+     },
+     {
+      "threshold": 0.4639,
+      "precision": 0.8763,
+      "recall": 0.797
+     },
+     {
+      "threshold": 0.4298,
+      "precision": 0.8487,
+      "recall": 0.8173
+     },
+     {
+      "threshold": 0.379,
+      "precision": 0.7184,
+      "recall": 0.8376
+     },
+     {
+      "threshold": 0.3639,
+      "precision": 0.6287,
+      "recall": 0.8561
+     },
+     {
+      "threshold": 0.3452,
+      "precision": 0.5615,
+      "recall": 0.8764
+     },
+     {
+      "threshold": 0.342,
+      "precision": 0.5586,
+      "recall": 0.9059
+     },
+     {
+      "threshold": 0.3296,
+      "precision": 0.4897,
+      "recall": 0.9188
+     },
+     {
+      "threshold": 0.2707,
+      "precision": 0.2952,
+      "recall": 0.9391
+     },
+     {
+      "threshold": 0.2511,
+      "precision": 0.1899,
+      "recall": 0.9594
+     },
+     {
+      "threshold": 0.2377,
+      "precision": 0.1259,
+      "recall": 0.9797
+     },
+     {
+      "threshold": 0.1983,
+      "precision": 0.0678,
+      "recall": 1.0
+     }
+    ],
+    "by_quarter": [
+     {
+      "quarter": "2025Q1",
+      "role": "early_stop",
+      "decisions": 3949,
+      "positives": 401,
+      "alerts": 176,
+      "tp": 138,
+      "fp": 38,
+      "fn": 263,
+      "tn": 3510,
+      "precision": 0.7841,
+      "recall": 0.3441,
+      "f1": 0.4783,
+      "ap": 0.6261,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 54.7,
+       "p25_s": 187.2,
+       "p50_s": 322.5,
+       "p75_s": 522.0,
+       "p90_s": 673.6,
+       "max_s": 2019.0
+      }
+     },
+     {
+      "quarter": "2025Q2",
+      "role": "early_stop",
+      "decisions": 2504,
+      "positives": 477,
+      "alerts": 216,
+      "tp": 108,
+      "fp": 108,
+      "fn": 369,
+      "tn": 1919,
+      "precision": 0.5,
+      "recall": 0.2264,
+      "f1": 0.3117,
+      "ap": 0.5014,
+      "lead_time": {
+       "min_s": 11.0,
+       "p10_s": 23.0,
+       "p25_s": 66.5,
+       "p50_s": 160.0,
+       "p75_s": 238.0,
+       "p90_s": 491.0,
+       "max_s": 3412.0
+      }
+     },
+     {
+      "quarter": "2025Q3",
+      "role": "threshold",
+      "decisions": 3463,
+      "positives": 274,
+      "alerts": 193,
+      "tp": 131,
+      "fp": 62,
+      "fn": 143,
+      "tn": 3127,
+      "precision": 0.6788,
+      "recall": 0.4781,
+      "f1": 0.561,
+      "ap": 0.6057,
+      "lead_time": {
+       "min_s": 5.0,
+       "p10_s": 29.0,
+       "p25_s": 82.0,
+       "p50_s": 250.0,
+       "p75_s": 1194.5,
+       "p90_s": 2173.0,
+       "max_s": 3665.0
+      }
+     },
+     {
+      "quarter": "2025Q4",
+      "role": "threshold",
+      "decisions": 4718,
+      "positives": 330,
+      "alerts": 239,
+      "tp": 198,
+      "fp": 41,
+      "fn": 132,
+      "tn": 4347,
+      "precision": 0.8285,
+      "recall": 0.6,
+      "f1": 0.696,
+      "ap": 0.6551,
+      "lead_time": {
+       "min_s": 0.0,
+       "p10_s": 39.8,
+       "p25_s": 79.8,
+       "p50_s": 167.5,
+       "p75_s": 316.5,
+       "p90_s": 538.9,
+       "max_s": 81267.0
+      }
+     },
+     {
+      "quarter": "2026Q1",
+      "role": "test",
+      "decisions": 4100,
+      "positives": 249,
+      "alerts": 204,
+      "tp": 182,
+      "fp": 22,
+      "fn": 67,
+      "tn": 3829,
+      "precision": 0.8922,
+      "recall": 0.7309,
+      "f1": 0.8035,
+      "ap": 0.8441,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 35.3,
+       "p25_s": 82.5,
+       "p50_s": 151.5,
+       "p75_s": 244.8,
+       "p90_s": 451.7,
+       "max_s": 7514.0
+      }
+     },
+     {
+      "quarter": "2026Q2",
+      "role": "test",
+      "decisions": 4158,
+      "positives": 293,
+      "alerts": 316,
+      "tp": 260,
+      "fp": 56,
+      "fn": 33,
+      "tn": 3809,
+      "precision": 0.8228,
+      "recall": 0.8874,
+      "f1": 0.8539,
+      "ap": 0.8583,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 37.0,
+       "p25_s": 82.8,
+       "p50_s": 133.0,
+       "p75_s": 218.8,
+       "p90_s": 388.2,
+       "max_s": 85388.0
+      }
+     }
+    ],
+    "by_type": null,
+    "by_episode_kind": [
+     {
+      "kind": "ppr",
+      "decisions": 6595,
+      "positives": 319,
+      "alerts": 264,
+      "tp": 234,
+      "fp": 30,
+      "fn": 85,
+      "tn": 6246,
+      "precision": 0.8864,
+      "recall": 0.7335,
+      "f1": 0.8027,
+      "ap": 0.8169,
+      "lead_time": {
+       "min_s": 7.0,
+       "p10_s": 61.0,
+       "p25_s": 92.2,
+       "p50_s": 137.0,
+       "p75_s": 194.2,
+       "p90_s": 263.4,
+       "max_s": 19343.0
+      }
+     },
+     {
+      "kind": "group",
+      "decisions": 1418,
+      "positives": 205,
+      "alerts": 223,
+      "tp": 194,
+      "fp": 29,
+      "fn": 11,
+      "tn": 1184,
+      "precision": 0.87,
+      "recall": 0.9463,
+      "f1": 0.9065,
+      "ap": 0.9275,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 22.0,
+       "p25_s": 61.0,
+       "p50_s": 148.0,
+       "p75_s": 339.8,
+       "p90_s": 636.4,
+       "max_s": 2762.0
+      }
+     },
+     {
+      "kind": "solitary",
+      "decisions": 245,
+      "positives": 18,
+      "alerts": 33,
+      "tp": 14,
+      "fp": 19,
+      "fn": 4,
+      "tn": 208,
+      "precision": 0.4242,
+      "recall": 0.7778,
+      "f1": 0.549,
+      "ap": 0.3759,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 6.3,
+       "p25_s": 23.5,
+       "p50_s": 65.0,
+       "p75_s": 186.5,
+       "p90_s": 5625.2,
+       "max_s": 85388.0
+      }
+     }
+    ],
+    "rule": {
+     "name": "одиночная тревога на объекте за час → неисправность",
+     "decisions": 8258,
+     "positives": 542,
+     "alerts": 371,
+     "tp": 57,
+     "fp": 314,
+     "fn": 485,
+     "tn": 7402,
+     "precision": 0.1536,
+     "recall": 0.1052,
+     "f1": 0.1249,
+     "ap": null,
+     "lead_time": null
+    }
+   },
+   "routes": []
+  },
+  {
+   "name": "daily",
+   "task": "daily",
+   "active": true,
+   "version": "baseline-v0-daily",
+   "label": "baseline-v0",
+   "family": "baseline",
+   "file": "daily.cbm",
+   "sha256": "1c1f26144726b6ca920517a2c143289487f30d9c8f9d6d7a5d8d998fb8d2a44b",
+   "trees": 132,
+   "features": 29,
+   "features_used": 26,
+   "categorical": [
+    "sensor_type"
+   ],
+   "threshold": 0.639263,
+   "scoring": "available",
+   "periods": {
+    "train": [
+     "2022-01-01",
+     "2025-01-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "threshold": [
+     "2025-07-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-07-01"
+    ]
+   },
+   "metrics": {
+    "early_stop": {
+     "decisions": 107193,
+     "positives": 14211,
+     "tp": 7831,
+     "fp": 2024,
+     "fn": 6380,
+     "precision": 0.7946,
+     "recall": 0.5511,
+     "f1": 0.6508,
+     "average_precision": 0.7513
+    },
+    "threshold": {
+     "decisions": 125830,
+     "positives": 12271,
+     "tp": 6221,
+     "fp": 2591,
+     "fn": 6050,
+     "precision": 0.706,
+     "recall": 0.507,
+     "f1": 0.5901,
+     "average_precision": 0.6424
+    },
+    "test": {
+     "decisions": 731642,
+     "positives": 75313,
+     "tp": 39326,
+     "fp": 11302,
+     "fn": 35987,
+     "precision": 0.7768,
+     "recall": 0.5222,
+     "f1": 0.6245,
+     "average_precision": 0.7161
+    },
+    "test_lead_days": {
+     "0": 1.0,
+     "0.25": 3.65,
+     "0.5": 8.38,
+     "0.75": 15.54,
+     "1": 29.94
+    },
+    "test_rule_recent_fault": {
+     "decisions": 731642,
+     "positives": 75313,
+     "tp": 45532,
+     "fp": 37117,
+     "fn": 29781,
+     "precision": 0.5509,
+     "recall": 0.6046,
+     "f1": 0.5765,
+     "average_precision": 0.3738
+    },
+    "test_by_type": {
+     "Газовый датчик": {
+      "decisions": 43802,
+      "positives": 2117,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2117,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "average_precision": 0.0289,
+      "rule_recent_fault": {
+       "decisions": 43802,
+       "positives": 2117,
+       "tp": 90,
+       "fp": 2752,
+       "fn": 2027,
+       "precision": 0.0317,
+       "recall": 0.0425,
+       "f1": 0.0363,
+       "average_precision": 0.0476
+      }
+     },
+     "Датчик дыма": {
+      "decisions": 445806,
+      "positives": 18062,
+      "tp": 0,
+      "fp": 2,
+      "fn": 18062,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "average_precision": 0.2057,
+      "rule_recent_fault": {
+       "decisions": 445806,
+       "positives": 18062,
+       "tp": 5228,
+       "fp": 19035,
+       "fn": 12834,
+       "precision": 0.2155,
+       "recall": 0.2894,
+       "f1": 0.247,
+       "average_precision": 0.0912
+      }
+     },
+     "Датчик температуры": {
+      "decisions": 67867,
+      "positives": 79,
+      "tp": 0,
+      "fp": 0,
+      "fn": 79,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "average_precision": 0.2734,
+      "rule_recent_fault": {
+       "decisions": 67867,
+       "positives": 79,
+       "tp": 24,
+       "fp": 145,
+       "fn": 55,
+       "precision": 0.142,
+       "recall": 0.3038,
+       "f1": 0.1935,
+       "average_precision": 0.044
+      }
+     },
+     "ИБП": {
+      "decisions": 8266,
+      "positives": 388,
+      "tp": 0,
+      "fp": 0,
+      "fn": 388,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "average_precision": 0.5825,
+      "rule_recent_fault": {
+       "decisions": 8266,
+       "positives": 388,
+       "tp": 275,
+       "fp": 198,
+       "fn": 113,
+       "precision": 0.5814,
+       "recall": 0.7088,
+       "f1": 0.6388,
+       "average_precision": 0.4257
+      }
+     },
+     "Ручной извещатель": {
+      "decisions": 12468,
+      "positives": 3469,
+      "tp": 2,
+      "fp": 0,
+      "fn": 3467,
+      "precision": 1.0,
+      "recall": 0.0006,
+      "f1": 0.0012,
+      "average_precision": 0.5739,
+      "rule_recent_fault": {
+       "decisions": 12468,
+       "positives": 3469,
+       "tp": 1486,
+       "fp": 1526,
+       "fn": 1983,
+       "precision": 0.4934,
+       "recall": 0.4284,
+       "f1": 0.4586,
+       "average_precision": 0.3704
+      }
+     },
+     "Состояние вентилятора": {
+      "decisions": 35606,
+      "positives": 20818,
+      "tp": 19371,
+      "fp": 4635,
+      "fn": 1447,
+      "precision": 0.8069,
+      "recall": 0.9305,
+      "f1": 0.8643,
+      "average_precision": 0.8824,
+      "rule_recent_fault": {
+       "decisions": 35606,
+       "positives": 20818,
+       "tp": 17066,
+       "fp": 4004,
+       "fn": 3752,
+       "precision": 0.81,
+       "recall": 0.8198,
+       "f1": 0.8148,
+       "average_precision": 0.7694
+      }
+     },
+     "Состояние насоса": {
+      "decisions": 19748,
+      "positives": 15935,
+      "tp": 15258,
+      "fp": 3481,
+      "fn": 677,
+      "precision": 0.8142,
+      "recall": 0.9575,
+      "f1": 0.8801,
+      "average_precision": 0.8733,
+      "rule_recent_fault": {
+       "decisions": 19748,
+       "positives": 15935,
+       "tp": 13018,
+       "fp": 2978,
+       "fn": 2917,
+       "precision": 0.8138,
+       "recall": 0.8169,
+       "f1": 0.8154,
+       "average_precision": 0.8126
+      }
+     },
+     "Состояние фазы": {
+      "decisions": 98079,
+      "positives": 14445,
+      "tp": 4695,
+      "fp": 3184,
+      "fn": 9750,
+      "precision": 0.5959,
+      "recall": 0.325,
+      "f1": 0.4206,
+      "average_precision": 0.5747,
+      "rule_recent_fault": {
+       "decisions": 98079,
+       "positives": 14445,
+       "tp": 8345,
+       "fp": 6479,
+       "fn": 6100,
+       "precision": 0.5629,
+       "recall": 0.5777,
+       "f1": 0.5702,
+       "average_precision": 0.3874
+      }
+     }
+    },
+    "test_alerts": {
+     "days": 122,
+     "per_day_mean": 415.0,
+     "per_day_max": 468,
+     "channels_alerted": 568,
+     "channels_with_onset": 1446,
+     "channels_caught": 521
+    },
+    "test_by_history": {
+     "with_train_faults": {
+      "channels": 2960,
+      "decisions": 310864,
+      "positives": 56179,
+      "tp": 36023,
+      "fp": 9664,
+      "fn": 20156,
+      "precision": 0.7885,
+      "recall": 0.6412,
+      "f1": 0.7073,
+      "average_precision": 0.7926
+     },
+     "without_train_faults": {
+      "channels": 4168,
+      "decisions": 420778,
+      "positives": 19134,
+      "tp": 3303,
+      "fp": 1638,
+      "fn": 15831,
+      "precision": 0.6685,
+      "recall": 0.1726,
+      "f1": 0.2744,
+      "average_precision": 0.3969
+     }
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": {
+    "computed_at": "2026-09-26T04:30:28+00:00",
+    "model": "daily",
+    "version": "v0",
+    "period": {
+     "from": "2026-01-01",
+     "to": "2026-07-01",
+     "label": "1 января — 2 мая 2026"
+    },
+    "threshold": 0.639263,
+    "test": {
+     "decisions": 731642,
+     "positives": 75313,
+     "alerts": 50628,
+     "tp": 39326,
+     "fp": 11302,
+     "fn": 35987,
+     "tn": 645027,
+     "precision": 0.7768,
+     "recall": 0.5222,
+     "f1": 0.6245,
+     "ap": 0.7161,
+     "lead_time": {
+      "min_s": 86405.0,
+      "p10_s": 157118.0,
+      "p25_s": 315622.0,
+      "p50_s": 724448.0,
+      "p75_s": 1342387.8,
+      "p90_s": 1958257.0,
+      "max_s": 2586409.0
+     }
+    },
+    "seen": {
+     "decisions": 310864,
+     "positives": 56179,
+     "alerts": 45687,
+     "tp": 36023,
+     "fp": 9664,
+     "fn": 20156,
+     "tn": 245021,
+     "precision": 0.7885,
+     "recall": 0.6412,
+     "f1": 0.7073,
+     "ap": 0.7926,
+     "lead_time": {
+      "min_s": 86405.0,
+      "p10_s": 158908.4,
+      "p25_s": 317143.0,
+      "p50_s": 718900.0,
+      "p75_s": 1331260.0,
+      "p90_s": 1942491.8,
+      "max_s": 2586409.0
+     }
+    },
+    "unseen": {
+     "decisions": 420778,
+     "positives": 19134,
+     "alerts": 4941,
+     "tp": 3303,
+     "fp": 1638,
+     "fn": 15831,
+     "tn": 400006,
+     "precision": 0.6685,
+     "recall": 0.1726,
+     "f1": 0.2744,
+     "ap": 0.3969,
+     "lead_time": {
+      "min_s": 87455.0,
+      "p10_s": 137383.0,
+      "p25_s": 303063.5,
+      "p50_s": 812380.0,
+      "p75_s": 1602501.0,
+      "p90_s": 2129296.0,
+      "max_s": 2553764.0
+     }
+    },
+    "seen_rule": "каналы с началами «Неисправен» в обучении 2022–2024",
+    "lead_time": {
+     "min_s": 86405.0,
+     "p10_s": 157118.0,
+     "p25_s": 315622.0,
+     "p50_s": 724448.0,
+     "p75_s": 1342387.8,
+     "p90_s": 1958257.0,
+     "max_s": 2586409.0
+    },
+    "pr_curve": [
+     {
+      "threshold": 0.9558,
+      "precision": 1.0,
+      "recall": 0.0
+     },
+     {
+      "threshold": 0.8863,
+      "precision": 0.9771,
+      "recall": 0.0204
+     },
+     {
+      "threshold": 0.8702,
+      "precision": 0.9594,
+      "recall": 0.0408
+     },
+     {
+      "threshold": 0.8567,
+      "precision": 0.9453,
+      "recall": 0.0612
+     },
+     {
+      "threshold": 0.844,
+      "precision": 0.9279,
+      "recall": 0.0816
+     },
+     {
+      "threshold": 0.8318,
+      "precision": 0.9136,
+      "recall": 0.1021
+     },
+     {
+      "threshold": 0.8226,
+      "precision": 0.8997,
+      "recall": 0.1225
+     },
+     {
+      "threshold": 0.8136,
+      "precision": 0.8899,
+      "recall": 0.1429
+     },
+     {
+      "threshold": 0.8042,
+      "precision": 0.8854,
+      "recall": 0.1633
+     },
+     {
+      "threshold": 0.7964,
+      "precision": 0.8826,
+      "recall": 0.1837
+     },
+     {
+      "threshold": 0.7883,
+      "precision": 0.8791,
+      "recall": 0.2041
+     },
+     {
+      "threshold": 0.7793,
+      "precision": 0.8732,
+      "recall": 0.2245
+     },
+     {
+      "threshold": 0.7708,
+      "precision": 0.869,
+      "recall": 0.2449
+     },
+     {
+      "threshold": 0.762,
+      "precision": 0.8611,
+      "recall": 0.2653
+     },
+     {
+      "threshold": 0.7532,
+      "precision": 0.851,
+      "recall": 0.2857
+     },
+     {
+      "threshold": 0.7446,
+      "precision": 0.8422,
+      "recall": 0.3061
+     },
+     {
+      "threshold": 0.7356,
+      "precision": 0.8384,
+      "recall": 0.3265
+     },
+     {
+      "threshold": 0.7273,
+      "precision": 0.8347,
+      "recall": 0.347
+     },
+     {
+      "threshold": 0.7183,
+      "precision": 0.8283,
+      "recall": 0.3674
+     },
+     {
+      "threshold": 0.7094,
+      "precision": 0.8225,
+      "recall": 0.3878
+     },
+     {
+      "threshold": 0.7007,
+      "precision": 0.8169,
+      "recall": 0.4082
+     },
+     {
+      "threshold": 0.6926,
+      "precision": 0.8121,
+      "recall": 0.4286
+     },
+     {
+      "threshold": 0.6827,
+      "precision": 0.8059,
+      "recall": 0.449
+     },
+     {
+      "threshold": 0.6735,
+      "precision": 0.8007,
+      "recall": 0.4694
+     },
+     {
+      "threshold": 0.6632,
+      "precision": 0.7952,
+      "recall": 0.4898
+     },
+     {
+      "threshold": 0.6494,
+      "precision": 0.7851,
+      "recall": 0.5102
+     },
+     {
+      "threshold": 0.6304,
+      "precision": 0.7699,
+      "recall": 0.5306
+     },
+     {
+      "threshold": 0.6057,
+      "precision": 0.7599,
+      "recall": 0.5511
+     },
+     {
+      "threshold": 0.5752,
+      "precision": 0.7482,
+      "recall": 0.5714
+     },
+     {
+      "threshold": 0.531,
+      "precision": 0.7382,
+      "recall": 0.5919
+     },
+     {
+      "threshold": 0.4617,
+      "precision": 0.7208,
+      "recall": 0.6122
+     },
+     {
+      "threshold": 0.3892,
+      "precision": 0.6966,
+      "recall": 0.6327
+     },
+     {
+      "threshold": 0.3354,
+      "precision": 0.6798,
+      "recall": 0.6531
+     },
+     {
+      "threshold": 0.2885,
+      "precision": 0.666,
+      "recall": 0.6735
+     },
+     {
+      "threshold": 0.2081,
+      "precision": 0.6319,
+      "recall": 0.6939
+     },
+     {
+      "threshold": 0.1647,
+      "precision": 0.6039,
+      "recall": 0.7143
+     },
+     {
+      "threshold": 0.1379,
+      "precision": 0.588,
+      "recall": 0.7347
+     },
+     {
+      "threshold": 0.1182,
+      "precision": 0.5662,
+      "recall": 0.7551
+     },
+     {
+      "threshold": 0.1069,
+      "precision": 0.5544,
+      "recall": 0.7755
+     },
+     {
+      "threshold": 0.0965,
+      "precision": 0.5439,
+      "recall": 0.7959
+     },
+     {
+      "threshold": 0.0889,
+      "precision": 0.5363,
+      "recall": 0.8164
+     },
+     {
+      "threshold": 0.0844,
+      "precision": 0.5296,
+      "recall": 0.8365
+     },
+     {
+      "threshold": 0.0806,
+      "precision": 0.5174,
+      "recall": 0.8571
+     },
+     {
+      "threshold": 0.072,
+      "precision": 0.4847,
+      "recall": 0.8776
+     },
+     {
+      "threshold": 0.0663,
+      "precision": 0.4635,
+      "recall": 0.898
+     },
+     {
+      "threshold": 0.0582,
+      "precision": 0.4349,
+      "recall": 0.9184
+     },
+     {
+      "threshold": 0.0407,
+      "precision": 0.3781,
+      "recall": 0.9387
+     },
+     {
+      "threshold": 0.0166,
+      "precision": 0.205,
+      "recall": 0.958
+     },
+     {
+      "threshold": 0.0106,
+      "precision": 0.1285,
+      "recall": 0.9796
+     },
+     {
+      "threshold": 0.0035,
+      "precision": 0.103,
+      "recall": 1.0
+     }
+    ],
+    "by_quarter": [
+     {
+      "quarter": "2025Q1",
+      "role": "early_stop",
+      "decisions": 377159,
+      "positives": 45394,
+      "alerts": 32849,
+      "tp": 26081,
+      "fp": 6768,
+      "fn": 19313,
+      "tn": 324997,
+      "precision": 0.794,
+      "recall": 0.5745,
+      "f1": 0.6667,
+      "ap": 0.7671,
+      "lead_time": {
+       "min_s": 86756.0,
+       "p10_s": 178860.0,
+       "p25_s": 321838.0,
+       "p50_s": 727944.0,
+       "p75_s": 1354534.0,
+       "p90_s": 1972322.0,
+       "max_s": 2589566.0
+      }
+     },
+     {
+      "quarter": "2025Q2",
+      "role": "early_stop",
+      "decisions": 386631,
+      "positives": 53106,
+      "alerts": 35773,
+      "tp": 28123,
+      "fp": 7650,
+      "fn": 24983,
+      "tn": 325875,
+      "precision": 0.7862,
+      "recall": 0.5296,
+      "f1": 0.6328,
+      "ap": 0.7308,
+      "lead_time": {
+       "min_s": 86518.0,
+       "p10_s": 192332.0,
+       "p25_s": 378170.0,
+       "p50_s": 766538.0,
+       "p75_s": 1390851.0,
+       "p90_s": 1995641.0,
+       "max_s": 2590708.0
+      }
+     },
+     {
+      "quarter": "2025Q3",
+      "role": "threshold",
+      "decisions": 427087,
+      "positives": 44866,
+      "alerts": 33625,
+      "tp": 24727,
+      "fp": 8898,
+      "fn": 20139,
+      "tn": 373323,
+      "precision": 0.7354,
+      "recall": 0.5511,
+      "f1": 0.6301,
+      "ap": 0.6886,
+      "lead_time": {
+       "min_s": 86596.0,
+       "p10_s": 169497.2,
+       "p25_s": 318817.0,
+       "p50_s": 723952.0,
+       "p75_s": 1378804.0,
+       "p90_s": 1994012.0,
+       "max_s": 2588645.0
+      }
+     },
+     {
+      "quarter": "2025Q4",
+      "role": "threshold",
+      "decisions": 473893,
+      "positives": 41006,
+      "alerts": 29196,
+      "tp": 19531,
+      "fp": 9665,
+      "fn": 21475,
+      "tn": 423222,
+      "precision": 0.669,
+      "recall": 0.4763,
+      "f1": 0.5564,
+      "ap": 0.5941,
+      "lead_time": {
+       "min_s": 86450.0,
+       "p10_s": 204158.0,
+       "p25_s": 381812.0,
+       "p50_s": 758679.0,
+       "p75_s": 1431178.0,
+       "p90_s": 2062415.0,
+       "max_s": 2590650.0
+      }
+     },
+     {
+      "quarter": "2026Q1",
+      "role": "test",
+      "decisions": 548231,
+      "positives": 52151,
+      "alerts": 36522,
+      "tp": 27103,
+      "fp": 9419,
+      "fn": 25048,
+      "tn": 486661,
+      "precision": 0.7421,
+      "recall": 0.5197,
+      "f1": 0.6113,
+      "ap": 0.701,
+      "lead_time": {
+       "min_s": 86405.0,
+       "p10_s": 173385.0,
+       "p25_s": 354837.0,
+       "p50_s": 763279.0,
+       "p75_s": 1383327.0,
+       "p90_s": 2021443.6,
+       "max_s": 2585757.0
+      }
+     },
+     {
+      "quarter": "2026Q2",
+      "role": "test",
+      "decisions": 183411,
+      "positives": 23162,
+      "alerts": 14106,
+      "tp": 12223,
+      "fp": 1883,
+      "fn": 10939,
+      "tn": 158366,
+      "precision": 0.8665,
+      "recall": 0.5277,
+      "f1": 0.656,
+      "ap": 0.7573,
+      "lead_time": {
+       "min_s": 87016.0,
+       "p10_s": 138648.0,
+       "p25_s": 284784.0,
+       "p50_s": 580011.0,
+       "p75_s": 1246214.0,
+       "p90_s": 1870096.0,
+       "max_s": 2586409.0
+      }
+     }
+    ],
+    "by_type": [
+     {
+      "sensor_type": "Состояние вентилятора",
+      "base_rate": 0.5847,
+      "decisions": 35606,
+      "positives": 20818,
+      "alerts": 24006,
+      "tp": 19371,
+      "fp": 4635,
+      "fn": 1447,
+      "tn": 10153,
+      "precision": 0.8069,
+      "recall": 0.9305,
+      "f1": 0.8643,
+      "ap": 0.8824,
+      "lead_time": {
+       "min_s": 86486.0,
+       "p10_s": 154996.0,
+       "p25_s": 315402.0,
+       "p50_s": 728324.0,
+       "p75_s": 1343812.0,
+       "p90_s": 1979713.0,
+       "max_s": 2578289.0
+      }
+     },
+     {
+      "sensor_type": "Датчик дыма",
+      "base_rate": 0.0405,
+      "decisions": 445806,
+      "positives": 18062,
+      "alerts": 2,
+      "tp": 0,
+      "fp": 2,
+      "fn": 18062,
+      "tn": 427742,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ap": 0.2057,
+      "lead_time": null
+     },
+     {
+      "sensor_type": "Состояние насоса",
+      "base_rate": 0.8069,
+      "decisions": 19748,
+      "positives": 15935,
+      "alerts": 18739,
+      "tp": 15258,
+      "fp": 3481,
+      "fn": 677,
+      "tn": 332,
+      "precision": 0.8142,
+      "recall": 0.9575,
+      "f1": 0.8801,
+      "ap": 0.8733,
+      "lead_time": {
+       "min_s": 86405.0,
+       "p10_s": 152993.0,
+       "p25_s": 304281.0,
+       "p50_s": 685149.0,
+       "p75_s": 1330489.0,
+       "p90_s": 1936137.2,
+       "max_s": 2586409.0
+      }
+     },
+     {
+      "sensor_type": "Состояние фазы",
+      "base_rate": 0.1473,
+      "decisions": 98079,
+      "positives": 14445,
+      "alerts": 7879,
+      "tp": 4695,
+      "fp": 3184,
+      "fn": 9750,
+      "tn": 80450,
+      "precision": 0.5959,
+      "recall": 0.325,
+      "f1": 0.4206,
+      "ap": 0.5747,
+      "lead_time": {
+       "min_s": 87937.0,
+       "p10_s": 198383.8,
+       "p25_s": 377440.0,
+       "p50_s": 786684.0,
+       "p75_s": 1412563.0,
+       "p90_s": 1999932.0,
+       "max_s": 2572897.0
+      }
+     },
+     {
+      "sensor_type": "Ручной извещатель",
+      "base_rate": 0.2782,
+      "decisions": 12468,
+      "positives": 3469,
+      "alerts": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 3467,
+      "tn": 8999,
+      "precision": 1.0,
+      "recall": 0.0006,
+      "f1": 0.0012,
+      "ap": 0.5739,
+      "lead_time": {
+       "min_s": 2550362.0,
+       "p10_s": 2550362.0,
+       "p25_s": 2550362.0,
+       "p50_s": 2550362.0,
+       "p75_s": 2550362.0,
+       "p90_s": 2550362.0,
+       "max_s": 2550362.0
+      }
+     },
+     {
+      "sensor_type": "Газовый датчик",
+      "base_rate": 0.0483,
+      "decisions": 43802,
+      "positives": 2117,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2117,
+      "tn": 41685,
+      "precision": null,
+      "recall": 0.0,
+      "f1": null,
+      "ap": 0.0289,
+      "lead_time": null
+     },
+     {
+      "sensor_type": "ИБП",
+      "base_rate": 0.0469,
+      "decisions": 8266,
+      "positives": 388,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 388,
+      "tn": 7878,
+      "precision": null,
+      "recall": 0.0,
+      "f1": null,
+      "ap": 0.5825,
+      "lead_time": null
+     },
+     {
+      "sensor_type": "Датчик температуры",
+      "base_rate": 0.0012,
+      "decisions": 67867,
+      "positives": 79,
+      "alerts": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 79,
+      "tn": 67788,
+      "precision": null,
+      "recall": 0.0,
+      "f1": null,
+      "ap": 0.2734,
+      "lead_time": null
+     }
+    ],
+    "by_episode_kind": null,
+    "rule": {
+     "name": "у канала были начала «Неисправен» за 30 суток",
+     "decisions": 731642,
+     "positives": 75313,
+     "alerts": 82649,
+     "tp": 45532,
+     "fp": 37117,
+     "fn": 29781,
+     "tn": 619212,
+     "precision": 0.5509,
+     "recall": 0.6046,
+     "f1": 0.5765,
+     "ap": null,
+     "lead_time": null
+    }
+   },
+   "routes": [
+    "Датчик дыма",
+    "Состояние насоса",
+    "Состояние вентилятора",
+    "Датчик температуры",
+    "Газовый датчик",
+    "Состояние фазы"
+   ]
+  },
+  {
+   "name": "fan",
+   "task": null,
+   "active": false,
+   "version": "fan",
+   "label": "Состояние вентилятора: отдельная модель",
+   "family": "each_channel",
+   "file": "fan.cbm",
+   "sha256": "d5a0e407179c2ee5d2f4e9ba316e9b33680ab0cd9866f103961d49726791b54a",
+   "trees": 120,
+   "features": 29,
+   "features_used": 25,
+   "categorical": [
+    "sensor_type"
+   ],
+   "threshold": 0.6711490998050569,
+   "scoring": "waiting_feature_code",
+   "periods": {
+    "train": [
+     "2022-01-01",
+     "2025-01-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "calibration": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-06-30"
+    ]
+   },
+   "metrics": {
+    "test": {
+     "decisions": 35606,
+     "positives": 20818,
+     "alerts": 19946,
+     "tp": 16278,
+     "fp": 3668,
+     "fn": 4540,
+     "precision": 0.8161034793943648,
+     "recall": 0.7819194927466615,
+     "f1": 0.798645863997645,
+     "ap": 0.8770561487679185,
+     "passes_both": true,
+     "lead_days": {
+      "0.25": 3.5008246898651123,
+      "0.5": 7.61075234413147,
+      "0.75": 14.669290781021118
+     },
+     "channels": 354,
+     "positive_channels": 233,
+     "caught_channels": 224,
+     "represented_episodes": 2400,
+     "caught_represented_episodes": 2239,
+     "represented_episode_recall": 0.9329166666666666,
+     "episode_first_alert_median_days": 5.570196628570557
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": []
+  },
+  {
+   "name": "manual_alarm",
+   "task": "daily",
+   "active": false,
+   "version": "manual-alarm",
+   "label": "Ручной извещатель: исследовательский режим готовности",
+   "family": "each_channel",
+   "file": "manual_alarm.cbm",
+   "sha256": "a1177ea934b102ccb5514562fdde7d475d737ed09a2c2d51e6ba6a2fd566aea3",
+   "trees": 180,
+   "features": 34,
+   "features_used": 30,
+   "categorical": [
+    "sensor_type"
+   ],
+   "threshold": 0.013155972033956975,
+   "scoring": "available",
+   "periods": {
+    "model_train": "Mondays 2022-2024 plus every eligible day H1 2025; 30-day purge",
+    "model_selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "base_threshold": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "retrospective_test": [
+     "2026-01-01",
+     "2026-05-03"
+    ]
+   },
+   "metrics": {
+    "retrospective_test": {
+     "decisions": 12771,
+     "positives": 3772,
+     "alerts": 2808,
+     "tp": 2040,
+     "fp": 768,
+     "fn": 1732,
+     "precision": 0.7264957264957265,
+     "recall": 0.5408271474019088,
+     "f1": 0.6200607902735562,
+     "ap": 0.5219800579062942,
+     "passes_both": true,
+     "lead_days": {
+      "0.25": 4.461898326873779,
+      "0.5": 9.501805305480957,
+      "0.75": 19.470903396606445
+     },
+     "channels": 130,
+     "positive_channels": 92,
+     "caught_channels": 91,
+     "represented_episodes": 332,
+     "caught_represented_episodes": 268,
+     "represented_episode_recall": 0.8072289156626506,
+     "episode_first_alert_median_days": 8.059392929077148
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": [
+    "Ручной извещатель"
+   ]
+  },
+  {
+   "name": "pump",
+   "task": null,
+   "active": false,
+   "version": "pump",
+   "label": "Состояние насоса: отдельная модель",
+   "family": "each_channel",
+   "file": "pump.cbm",
+   "sha256": "5db1396d6470d09c56420065e6de903ee1967d1644001515ceb509ac24bddada",
+   "trees": 120,
+   "features": 29,
+   "features_used": 25,
+   "categorical": [
+    "sensor_type"
+   ],
+   "threshold": 0.7191326796175387,
+   "scoring": "waiting_feature_code",
+   "periods": {
+    "train": [
+     "2022-01-01",
+     "2025-01-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "calibration": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-06-30"
+    ]
+   },
+   "metrics": {
+    "test": {
+     "decisions": 19746,
+     "positives": 15937,
+     "alerts": 15583,
+     "tp": 13222,
+     "fp": 2361,
+     "fn": 2715,
+     "precision": 0.8484887377270102,
+     "recall": 0.8296417142498588,
+     "f1": 0.8389593908629441,
+     "ap": 0.8680184463368414,
+     "passes_both": true,
+     "lead_days": {
+      "0.25": 3.4407176971435547,
+      "0.5": 7.47502326965332,
+      "0.75": 14.621308326721191
+     },
+     "channels": 180,
+     "positive_channels": 178,
+     "caught_channels": 176,
+     "represented_episodes": 2001,
+     "caught_represented_episodes": 1873,
+     "represented_episode_recall": 0.936031984007996,
+     "episode_first_alert_median_days": 4.98450231552124
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": []
+  },
+  {
+   "name": "ups_context",
+   "task": null,
+   "active": false,
+   "version": "new",
+   "label": "ИБП: модель контекста объектов",
+   "family": "each_channel",
+   "file": "ups_context.cbm",
+   "sha256": "41dcd1553330cc2a77a560b86d1af33642613b9daa9cdbbf2f461ef048ad51a7",
+   "trees": 160,
+   "features": 99,
+   "features_used": 73,
+   "categorical": [
+    "sensor_type",
+    "object_kind"
+   ],
+   "threshold": 0.26866602274491386,
+   "scoring": "waiting_feature_code",
+   "periods": {
+    "train": [
+     "2022-01-01",
+     "2025-07-01"
+    ],
+    "selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "threshold": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-05-03"
+    ]
+   },
+   "metrics": null,
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": []
+  },
+  {
+   "name": "ups_old",
+   "task": null,
+   "active": false,
+   "version": "old",
+   "label": "ИБП: прежняя отдельная модель",
+   "family": "each_channel",
+   "file": "ups_old.cbm",
+   "sha256": "41bd4a0f11edac68efaffaa8fed3c9c96624fb31dcb6916d01057aa1887ccede",
+   "trees": 120,
+   "features": 29,
+   "features_used": 26,
+   "categorical": [
+    "sensor_type"
+   ],
+   "threshold": 0.2435152854797299,
+   "scoring": "waiting_feature_code",
+   "periods": {
+    "train": [
+     "2022-01-01",
+     "2025-01-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "calibration": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-06-30"
+    ]
+   },
+   "metrics": null,
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": []
+  },
+  {
+   "name": "pdm_failure_24h",
+   "task": "pdm_failure_24h",
+   "active": true,
+   "version": "azure_pdm-failure",
+   "label": "pdm-failure-v0",
+   "family": "external",
+   "file": "pdm_failure_24h.cbm",
+   "sha256": "a59a10601fe65d95eb2af75e7e8317f6d8f4175ba919ae8c83e3ce3de7a2e2e1",
+   "trees": 600,
+   "features": 45,
+   "features_used": 45,
+   "categorical": [
+    "model"
+   ],
+   "threshold": 0.173227,
+   "scoring": "available",
+   "periods": {
+    "train": [
+     "2015-01-01",
+     "2015-09-01"
+    ],
+    "threshold": [
+     "2015-09-01",
+     "2015-11-01"
+    ],
+    "test": [
+     "2015-11-01",
+     "2016-01-01"
+    ]
+   },
+   "metrics": null,
+   "title": "Отказ агрегата в ближайшие 24 ч",
+   "dataset": "azure_pdm",
+   "synthetic": true,
+   "trigger": "hourly",
+   "eval_scheme": "out-of-time",
+   "target": "object",
+   "target_tag": "machine",
+   "horizon": "24h",
+   "outcome": "label_in_horizon",
+   "label_key": null,
+   "positive_labels": [
+    "failure"
+   ],
+   "ignore_labels": [],
+   "history_minutes": 10080,
+   "decision_lag_s": null,
+   "offline": {
+    "computed_at": "2026-09-27T01:28:12+00:00",
+    "model": "pdm_failure_24h",
+    "version": "v0",
+    "period": {
+     "from": "2015-11-01",
+     "to": "2016-01-01",
+     "label": "ноябрь–декабрь 2015"
+    },
+    "threshold": 0.173227,
+    "eval_scheme": "out-of-time",
+    "test": {
+     "decisions": 143990,
+     "positives": 2551,
+     "alerts": 2623,
+     "tp": 2546,
+     "fp": 77,
+     "fn": 5,
+     "tn": 141362,
+     "precision": 0.9706,
+     "recall": 0.998,
+     "f1": 0.9842,
+     "ap": 0.9954,
+     "lead_time": {
+      "min_s": 3600.0,
+      "p10_s": 10800.0,
+      "p25_s": 21600.0,
+      "p50_s": 43200.0,
+      "p75_s": 64800.0,
+      "p90_s": 75600.0,
+      "max_s": 82800.0
+     }
+    },
+    "seen": {
+     "decisions": 141108,
+     "positives": 2551,
+     "alerts": 2609,
+     "tp": 2546,
+     "fp": 63,
+     "fn": 5,
+     "tn": 138494,
+     "precision": 0.9759,
+     "recall": 0.998,
+     "f1": 0.9868,
+     "ap": 0.9957,
+     "lead_time": {
+      "min_s": 3600.0,
+      "p10_s": 10800.0,
+      "p25_s": 21600.0,
+      "p50_s": 43200.0,
+      "p75_s": 64800.0,
+      "p90_s": 75600.0,
+      "max_s": 82800.0
+     }
+    },
+    "unseen": {
+     "decisions": 2882,
+     "positives": 0,
+     "alerts": 14,
+     "tp": 0,
+     "fp": 14,
+     "fn": 0,
+     "tn": 2868,
+     "precision": 0.0,
+     "recall": null,
+     "f1": null,
+     "ap": null,
+     "lead_time": null
+    },
+    "seen_rule": "у агрегата был отказ в январе–августе 2015",
+    "lead_time": {
+     "min_s": 21600.0,
+     "p10_s": 82800.0,
+     "p25_s": 82800.0,
+     "p50_s": 82800.0,
+     "p75_s": 82800.0,
+     "p90_s": 82800.0,
+     "max_s": 82800.0
+    },
+    "pr_curve": [
+     {
+      "threshold": 1.0,
+      "precision": 1.0,
+      "recall": 0.0004
+     },
+     {
+      "threshold": 1.0,
+      "precision": 1.0,
+      "recall": 0.0208
+     },
+     {
+      "threshold": 1.0,
+      "precision": 1.0,
+      "recall": 0.0412
+     },
+     {
+      "threshold": 0.9999,
+      "precision": 1.0,
+      "recall": 0.0615
+     },
+     {
+      "threshold": 0.9998,
+      "precision": 1.0,
+      "recall": 0.0819
+     },
+     {
+      "threshold": 0.9997,
+      "precision": 1.0,
+      "recall": 0.1023
+     },
+     {
+      "threshold": 0.9997,
+      "precision": 1.0,
+      "recall": 0.1227
+     },
+     {
+      "threshold": 0.9997,
+      "precision": 1.0,
+      "recall": 0.1431
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.1635
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.1838
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.2042
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.2246
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.245
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.2658
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.2862
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.3065
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.3269
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.3473
+     },
+     {
+      "threshold": 0.9994,
+      "precision": 1.0,
+      "recall": 0.3677
+     },
+     {
+      "threshold": 0.9994,
+      "precision": 1.0,
+      "recall": 0.3881
+     },
+     {
+      "threshold": 0.9994,
+      "precision": 1.0,
+      "recall": 0.4085
+     },
+     {
+      "threshold": 0.9993,
+      "precision": 1.0,
+      "recall": 0.4289
+     },
+     {
+      "threshold": 0.9992,
+      "precision": 1.0,
+      "recall": 0.4492
+     },
+     {
+      "threshold": 0.9991,
+      "precision": 1.0,
+      "recall": 0.4696
+     },
+     {
+      "threshold": 0.9991,
+      "precision": 1.0,
+      "recall": 0.49
+     },
+     {
+      "threshold": 0.999,
+      "precision": 1.0,
+      "recall": 0.5104
+     },
+     {
+      "threshold": 0.9988,
+      "precision": 1.0,
+      "recall": 0.5308
+     },
+     {
+      "threshold": 0.9986,
+      "precision": 0.9993,
+      "recall": 0.5512
+     },
+     {
+      "threshold": 0.9984,
+      "precision": 0.9986,
+      "recall": 0.5715
+     },
+     {
+      "threshold": 0.9981,
+      "precision": 0.998,
+      "recall": 0.5919
+     },
+     {
+      "threshold": 0.9977,
+      "precision": 0.9981,
+      "recall": 0.6123
+     },
+     {
+      "threshold": 0.9973,
+      "precision": 0.9963,
+      "recall": 0.6327
+     },
+     {
+      "threshold": 0.9968,
+      "precision": 0.9958,
+      "recall": 0.6531
+     },
+     {
+      "threshold": 0.996,
+      "precision": 0.9954,
+      "recall": 0.6735
+     },
+     {
+      "threshold": 0.994,
+      "precision": 0.9933,
+      "recall": 0.6938
+     },
+     {
+      "threshold": 0.9923,
+      "precision": 0.9918,
+      "recall": 0.7142
+     },
+     {
+      "threshold": 0.9901,
+      "precision": 0.991,
+      "recall": 0.7346
+     },
+     {
+      "threshold": 0.9877,
+      "precision": 0.9913,
+      "recall": 0.7554
+     },
+     {
+      "threshold": 0.9842,
+      "precision": 0.9895,
+      "recall": 0.7758
+     },
+     {
+      "threshold": 0.9803,
+      "precision": 0.9888,
+      "recall": 0.7962
+     },
+     {
+      "threshold": 0.9754,
+      "precision": 0.9881,
+      "recall": 0.8165
+     },
+     {
+      "threshold": 0.9702,
+      "precision": 0.988,
+      "recall": 0.8369
+     },
+     {
+      "threshold": 0.9632,
+      "precision": 0.9874,
+      "recall": 0.8573
+     },
+     {
+      "threshold": 0.952,
+      "precision": 0.9868,
+      "recall": 0.8777
+     },
+     {
+      "threshold": 0.938,
+      "precision": 0.9858,
+      "recall": 0.8981
+     },
+     {
+      "threshold": 0.9123,
+      "precision": 0.9861,
+      "recall": 0.9185
+     },
+     {
+      "threshold": 0.8832,
+      "precision": 0.9856,
+      "recall": 0.9388
+     },
+     {
+      "threshold": 0.8187,
+      "precision": 0.9815,
+      "recall": 0.9592
+     },
+     {
+      "threshold": 0.6874,
+      "precision": 0.975,
+      "recall": 0.9796
+     },
+     {
+      "threshold": 0.001,
+      "precision": 0.9134,
+      "recall": 1.0
+     }
+    ],
+    "by_quarter": null,
+    "by_type": null,
+    "by_episode_kind": null,
+    "by_class": null,
+    "by_experiment": null,
+    "rule": {
+     "name": "была ошибка агрегата за 72 ч",
+     "decisions": 143990,
+     "positives": 2551,
+     "alerts": 35613,
+     "tp": 2551,
+     "fp": 33062,
+     "fn": 0,
+     "tn": 108377,
+     "precision": 0.0716,
+     "recall": 1.0,
+     "f1": 0.1337,
+     "ap": null,
+     "lead_time": null
+    }
+   },
+   "routes": []
+  },
+  {
+   "name": "magdeburg_fire",
+   "task": "magdeburg_fire",
+   "active": true,
+   "version": "magdeburg-fire",
+   "label": "magdeburg-fire-v0",
+   "family": "external",
+   "file": "magdeburg_fire.cbm",
+   "sha256": "95e4e4d4d2a211b2ba4c27da6b357101de14f7193590b8751c7bf91cd38fbb28",
+   "trees": 300,
+   "features": 149,
+   "features_used": 128,
+   "categorical": [],
+   "threshold": 0.5,
+   "scoring": "available",
+   "periods": null,
+   "metrics": null,
+   "title": "Пожар против помехи на узлах цеха",
+   "dataset": "magdeburg",
+   "synthetic": false,
+   "trigger": "every_60s",
+   "eval_scheme": "leave-one-experiment-out",
+   "target": "object",
+   "target_tag": "node",
+   "horizon": "now",
+   "outcome": "label_at_decision_time",
+   "label_key": null,
+   "positive_labels": [
+    "fire"
+   ],
+   "ignore_labels": [
+    "unknown"
+   ],
+   "history_minutes": 65,
+   "decision_lag_s": null,
+   "offline": {
+    "computed_at": "2026-09-27T00:44:56+00:00",
+    "model": "magdeburg_fire",
+    "version": "v0",
+    "period": {
+     "from": "2023-07-10 08:36:00+00:00",
+     "to": "2023-07-13 12:43:00+00:00",
+     "label": "10–13.07.2023, все опыты"
+    },
+    "threshold": 0.5,
+    "eval_scheme": "leave-one-experiment-out",
+    "test": {
+     "decisions": 40671,
+     "positives": 4581,
+     "alerts": 4790,
+     "tp": 3681,
+     "fp": 1109,
+     "fn": 900,
+     "tn": 34981,
+     "precision": 0.7685,
+     "recall": 0.8035,
+     "f1": 0.7856,
+     "ap": 0.8833,
+     "lead_time": null
+    },
+    "fire_vs_nuisance": {
+     "decisions": 6759,
+     "positives": 4581,
+     "alerts": 4374,
+     "tp": 3681,
+     "fp": 693,
+     "fn": 900,
+     "tn": 1485,
+     "precision": 0.8416,
+     "recall": 0.8035,
+     "f1": 0.8221,
+     "ap": 0.9325,
+     "lead_time": null
+    },
+    "seen": null,
+    "unseen": null,
+    "seen_rule": null,
+    "lead_time": {
+     "min_s": 1.0,
+     "p10_s": 30.0,
+     "p25_s": 50.0,
+     "p50_s": 167.5,
+     "p75_s": 322.0,
+     "p90_s": 551.5,
+     "max_s": 1067.0
+    },
+    "pr_curve": [
+     {
+      "threshold": 0.9999,
+      "precision": 1.0,
+      "recall": 0.0002
+     },
+     {
+      "threshold": 0.9997,
+      "precision": 1.0,
+      "recall": 0.0205
+     },
+     {
+      "threshold": 0.9996,
+      "precision": 1.0,
+      "recall": 0.041
+     },
+     {
+      "threshold": 0.9995,
+      "precision": 1.0,
+      "recall": 0.0613
+     },
+     {
+      "threshold": 0.9994,
+      "precision": 1.0,
+      "recall": 0.0819
+     },
+     {
+      "threshold": 0.9993,
+      "precision": 1.0,
+      "recall": 0.1022
+     },
+     {
+      "threshold": 0.9993,
+      "precision": 1.0,
+      "recall": 0.1227
+     },
+     {
+      "threshold": 0.9992,
+      "precision": 1.0,
+      "recall": 0.143
+     },
+     {
+      "threshold": 0.9991,
+      "precision": 1.0,
+      "recall": 0.1635
+     },
+     {
+      "threshold": 0.999,
+      "precision": 1.0,
+      "recall": 0.1838
+     },
+     {
+      "threshold": 0.9989,
+      "precision": 1.0,
+      "recall": 0.2043
+     },
+     {
+      "threshold": 0.9988,
+      "precision": 1.0,
+      "recall": 0.2246
+     },
+     {
+      "threshold": 0.9987,
+      "precision": 1.0,
+      "recall": 0.2451
+     },
+     {
+      "threshold": 0.9985,
+      "precision": 1.0,
+      "recall": 0.2654
+     },
+     {
+      "threshold": 0.9983,
+      "precision": 1.0,
+      "recall": 0.286
+     },
+     {
+      "threshold": 0.9981,
+      "precision": 1.0,
+      "recall": 0.3063
+     },
+     {
+      "threshold": 0.9978,
+      "precision": 1.0,
+      "recall": 0.3268
+     },
+     {
+      "threshold": 0.9975,
+      "precision": 1.0,
+      "recall": 0.3471
+     },
+     {
+      "threshold": 0.997,
+      "precision": 1.0,
+      "recall": 0.3674
+     },
+     {
+      "threshold": 0.9965,
+      "precision": 1.0,
+      "recall": 0.3879
+     },
+     {
+      "threshold": 0.9958,
+      "precision": 0.9989,
+      "recall": 0.4082
+     },
+     {
+      "threshold": 0.9948,
+      "precision": 0.9964,
+      "recall": 0.4287
+     },
+     {
+      "threshold": 0.9938,
+      "precision": 0.9961,
+      "recall": 0.449
+     },
+     {
+      "threshold": 0.9928,
+      "precision": 0.9949,
+      "recall": 0.4695
+     },
+     {
+      "threshold": 0.9912,
+      "precision": 0.9907,
+      "recall": 0.4898
+     },
+     {
+      "threshold": 0.99,
+      "precision": 0.9882,
+      "recall": 0.5104
+     },
+     {
+      "threshold": 0.988,
+      "precision": 0.9822,
+      "recall": 0.5307
+     },
+     {
+      "threshold": 0.9858,
+      "precision": 0.9745,
+      "recall": 0.5512
+     },
+     {
+      "threshold": 0.9821,
+      "precision": 0.9569,
+      "recall": 0.5715
+     },
+     {
+      "threshold": 0.9768,
+      "precision": 0.9342,
+      "recall": 0.592
+     },
+     {
+      "threshold": 0.9701,
+      "precision": 0.9188,
+      "recall": 0.6123
+     },
+     {
+      "threshold": 0.9597,
+      "precision": 0.9014,
+      "recall": 0.6328
+     },
+     {
+      "threshold": 0.9428,
+      "precision": 0.8784,
+      "recall": 0.6531
+     },
+     {
+      "threshold": 0.9262,
+      "precision": 0.8683,
+      "recall": 0.6734
+     },
+     {
+      "threshold": 0.8977,
+      "precision": 0.8606,
+      "recall": 0.694
+     },
+     {
+      "threshold": 0.8557,
+      "precision": 0.8485,
+      "recall": 0.7143
+     },
+     {
+      "threshold": 0.7902,
+      "precision": 0.8359,
+      "recall": 0.7348
+     },
+     {
+      "threshold": 0.7126,
+      "precision": 0.8177,
+      "recall": 0.7551
+     },
+     {
+      "threshold": 0.6266,
+      "precision": 0.7975,
+      "recall": 0.7756
+     },
+     {
+      "threshold": 0.5311,
+      "precision": 0.7759,
+      "recall": 0.7959
+     },
+     {
+      "threshold": 0.452,
+      "precision": 0.7545,
+      "recall": 0.8164
+     },
+     {
+      "threshold": 0.3773,
+      "precision": 0.7311,
+      "recall": 0.8367
+     },
+     {
+      "threshold": 0.3006,
+      "precision": 0.7085,
+      "recall": 0.8572
+     },
+     {
+      "threshold": 0.2105,
+      "precision": 0.6687,
+      "recall": 0.8775
+     },
+     {
+      "threshold": 0.1493,
+      "precision": 0.6286,
+      "recall": 0.8981
+     },
+     {
+      "threshold": 0.0818,
+      "precision": 0.5637,
+      "recall": 0.9184
+     },
+     {
+      "threshold": 0.0429,
+      "precision": 0.5045,
+      "recall": 0.9389
+     },
+     {
+      "threshold": 0.024,
+      "precision": 0.4516,
+      "recall": 0.9592
+     },
+     {
+      "threshold": 0.0093,
+      "precision": 0.3607,
+      "recall": 0.9797
+     },
+     {
+      "threshold": 0.0009,
+      "precision": 0.1741,
+      "recall": 1.0
+     }
+    ],
+    "by_quarter": null,
+    "by_type": null,
+    "by_episode_kind": null,
+    "by_class": [
+     {
+      "class": "fire",
+      "decisions": 40671,
+      "positives": 4581,
+      "alerts": 4790,
+      "tp": 3681,
+      "fp": 1109,
+      "fn": 900,
+      "tn": 34981,
+      "precision": 0.7685,
+      "recall": 0.8035,
+      "f1": 0.7856,
+      "ap": 0.8833,
+      "lead_time": null
+     },
+     {
+      "class": "nuisance",
+      "decisions": 40671,
+      "positives": 2178,
+      "alerts": 1080,
+      "tp": 813,
+      "fp": 267,
+      "fn": 1365,
+      "tn": 38226,
+      "precision": 0.7528,
+      "recall": 0.3733,
+      "f1": 0.4991,
+      "ap": 0.5607,
+      "lead_time": null
+     }
+    ],
+    "by_experiment": [
+     {
+      "experiment": 1,
+      "label": "nuisance",
+      "subtype": "Smoke",
+      "subtypes": [
+       "Smoke"
+      ],
+      "minutes": 14.3,
+      "decisions": 126,
+      "fire_alerts": 85,
+      "nodes_alerted": 9,
+      "first_alert_s": 170.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 2,
+      "label": "fire",
+      "subtype": "Lunts",
+      "subtypes": [
+       "Lunts"
+      ],
+      "minutes": 38.1,
+      "decisions": 342,
+      "fire_alerts": 332,
+      "nodes_alerted": 9,
+      "first_alert_s": 108.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 3,
+      "label": "nuisance",
+      "subtype": "Deodorant",
+      "subtypes": [
+       "Deodorant"
+      ],
+      "minutes": 17.2,
+      "decisions": 153,
+      "fire_alerts": 56,
+      "nodes_alerted": 9,
+      "first_alert_s": 168.0,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 4,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 29.1,
+      "decisions": 261,
+      "fire_alerts": 212,
+      "nodes_alerted": 9,
+      "first_alert_s": 337.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 5,
+      "label": "nuisance",
+      "subtype": "Ethanol",
+      "subtypes": [
+       "Ethanol"
+      ],
+      "minutes": 26.4,
+      "decisions": 234,
+      "fire_alerts": 66,
+      "nodes_alerted": 8,
+      "first_alert_s": 41.0,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 6,
+      "label": "nuisance",
+      "subtype": "CO",
+      "subtypes": [
+       "CO"
+      ],
+      "minutes": 11.6,
+      "decisions": 99,
+      "fire_alerts": 6,
+      "nodes_alerted": 1,
+      "first_alert_s": 178.0,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 7,
+      "label": "nuisance",
+      "subtype": "Exhaust",
+      "subtypes": [
+       "Exhaust"
+      ],
+      "minutes": 19.3,
+      "decisions": 171,
+      "fire_alerts": 0,
+      "nodes_alerted": 0,
+      "first_alert_s": null,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 8,
+      "label": "fire",
+      "subtype": "Candles",
+      "subtypes": [
+       "Candles"
+      ],
+      "minutes": 37.8,
+      "decisions": 342,
+      "fire_alerts": 180,
+      "nodes_alerted": 9,
+      "first_alert_s": 1067.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 9,
+      "label": "fire",
+      "subtype": "Candles",
+      "subtypes": [
+       "Candles"
+      ],
+      "minutes": 28.5,
+      "decisions": 252,
+      "fire_alerts": 140,
+      "nodes_alerted": 9,
+      "first_alert_s": 708.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 10,
+      "label": "nuisance",
+      "subtype": "Deodorant",
+      "subtypes": [
+       "Deodorant"
+      ],
+      "minutes": 10.7,
+      "decisions": 90,
+      "fire_alerts": 0,
+      "nodes_alerted": 0,
+      "first_alert_s": null,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 11,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 40.1,
+      "decisions": 360,
+      "fire_alerts": 311,
+      "nodes_alerted": 9,
+      "first_alert_s": 33.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 12,
+      "label": "fire",
+      "subtype": "Cable",
+      "subtypes": [
+       "Cable"
+      ],
+      "minutes": 6.8,
+      "decisions": 54,
+      "fire_alerts": 0,
+      "nodes_alerted": 0,
+      "first_alert_s": null,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 14,
+      "label": "fire",
+      "subtype": "Cable",
+      "subtypes": [
+       "Cable"
+      ],
+      "minutes": 10.4,
+      "decisions": 99,
+      "fire_alerts": 83,
+      "nodes_alerted": 9,
+      "first_alert_s": 1.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 15,
+      "label": "fire",
+      "subtype": "Candles",
+      "subtypes": [
+       "Candles"
+      ],
+      "minutes": 30.1,
+      "decisions": 270,
+      "fire_alerts": 187,
+      "nodes_alerted": 9,
+      "first_alert_s": 53.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 16,
+      "label": "nuisance",
+      "subtype": "Smoke",
+      "subtypes": [
+       "Smoke"
+      ],
+      "minutes": 9.3,
+      "decisions": 90,
+      "fire_alerts": 89,
+      "nodes_alerted": 9,
+      "first_alert_s": 13.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 17,
+      "label": "nuisance",
+      "subtype": "CO",
+      "subtypes": [
+       "CO"
+      ],
+      "minutes": 14.0,
+      "decisions": 126,
+      "fire_alerts": 80,
+      "nodes_alerted": 8,
+      "first_alert_s": 93.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 18,
+      "label": "fire",
+      "subtype": "Lunts",
+      "subtypes": [
+       "Lunts"
+      ],
+      "minutes": 32.0,
+      "decisions": 288,
+      "fire_alerts": 267,
+      "nodes_alerted": 9,
+      "first_alert_s": 157.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 19,
+      "label": "nuisance",
+      "subtype": "Deodorant",
+      "subtypes": [
+       "Deodorant"
+      ],
+      "minutes": 11.7,
+      "decisions": 108,
+      "fire_alerts": 7,
+      "nodes_alerted": 2,
+      "first_alert_s": 66.0,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 20,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 31.4,
+      "decisions": 279,
+      "fire_alerts": 268,
+      "nodes_alerted": 9,
+      "first_alert_s": 41.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 21,
+      "label": "nuisance",
+      "subtype": "Ethanol",
+      "subtypes": [
+       "Ethanol",
+       "Green_Waste"
+      ],
+      "minutes": 75.3,
+      "decisions": 675,
+      "fire_alerts": 207,
+      "nodes_alerted": 9,
+      "first_alert_s": 21.0,
+      "predicted": "background"
+     },
+     {
+      "experiment": 22,
+      "label": "fire",
+      "subtype": "Candles",
+      "subtypes": [
+       "Candles"
+      ],
+      "minutes": 27.4,
+      "decisions": 243,
+      "fire_alerts": 203,
+      "nodes_alerted": 9,
+      "first_alert_s": 53.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 23,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 42.4,
+      "decisions": 378,
+      "fire_alerts": 324,
+      "nodes_alerted": 9,
+      "first_alert_s": 395.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 24,
+      "label": "fire",
+      "subtype": "Cable",
+      "subtypes": [
+       "Cable"
+      ],
+      "minutes": 21.8,
+      "decisions": 198,
+      "fire_alerts": 162,
+      "nodes_alerted": 9,
+      "first_alert_s": 240.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 25,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 32.5,
+      "decisions": 288,
+      "fire_alerts": 237,
+      "nodes_alerted": 9,
+      "first_alert_s": 225.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 26,
+      "label": "nuisance",
+      "subtype": "Exhaust",
+      "subtypes": [
+       "Exhaust"
+      ],
+      "minutes": 9.9,
+      "decisions": 90,
+      "fire_alerts": 0,
+      "nodes_alerted": 0,
+      "first_alert_s": null,
+      "predicted": "background"
+     },
+     {
+      "experiment": 27,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 40.3,
+      "decisions": 360,
+      "fire_alerts": 292,
+      "nodes_alerted": 9,
+      "first_alert_s": 27.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 28,
+      "label": "nuisance",
+      "subtype": "Exhaust",
+      "subtypes": [
+       "Exhaust"
+      ],
+      "minutes": 9.0,
+      "decisions": 81,
+      "fire_alerts": 0,
+      "nodes_alerted": 0,
+      "first_alert_s": null,
+      "predicted": "nuisance"
+     },
+     {
+      "experiment": 29,
+      "label": "fire",
+      "subtype": "Lunts",
+      "subtypes": [
+       "Lunts"
+      ],
+      "minutes": 31.8,
+      "decisions": 279,
+      "fire_alerts": 256,
+      "nodes_alerted": 9,
+      "first_alert_s": 178.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 30,
+      "label": "fire",
+      "subtype": "Wood",
+      "subtypes": [
+       "Wood"
+      ],
+      "minutes": 31.7,
+      "decisions": 288,
+      "fire_alerts": 227,
+      "nodes_alerted": 9,
+      "first_alert_s": 317.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 31,
+      "label": "nuisance",
+      "subtype": "Welding",
+      "subtypes": [
+       "Welding"
+      ],
+      "minutes": 10.2,
+      "decisions": 90,
+      "fire_alerts": 86,
+      "nodes_alerted": 9,
+      "first_alert_s": 45.0,
+      "predicted": "fire"
+     },
+     {
+      "experiment": 32,
+      "label": "nuisance",
+      "subtype": "Abrasive_Cutting",
+      "subtypes": [
+       "Abrasive_Cutting"
+      ],
+      "minutes": 5.1,
+      "decisions": 45,
+      "fire_alerts": 11,
+      "nodes_alerted": 8,
+      "first_alert_s": 171.0,
+      "predicted": "nuisance"
+     }
+    ],
+    "rule": null
+   },
+   "routes": []
+  },
+  {
+   "name": "alarm_all_d7",
+   "task": "smoke_alarm",
+   "active": false,
+   "version": "v3",
+   "label": "v3",
+   "family": "v3",
+   "file": "alarm_all_d7.cbm",
+   "sha256": "dd65fc3c299287b4e454cff3c72e3d39bbf86861d3adebaaa725b734c2c4d53c",
+   "trees": 18,
+   "features": 227,
+   "features_used": 66,
+   "categorical": [
+    "channel_key",
+    "current_state",
+    "previous_state_1",
+    "previous_state_2",
+    "previous_state_3",
+    "object_key",
+    "loop_key"
+   ],
+   "threshold": 0.48862178270017925,
+   "scoring": "available",
+   "periods": {
+    "train": [
+     "2023-01-01",
+     "2025-07-01"
+    ],
+    "early_stop": [
+     "2025-01-01",
+     "2025-07-01"
+    ],
+    "selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "threshold": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-06-30"
+    ]
+   },
+   "metrics": {
+    "threshold": {
+     "decisions": 4718,
+     "positives": 330,
+     "tp": 199,
+     "fp": 38,
+     "fn": 131,
+     "precision": 0.8397,
+     "recall": 0.603,
+     "f1": 0.7019,
+     "average_precision": 0.6814
+    },
+    "test": {
+     "decisions": 6512,
+     "positives": 434,
+     "tp": 324,
+     "fp": 58,
+     "fn": 110,
+     "precision": 0.8482,
+     "recall": 0.7465,
+     "f1": 0.7941,
+     "average_precision": 0.7877
+    },
+    "test_seen": {
+     "decisions": 5519,
+     "positives": 423,
+     "tp": 324,
+     "fp": 58,
+     "fn": 99,
+     "precision": 0.8482,
+     "recall": 0.766,
+     "f1": 0.805,
+     "average_precision": 0.8089
+    },
+    "test_unseen": {
+     "decisions": 993,
+     "positives": 11,
+     "tp": 0,
+     "fp": 0,
+     "fn": 11,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "average_precision": 0.0277
+    }
+   },
+   "title": "Событийная v3 ML-разработчика: неисправность в 24 ч после дымовой тревоги",
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": {
+    "computed_at": "2026-09-27T06:21:50+00:00",
+    "model": "smoke_alarm",
+    "version": "v3",
+    "period": {
+     "from": "2026-01-01",
+     "to": "2026-06-30",
+     "label": "I полугодие 2026"
+    },
+    "threshold": 0.48862178270017925,
+    "test": {
+     "decisions": 6512,
+     "positives": 434,
+     "alerts": 382,
+     "tp": 324,
+     "fp": 58,
+     "fn": 110,
+     "tn": 6020,
+     "precision": 0.8482,
+     "recall": 0.7465,
+     "f1": 0.7941,
+     "ap": 0.7877,
+     "lead_time": {
+      "min_s": 1.0,
+      "p10_s": 31.6,
+      "p25_s": 72.8,
+      "p50_s": 139.0,
+      "p75_s": 223.5,
+      "p90_s": 398.5,
+      "max_s": 19343.0
+     }
+    },
+    "seen": {
+     "decisions": 5519,
+     "positives": 423,
+     "alerts": 382,
+     "tp": 324,
+     "fp": 58,
+     "fn": 99,
+     "tn": 5038,
+     "precision": 0.8482,
+     "recall": 0.766,
+     "f1": 0.805,
+     "ap": 0.8089,
+     "lead_time": {
+      "min_s": 1.0,
+      "p10_s": 31.6,
+      "p25_s": 72.8,
+      "p50_s": 139.0,
+      "p75_s": 223.5,
+      "p90_s": 398.5,
+      "max_s": 19343.0
+     }
+    },
+    "unseen": {
+     "decisions": 993,
+     "positives": 11,
+     "alerts": 0,
+     "tp": 0,
+     "fp": 0,
+     "fn": 11,
+     "tn": 982,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "ap": 0.0277,
+     "lead_time": null
+    },
+    "seen_rule": "каналы с решениями в обучении 2023-01 — 2025-07",
+    "lead_time": {
+     "min_s": 1.0,
+     "p10_s": 31.6,
+     "p25_s": 72.8,
+     "p50_s": 139.0,
+     "p75_s": 223.5,
+     "p90_s": 398.5,
+     "max_s": 19343.0
+    },
+    "pr_curve": [
+     {
+      "threshold": 0.6858,
+      "precision": 1.0,
+      "recall": 0.0023
+     },
+     {
+      "threshold": 0.6767,
+      "precision": 1.0,
+      "recall": 0.023
+     },
+     {
+      "threshold": 0.6646,
+      "precision": 1.0,
+      "recall": 0.0438
+     },
+     {
+      "threshold": 0.6568,
+      "precision": 1.0,
+      "recall": 0.0645
+     },
+     {
+      "threshold": 0.6419,
+      "precision": 1.0,
+      "recall": 0.0829
+     },
+     {
+      "threshold": 0.6272,
+      "precision": 1.0,
+      "recall": 0.1037
+     },
+     {
+      "threshold": 0.6236,
+      "precision": 1.0,
+      "recall": 0.1267
+     },
+     {
+      "threshold": 0.6176,
+      "precision": 0.9692,
+      "recall": 0.1452
+     },
+     {
+      "threshold": 0.6147,
+      "precision": 0.9351,
+      "recall": 0.1659
+     },
+     {
+      "threshold": 0.6127,
+      "precision": 0.9412,
+      "recall": 0.1843
+     },
+     {
+      "threshold": 0.6086,
+      "precision": 0.9368,
+      "recall": 0.2051
+     },
+     {
+      "threshold": 0.6039,
+      "precision": 0.9159,
+      "recall": 0.2258
+     },
+     {
+      "threshold": 0.6026,
+      "precision": 0.8992,
+      "recall": 0.2465
+     },
+     {
+      "threshold": 0.6006,
+      "precision": 0.9062,
+      "recall": 0.2673
+     },
+     {
+      "threshold": 0.5997,
+      "precision": 0.9124,
+      "recall": 0.288
+     },
+     {
+      "threshold": 0.5983,
+      "precision": 0.9041,
+      "recall": 0.3041
+     },
+     {
+      "threshold": 0.5969,
+      "precision": 0.9103,
+      "recall": 0.3272
+     },
+     {
+      "threshold": 0.596,
+      "precision": 0.9102,
+      "recall": 0.3502
+     },
+     {
+      "threshold": 0.5949,
+      "precision": 0.8989,
+      "recall": 0.3687
+     },
+     {
+      "threshold": 0.5941,
+      "precision": 0.8942,
+      "recall": 0.3894
+     },
+     {
+      "threshold": 0.5921,
+      "precision": 0.899,
+      "recall": 0.4101
+     },
+     {
+      "threshold": 0.5908,
+      "precision": 0.8905,
+      "recall": 0.4309
+     },
+     {
+      "threshold": 0.5893,
+      "precision": 0.895,
+      "recall": 0.4516
+     },
+     {
+      "threshold": 0.5874,
+      "precision": 0.887,
+      "recall": 0.47
+     },
+     {
+      "threshold": 0.5858,
+      "precision": 0.8694,
+      "recall": 0.4908
+     },
+     {
+      "threshold": 0.5842,
+      "precision": 0.8745,
+      "recall": 0.5138
+     },
+     {
+      "threshold": 0.5817,
+      "precision": 0.875,
+      "recall": 0.5323
+     },
+     {
+      "threshold": 0.5795,
+      "precision": 0.8633,
+      "recall": 0.553
+     },
+     {
+      "threshold": 0.5778,
+      "precision": 0.8581,
+      "recall": 0.5714
+     },
+     {
+      "threshold": 0.5745,
+      "precision": 0.8538,
+      "recall": 0.5922
+     },
+     {
+      "threshold": 0.572,
+      "precision": 0.8526,
+      "recall": 0.6129
+     },
+     {
+      "threshold": 0.5683,
+      "precision": 0.854,
+      "recall": 0.6336
+     },
+     {
+      "threshold": 0.5602,
+      "precision": 0.8529,
+      "recall": 0.6544
+     },
+     {
+      "threshold": 0.5514,
+      "precision": 0.8547,
+      "recall": 0.6774
+     },
+     {
+      "threshold": 0.5467,
+      "precision": 0.8575,
+      "recall": 0.6935
+     },
+     {
+      "threshold": 0.5311,
+      "precision": 0.854,
+      "recall": 0.7143
+     },
+     {
+      "threshold": 0.508,
+      "precision": 0.8462,
+      "recall": 0.735
+     },
+     {
+      "threshold": 0.4801,
+      "precision": 0.8262,
+      "recall": 0.7558
+     },
+     {
+      "threshold": 0.4658,
+      "precision": 0.7573,
+      "recall": 0.7765
+     },
+     {
+      "threshold": 0.3735,
+      "precision": 0.5081,
+      "recall": 0.7972
+     },
+     {
+      "threshold": 0.3348,
+      "precision": 0.4744,
+      "recall": 0.8111
+     },
+     {
+      "threshold": 0.3182,
+      "precision": 0.4618,
+      "recall": 0.8364
+     },
+     {
+      "threshold": 0.3004,
+      "precision": 0.4542,
+      "recall": 0.8571
+     },
+     {
+      "threshold": 0.2875,
+      "precision": 0.4383,
+      "recall": 0.8756
+     },
+     {
+      "threshold": 0.2606,
+      "precision": 0.43,
+      "recall": 0.8986
+     },
+     {
+      "threshold": 0.2143,
+      "precision": 0.3778,
+      "recall": 0.9194
+     },
+     {
+      "threshold": 0.1682,
+      "precision": 0.2423,
+      "recall": 0.9378
+     },
+     {
+      "threshold": 0.1559,
+      "precision": 0.1933,
+      "recall": 0.9585
+     },
+     {
+      "threshold": 0.147,
+      "precision": 0.155,
+      "recall": 0.9793
+     },
+     {
+      "threshold": 0.1094,
+      "precision": 0.073,
+      "recall": 1.0
+     }
+    ],
+    "by_quarter": [
+     {
+      "quarter": "2025Q1",
+      "role": "early_stop",
+      "decisions": 3949,
+      "positives": 401,
+      "alerts": 208,
+      "tp": 183,
+      "fp": 25,
+      "fn": 218,
+      "tn": 3523,
+      "precision": 0.8798,
+      "recall": 0.4564,
+      "f1": 0.601,
+      "ap": 0.7848,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 98.6,
+       "p25_s": 201.0,
+       "p50_s": 341.0,
+       "p75_s": 634.0,
+       "p90_s": 845.8,
+       "max_s": 2019.0
+      }
+     },
+     {
+      "quarter": "2025Q2",
+      "role": "early_stop",
+      "decisions": 2504,
+      "positives": 477,
+      "alerts": 336,
+      "tp": 302,
+      "fp": 34,
+      "fn": 175,
+      "tn": 1993,
+      "precision": 0.8988,
+      "recall": 0.6331,
+      "f1": 0.7429,
+      "ap": 0.9083,
+      "lead_time": {
+       "min_s": 0.0,
+       "p10_s": 47.1,
+       "p25_s": 85.0,
+       "p50_s": 193.0,
+       "p75_s": 1014.5,
+       "p90_s": 14039.6,
+       "max_s": 69711.0
+      }
+     },
+     {
+      "quarter": "2025Q3",
+      "role": "early_stop",
+      "decisions": 3463,
+      "positives": 274,
+      "alerts": 305,
+      "tp": 108,
+      "fp": 197,
+      "fn": 166,
+      "tn": 2992,
+      "precision": 0.3541,
+      "recall": 0.3942,
+      "f1": 0.3731,
+      "ap": 0.4742,
+      "lead_time": {
+       "min_s": 3.0,
+       "p10_s": 20.7,
+       "p25_s": 51.5,
+       "p50_s": 100.0,
+       "p75_s": 222.2,
+       "p90_s": 542.2,
+       "max_s": 2052.0
+      }
+     },
+     {
+      "quarter": "2025Q4",
+      "role": "threshold",
+      "decisions": 4718,
+      "positives": 330,
+      "alerts": 237,
+      "tp": 199,
+      "fp": 38,
+      "fn": 131,
+      "tn": 4350,
+      "precision": 0.8397,
+      "recall": 0.603,
+      "f1": 0.7019,
+      "ap": 0.6814,
+      "lead_time": {
+       "min_s": 0.0,
+       "p10_s": 34.0,
+       "p25_s": 73.5,
+       "p50_s": 155.0,
+       "p75_s": 304.5,
+       "p90_s": 517.8,
+       "max_s": 81267.0
+      }
+     },
+     {
+      "quarter": "2026Q1",
+      "role": "test",
+      "decisions": 4100,
+      "positives": 249,
+      "alerts": 177,
+      "tp": 160,
+      "fp": 17,
+      "fn": 89,
+      "tn": 3834,
+      "precision": 0.904,
+      "recall": 0.6426,
+      "f1": 0.7512,
+      "ap": 0.7784,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 34.9,
+       "p25_s": 84.8,
+       "p50_s": 147.5,
+       "p75_s": 221.5,
+       "p90_s": 404.0,
+       "max_s": 7514.0
+      }
+     },
+     {
+      "quarter": "2026Q2",
+      "role": "test",
+      "decisions": 2412,
+      "positives": 185,
+      "alerts": 205,
+      "tp": 164,
+      "fp": 41,
+      "fn": 21,
+      "tn": 2186,
+      "precision": 0.8,
+      "recall": 0.8865,
+      "f1": 0.841,
+      "ap": 0.7965,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 27.3,
+       "p25_s": 63.0,
+       "p50_s": 136.5,
+       "p75_s": 225.2,
+       "p90_s": 383.2,
+       "max_s": 19343.0
+      }
+     }
+    ],
+    "by_type": null,
+    "by_episode_kind": [
+     {
+      "kind": "ppr",
+      "decisions": 4905,
+      "positives": 225,
+      "alerts": 181,
+      "tp": 153,
+      "fp": 28,
+      "fn": 72,
+      "tn": 4652,
+      "precision": 0.8453,
+      "recall": 0.68,
+      "f1": 0.7537,
+      "ap": 0.6917,
+      "lead_time": {
+       "min_s": 7.0,
+       "p10_s": 59.2,
+       "p25_s": 92.0,
+       "p50_s": 139.0,
+       "p75_s": 202.0,
+       "p90_s": 266.4,
+       "max_s": 19343.0
+      }
+     },
+     {
+      "kind": "group",
+      "decisions": 1378,
+      "positives": 192,
+      "alerts": 170,
+      "tp": 157,
+      "fp": 13,
+      "fn": 35,
+      "tn": 1173,
+      "precision": 0.9235,
+      "recall": 0.8177,
+      "f1": 0.8674,
+      "ap": 0.9111,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 20.6,
+       "p25_s": 55.0,
+       "p50_s": 142.0,
+       "p75_s": 297.0,
+       "p90_s": 570.2,
+       "max_s": 2762.0
+      }
+     },
+     {
+      "kind": "solitary",
+      "decisions": 229,
+      "positives": 17,
+      "alerts": 31,
+      "tp": 14,
+      "fp": 17,
+      "fn": 3,
+      "tn": 195,
+      "precision": 0.4516,
+      "recall": 0.8235,
+      "f1": 0.5833,
+      "ap": 0.4426,
+      "lead_time": {
+       "min_s": 1.0,
+       "p10_s": 6.3,
+       "p25_s": 23.5,
+       "p50_s": 65.0,
+       "p75_s": 145.2,
+       "p90_s": 901.5,
+       "max_s": 7514.0
+      }
+     }
+    ],
+    "rule": {
+     "name": "одиночная тревога на объекте за час → неисправность",
+     "decisions": 6512,
+     "positives": 434,
+     "alerts": 345,
+     "tp": 54,
+     "fp": 291,
+     "fn": 380,
+     "tn": 5787,
+     "precision": 0.1565,
+     "recall": 0.1244,
+     "f1": 0.1386,
+     "ap": null,
+     "lead_time": null
+    }
+   },
+   "routes": []
+  },
+  {
+   "name": "vast_gate",
+   "task": "vast_gate",
+   "active": true,
+   "version": "vast2017-gate",
+   "label": "vast-gate-v0",
+   "family": "external",
+   "file": "vast_gate.json",
+   "sha256": "143b77b4689f03d51844581848828b4eec1bdd15845fbd0e838a64cf3f06f70f",
+   "trees": null,
+   "features": 5,
+   "features_used": 5,
+   "categorical": [],
+   "threshold": 2.677447,
+   "scoring": "available",
+   "periods": {
+    "train": [
+     "2015-05-01 00:43:28+03:00",
+     "2015-07-01"
+    ],
+    "test": [
+     "2015-07-01",
+     "2016-05-31 23:56:06+03:00"
+    ]
+   },
+   "metrics": null,
+   "title": "Проезд без допуска и необычный проезд",
+   "dataset": "vast2017",
+   "synthetic": true,
+   "trigger": "on_event",
+   "eval_scheme": "out-of-time",
+   "target": "event",
+   "target_tag": null,
+   "horizon": "now",
+   "outcome": "label_at_event",
+   "label_key": "credential_id",
+   "positive_labels": [
+    "violation",
+    "suspicious"
+   ],
+   "ignore_labels": [],
+   "history_minutes": 57600,
+   "decision_lag_s": 1,
+   "offline": {
+    "computed_at": "2026-09-27T00:54:43+00:00",
+    "model": "vast_gate",
+    "version": "v0",
+    "period": {
+     "from": "2015-07-01 01:58:19+03:00",
+     "to": "2016-05-31 23:56:06+03:00",
+     "label": "01.07.2015–31.05.2016, после периода норм"
+    },
+    "threshold": 2.677447,
+    "eval_scheme": "out-of-time",
+    "test": {
+     "decisions": 135637,
+     "positives": 247,
+     "alerts": 690,
+     "tp": 208,
+     "fp": 482,
+     "fn": 39,
+     "tn": 134908,
+     "precision": 0.3014,
+     "recall": 0.8421,
+     "f1": 0.444,
+     "ap": 0.8378,
+     "lead_time": null
+    },
+    "seen": null,
+    "unseen": null,
+    "seen_rule": null,
+    "lead_time": {
+     "min_s": 5.0,
+     "p10_s": 5.0,
+     "p25_s": 5.0,
+     "p50_s": 6.0,
+     "p75_s": 175.5,
+     "p90_s": 357.8,
+     "max_s": 377.0
+    },
+    "pr_curve": null,
+    "by_quarter": null,
+    "by_type": null,
+    "by_episode_kind": null,
+    "by_class": [
+     {
+      "class": "violation",
+      "decisions": 135637,
+      "positives": 192,
+      "alerts": 690,
+      "tp": 192,
+      "fp": 498,
+      "fn": 0,
+      "tn": 134947,
+      "precision": 0.2783,
+      "recall": 1.0,
+      "f1": 0.4354,
+      "ap": 1.0,
+      "lead_time": null
+     },
+     {
+      "class": "suspicious",
+      "decisions": 135637,
+      "positives": 55,
+      "alerts": 690,
+      "tp": 16,
+      "fp": 674,
+      "fn": 39,
+      "tn": 134908,
+      "precision": 0.0232,
+      "recall": 0.2909,
+      "f1": 0.043,
+      "ap": 0.0131,
+      "lead_time": null
+     }
+    ],
+    "by_experiment": [
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20150104020118-228",
+      "class": "4",
+      "start": "2015-08-04 02:03:05+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20150920030917-854",
+      "class": "4",
+      "start": "2015-10-20 03:11:10+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20151112031119-409",
+      "class": "4",
+      "start": "2015-11-12 03:13:23+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20151201031245-77",
+      "class": "4",
+      "start": "2015-10-01 03:14:51+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20151414041406-386",
+      "class": "4",
+      "start": "2015-07-14 04:16:00+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20151415031450-923",
+      "class": "4",
+      "start": "2015-09-15 03:16:55+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20151520021556-881",
+      "class": "4",
+      "start": "2015-08-20 02:18:04+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20152824032830-251",
+      "class": "4",
+      "start": "2015-12-24 03:30:43+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20153923043910-954",
+      "class": "4",
+      "start": "2015-07-23 04:41:23+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20154901044910-777",
+      "class": "4",
+      "start": "2015-09-01 04:50:58+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20154907044911-419",
+      "class": "4",
+      "start": "2015-07-07 04:51:22+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20155201025245-696",
+      "class": "4",
+      "start": "2015-12-01 02:54:29+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20162219032229-226",
+      "class": "4",
+      "start": "2016-01-19 03:24:13+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20162401032410-101",
+      "class": "4",
+      "start": "2016-03-01 03:26:04+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20162419042411-322",
+      "class": "4",
+      "start": "2016-05-19 04:26:18+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20163016033037-38",
+      "class": "4",
+      "start": "2016-02-16 03:32:21+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20164531024545-131",
+      "class": "4",
+      "start": "2016-05-31 02:47:37+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "closed_gate_pass",
+      "credential_id": "20165003035005-470",
+      "class": "4",
+      "start": "2016-05-03 03:52:08+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 10,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20152810102803-808",
+      "class": "1",
+      "start": "2015-07-10 10:35:47+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20152810102819-458",
+      "class": "1",
+      "start": "2015-07-10 10:36:00+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20152810102828-459",
+      "class": "1",
+      "start": "2015-07-10 10:36:22+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20152910102928-970",
+      "class": "1",
+      "start": "2015-07-10 10:36:35+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20152910102959-782",
+      "class": "1",
+      "start": "2015-07-10 10:37:57+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "gate_bypass",
+      "credential_id": "20153010103017-871",
+      "class": "1",
+      "start": "2015-07-10 10:37:31+03:00",
+      "in_test": true,
+      "passes": 2,
+      "by_rule": 2,
+      "by_norms": 1,
+      "detected": true,
+      "first_alert_s": 0.0,
+      "first_reason": "no_permit"
+     },
+     {
+      "subtype": "overnight_truck",
+      "credential_id": "20150204100226-134",
+      "class": "4",
+      "start": "2015-07-04 22:02:26+03:00",
+      "in_test": true,
+      "passes": 11,
+      "by_rule": 0,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 5.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "overnight_truck",
+      "credential_id": "20150322080300-861",
+      "class": "4",
+      "start": "2015-10-22 20:03:00+03:00",
+      "in_test": true,
+      "passes": 9,
+      "by_rule": 0,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 5.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "overnight_truck",
+      "credential_id": "20154501084537-684",
+      "class": "4",
+      "start": "2015-09-01 20:45:37+03:00",
+      "in_test": true,
+      "passes": 4,
+      "by_rule": 0,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 6.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "overnight_truck",
+      "credential_id": "20160623090611-424",
+      "class": "4",
+      "start": "2016-03-23 21:06:11+03:00",
+      "in_test": true,
+      "passes": 10,
+      "by_rule": 0,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 6.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "overnight_truck",
+      "credential_id": "20161008061012-639",
+      "class": "4",
+      "start": "2016-05-08 18:10:12+03:00",
+      "in_test": true,
+      "passes": 9,
+      "by_rule": 0,
+      "by_norms": 2,
+      "detected": true,
+      "first_alert_s": 5.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "speeding",
+      "credential_id": "20151320031302-558",
+      "class": "1",
+      "start": "2015-07-20 15:13:02+03:00",
+      "in_test": true,
+      "passes": 6,
+      "by_rule": 0,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 377.0,
+      "first_reason": "route"
+     },
+     {
+      "subtype": "speeding",
+      "credential_id": "20151320031302-782",
+      "class": "1",
+      "start": "2015-07-20 15:13:02+03:00",
+      "in_test": true,
+      "passes": 6,
+      "by_rule": 0,
+      "by_norms": 3,
+      "detected": true,
+      "first_alert_s": 345.0,
+      "first_reason": "route"
+     }
+    ],
+    "rule": {
+     "name": "проезд к закрытому объекту без допуска",
+     "decisions": 135637,
+     "positives": 247,
+     "alerts": 192,
+     "tp": 192,
+     "fp": 0,
+     "fn": 55,
+     "tn": 135390,
+     "precision": 1.0,
+     "recall": 0.7773,
+     "f1": 0.8747,
+     "ap": null,
+     "lead_time": null
+    }
+   },
+   "routes": []
+  },
+  {
+   "name": "ups_ensemble",
+   "task": "daily",
+   "active": false,
+   "version": "ups",
+   "label": "ИБП: ансамбль 75/25",
+   "family": "each_channel",
+   "file": "config.json",
+   "sha256": "ca7e1bea2e48c5333a91bae8f27b5d337512c671aed22bc048a8df0b8d8ddeca",
+   "trees": null,
+   "features": 0,
+   "features_used": 0,
+   "categorical": [],
+   "threshold": 0.30159646707305565,
+   "scoring": "available",
+   "periods": {
+    "weight_selection": [
+     "2025-07-01",
+     "2025-10-01"
+    ],
+    "threshold": [
+     "2025-10-01",
+     "2026-01-01"
+    ],
+    "test": [
+     "2026-01-01",
+     "2026-05-03"
+    ]
+   },
+   "metrics": {
+    "calibration": {
+     "decisions": 3822,
+     "positives": 378,
+     "alerts": 297,
+     "tp": 213,
+     "fp": 84,
+     "fn": 165,
+     "precision": 0.7171717171717171,
+     "recall": 0.5634920634920635,
+     "f1": 0.6311111111111111,
+     "ap": 0.7115096376408239,
+     "passes_both": true,
+     "lead_days": {
+      "0.25": 4.5958333015441895,
+      "0.5": 8.544051170349121,
+      "0.75": 12.872210502624512
+     },
+     "channels": 79,
+     "positive_channels": 14,
+     "caught_channels": 10,
+     "represented_episodes": 36,
+     "caught_represented_episodes": 27,
+     "represented_episode_recall": 0.75,
+     "episode_first_alert_median_days": 13.872233390808105
+    },
+    "test": {
+     "decisions": 8266,
+     "positives": 388,
+     "alerts": 329,
+     "tp": 255,
+     "fp": 74,
+     "fn": 133,
+     "precision": 0.7750759878419453,
+     "recall": 0.6572164948453608,
+     "f1": 0.7112970711297071,
+     "ap": 0.7142091853483711,
+     "passes_both": true,
+     "lead_days": {
+      "0.25": 4.435717582702637,
+      "0.5": 7.489259243011475,
+      "0.75": 11.48901653289795
+     },
+     "channels": 80,
+     "positive_channels": 8,
+     "caught_channels": 4,
+     "represented_episodes": 27,
+     "caught_represented_episodes": 22,
+     "represented_episode_recall": 0.8148148148148148,
+     "episode_first_alert_median_days": 14.200983047485352
+    }
+   },
+   "title": null,
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "offline": null,
+   "routes": [
+    "ИБП"
+   ]
+  }
+ ],
+ "daily_routing": {
+  "version": "2026-09-29",
+  "sha256": "969843900322a7c4b6fe2fa75c3795bc1971d33fac667fcac27f93d5d6f17da5",
+  "routes": [
+   {
+    "sensor_type": "Датчик дыма",
+    "model": "baseline-v0",
+    "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+    "offline": {
+     "decisions": 441067,
+     "positives": 17679,
+     "alerts": 2,
+     "tp": 0,
+     "fp": 2,
+     "precision": 0.0,
+     "recall": 0.0,
+     "lead_days": null,
+     "episodes": 1206,
+     "caught_episodes": 0
+    }
+   },
+   {
+    "sensor_type": "Состояние насоса",
+    "model": "baseline-v0",
+    "why": "его совет — оставить v0: R 95.7% против 83.0% у его модели",
+    "offline": {
+     "decisions": 19748,
+     "positives": 15935,
+     "alerts": 18739,
+     "tp": 15258,
+     "fp": 3481,
+     "precision": 0.814237686109184,
+     "recall": 0.9575149042987136,
+     "lead_days": {
+      "p10": 1.7707523148148148,
+      "p50": 7.929965277777778,
+      "p90": 22.408995370370377
+     },
+     "episodes": 1996,
+     "caught_episodes": 1973
+    }
+   },
+   {
+    "sensor_type": "Состояние вентилятора",
+    "model": "baseline-v0",
+    "why": "его совет — оставить v0: R 93.1% против 78.2% у его модели",
+    "offline": {
+     "decisions": 35606,
+     "positives": 20818,
+     "alerts": 24006,
+     "tp": 19371,
+     "fp": 4635,
+     "precision": 0.8069232691827043,
+     "recall": 0.930492842732251,
+     "lead_days": {
+      "p10": 1.7939351851851852,
+      "p50": 8.429675925925926,
+      "p90": 22.913344907407406
+     },
+     "episodes": 2400,
+     "caught_episodes": 2344
+    }
+   },
+   {
+    "sensor_type": "Датчик температуры",
+    "model": "baseline-v0",
+    "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+    "offline": {
+     "decisions": 66746,
+     "positives": 69,
+     "alerts": 0,
+     "tp": 0,
+     "fp": 0,
+     "precision": null,
+     "recall": 0.0,
+     "lead_days": null,
+     "episodes": 20,
+     "caught_episodes": 0
+    }
+   },
+   {
+    "sensor_type": "Газовый датчик",
+    "model": "baseline-v0",
+    "why": "его модель не проходит P > 0.7 и R > 0.5 на общих строках",
+    "offline": {
+     "decisions": 42870,
+     "positives": 1853,
+     "alerts": 0,
+     "tp": 0,
+     "fp": 0,
+     "precision": null,
+     "recall": 0.0,
+     "lead_days": null,
+     "episodes": 89,
+     "caught_episodes": 0
+    }
+   },
+   {
+    "sensor_type": "Состояние фазы",
+    "model": "baseline-v0",
+    "why": "другой модели нет",
+    "offline": {
+     "decisions": 98079,
+     "positives": 14445,
+     "alerts": 7879,
+     "tp": 4695,
+     "fp": 3184,
+     "precision": 0.5958878030206879,
+     "recall": 0.32502596053997923,
+     "lead_days": {
+      "p10": 2.2961087962962963,
+      "p50": 9.105138888888888,
+      "p90": 23.14736111111111
+     },
+     "episodes": 1087,
+     "caught_episodes": 572
+    }
+   },
+   {
+    "sensor_type": "Ручной извещатель",
+    "model": "manual_alarm",
+    "why": "его модель проходит пороги на общих строках, v0 — нет",
+    "offline": {
+     "decisions": 12468,
+     "positives": 3469,
+     "alerts": 2562,
+     "tp": 1795,
+     "fp": 767,
+     "precision": 0.7006245120999219,
+     "recall": 0.5174401844912079,
+     "lead_days": {
+      "p10": 2.4327060185185183,
+      "p50": 11.470902777777777,
+      "p90": 23.64490740740741
+     },
+     "episodes": 301,
+     "caught_episodes": 235
+    }
+   },
+   {
+    "sensor_type": "ИБП",
+    "model": "ups_ensemble",
+    "why": "его модель проходит пороги на общих строках, v0 — нет",
+    "offline": {
+     "decisions": 8266,
+     "positives": 388,
+     "alerts": 329,
+     "tp": 255,
+     "fp": 74,
+     "precision": 0.7750759878419453,
+     "recall": 0.6572164948453608,
+     "lead_days": {
+      "p10": 2.435576388888889,
+      "p50": 7.489259259259259,
+      "p90": 14.201011574074075
+     },
+     "episodes": 27,
+     "caught_episodes": 22
+    }
+   }
+  ],
+  "unrouted": [
+   {
+    "sensor_type": "Тепловой датчик",
+    "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+   },
+   {
+    "sensor_type": "Датчик движения",
+    "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+   },
+   {
+    "sensor_type": "КД Дверь",
+    "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+   },
+   {
+    "sensor_type": "КД Люк",
+    "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+   },
+   {
+    "sensor_type": "КД АВ",
+    "why": "v0 тип не оценивает; его модель не проходит пороги — ежедневного прогноза у типа нет"
+   }
+  ],
+  "rule": "модель ML-разработчика, если на общих с v0 строках P > 0.7, R > 0.5 и не хуже v0; иначе v0 (A21)",
+  "report": "ml/reports/daily-routing/REPORT.md",
+  "test": {
+   "from": "2026-01-01",
+   "to": "2026-05-02",
+   "label": "I полугодие 2026: T с 1.01 по 2.05, горизонт до 1.06"
+  },
+  "offline": {
+   "routing": {
+    "decisions": 731945,
+    "positives": 75605,
+    "alerts": 53763,
+    "tp": 41619,
+    "fp": 12144,
+    "precision": 0.7741197477819318,
+    "recall": 0.5504794656438067,
+    "lead_days": {
+     "p10": 1.8311574074074075,
+     "p50": 8.420231481481482,
+     "p90": 22.65303240740741
+    },
+    "episodes": 7201,
+    "caught_episodes": 5177
+   },
+   "v0_only": {
+    "decisions": 731642,
+    "positives": 75313,
+    "alerts": 50628,
+    "tp": 39326,
+    "fp": 11302,
+    "precision": 0.776763846093071,
+    "recall": 0.5221674876847291,
+    "lead_days": {
+     "p10": 1.8184953703703703,
+     "p50": 8.384814814814815,
+     "p90": 22.665011574074075
+    },
+    "episodes": 7172,
+    "caught_episodes": 4891
+   }
+  }
+ }
+}

@@ -1,0 +1,341 @@
+{
+  "model": "daily",
+  "family": "baseline",
+  "version": "v0",
+  "features": [
+    "sensor_type",
+    "events_1d",
+    "events_7d",
+    "events_30d",
+    "events_90d",
+    "days_active_30d",
+    "days_active_90d",
+    "alarms_7d",
+    "alarms_30d",
+    "alarms_90d",
+    "faults_msg_7d",
+    "faults_msg_30d",
+    "faults_msg_90d",
+    "num_mean_7d",
+    "num_mean_30d",
+    "num_max_7d",
+    "onsets_7d",
+    "onsets_30d",
+    "onsets_90d",
+    "onsets_365d",
+    "days_since_onset",
+    "days_since_recovery",
+    "fault_hours_30d",
+    "mean_episode_hours_365d",
+    "obj_in_fault",
+    "obj_onsets_7d",
+    "month_sin",
+    "month_cos",
+    "weekday"
+  ],
+  "categorical": [
+    "sensor_type"
+  ],
+  "types": [
+    "Датчик дыма",
+    "Состояние насоса",
+    "Состояние вентилятора",
+    "Датчик температуры",
+    "Газовый датчик",
+    "Состояние фазы",
+    "Ручной извещатель",
+    "ИБП"
+  ],
+  "threshold": 0.639263,
+  "trees": 132,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "threshold": [
+      "2025-07-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-07-01"
+    ]
+  },
+  "history_days": 400,
+  "horizon_days": [
+    1,
+    30
+  ],
+  "sha256": "1c1f26144726b6ca920517a2c143289487f30d9c8f9d6d7a5d8d998fb8d2a44b",
+  "metrics": {
+    "early_stop": {
+      "decisions": 107193,
+      "positives": 14211,
+      "tp": 7831,
+      "fp": 2024,
+      "fn": 6380,
+      "precision": 0.7946,
+      "recall": 0.5511,
+      "f1": 0.6508,
+      "average_precision": 0.7513
+    },
+    "threshold": {
+      "decisions": 125830,
+      "positives": 12271,
+      "tp": 6221,
+      "fp": 2591,
+      "fn": 6050,
+      "precision": 0.706,
+      "recall": 0.507,
+      "f1": 0.5901,
+      "average_precision": 0.6424
+    },
+    "test": {
+      "decisions": 731642,
+      "positives": 75313,
+      "tp": 39326,
+      "fp": 11302,
+      "fn": 35987,
+      "precision": 0.7768,
+      "recall": 0.5222,
+      "f1": 0.6245,
+      "average_precision": 0.7161
+    },
+    "test_lead_days": {
+      "0": 1.0,
+      "0.25": 3.65,
+      "0.5": 8.38,
+      "0.75": 15.54,
+      "1": 29.94
+    },
+    "test_rule_recent_fault": {
+      "decisions": 731642,
+      "positives": 75313,
+      "tp": 45532,
+      "fp": 37117,
+      "fn": 29781,
+      "precision": 0.5509,
+      "recall": 0.6046,
+      "f1": 0.5765,
+      "average_precision": 0.3738
+    },
+    "test_by_type": {
+      "Газовый датчик": {
+        "decisions": 43802,
+        "positives": 2117,
+        "tp": 0,
+        "fp": 0,
+        "fn": 2117,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "average_precision": 0.0289,
+        "rule_recent_fault": {
+          "decisions": 43802,
+          "positives": 2117,
+          "tp": 90,
+          "fp": 2752,
+          "fn": 2027,
+          "precision": 0.0317,
+          "recall": 0.0425,
+          "f1": 0.0363,
+          "average_precision": 0.0476
+        }
+      },
+      "Датчик дыма": {
+        "decisions": 445806,
+        "positives": 18062,
+        "tp": 0,
+        "fp": 2,
+        "fn": 18062,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "average_precision": 0.2057,
+        "rule_recent_fault": {
+          "decisions": 445806,
+          "positives": 18062,
+          "tp": 5228,
+          "fp": 19035,
+          "fn": 12834,
+          "precision": 0.2155,
+          "recall": 0.2894,
+          "f1": 0.247,
+          "average_precision": 0.0912
+        }
+      },
+      "Датчик температуры": {
+        "decisions": 67867,
+        "positives": 79,
+        "tp": 0,
+        "fp": 0,
+        "fn": 79,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "average_precision": 0.2734,
+        "rule_recent_fault": {
+          "decisions": 67867,
+          "positives": 79,
+          "tp": 24,
+          "fp": 145,
+          "fn": 55,
+          "precision": 0.142,
+          "recall": 0.3038,
+          "f1": 0.1935,
+          "average_precision": 0.044
+        }
+      },
+      "ИБП": {
+        "decisions": 8266,
+        "positives": 388,
+        "tp": 0,
+        "fp": 0,
+        "fn": 388,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "average_precision": 0.5825,
+        "rule_recent_fault": {
+          "decisions": 8266,
+          "positives": 388,
+          "tp": 275,
+          "fp": 198,
+          "fn": 113,
+          "precision": 0.5814,
+          "recall": 0.7088,
+          "f1": 0.6388,
+          "average_precision": 0.4257
+        }
+      },
+      "Ручной извещатель": {
+        "decisions": 12468,
+        "positives": 3469,
+        "tp": 2,
+        "fp": 0,
+        "fn": 3467,
+        "precision": 1.0,
+        "recall": 0.0006,
+        "f1": 0.0012,
+        "average_precision": 0.5739,
+        "rule_recent_fault": {
+          "decisions": 12468,
+          "positives": 3469,
+          "tp": 1486,
+          "fp": 1526,
+          "fn": 1983,
+          "precision": 0.4934,
+          "recall": 0.4284,
+          "f1": 0.4586,
+          "average_precision": 0.3704
+        }
+      },
+      "Состояние вентилятора": {
+        "decisions": 35606,
+        "positives": 20818,
+        "tp": 19371,
+        "fp": 4635,
+        "fn": 1447,
+        "precision": 0.8069,
+        "recall": 0.9305,
+        "f1": 0.8643,
+        "average_precision": 0.8824,
+        "rule_recent_fault": {
+          "decisions": 35606,
+          "positives": 20818,
+          "tp": 17066,
+          "fp": 4004,
+          "fn": 3752,
+          "precision": 0.81,
+          "recall": 0.8198,
+          "f1": 0.8148,
+          "average_precision": 0.7694
+        }
+      },
+      "Состояние насоса": {
+        "decisions": 19748,
+        "positives": 15935,
+        "tp": 15258,
+        "fp": 3481,
+        "fn": 677,
+        "precision": 0.8142,
+        "recall": 0.9575,
+        "f1": 0.8801,
+        "average_precision": 0.8733,
+        "rule_recent_fault": {
+          "decisions": 19748,
+          "positives": 15935,
+          "tp": 13018,
+          "fp": 2978,
+          "fn": 2917,
+          "precision": 0.8138,
+          "recall": 0.8169,
+          "f1": 0.8154,
+          "average_precision": 0.8126
+        }
+      },
+      "Состояние фазы": {
+        "decisions": 98079,
+        "positives": 14445,
+        "tp": 4695,
+        "fp": 3184,
+        "fn": 9750,
+        "precision": 0.5959,
+        "recall": 0.325,
+        "f1": 0.4206,
+        "average_precision": 0.5747,
+        "rule_recent_fault": {
+          "decisions": 98079,
+          "positives": 14445,
+          "tp": 8345,
+          "fp": 6479,
+          "fn": 6100,
+          "precision": 0.5629,
+          "recall": 0.5777,
+          "f1": 0.5702,
+          "average_precision": 0.3874
+        }
+      }
+    },
+    "test_alerts": {
+      "days": 122,
+      "per_day_mean": 415.0,
+      "per_day_max": 468,
+      "channels_alerted": 568,
+      "channels_with_onset": 1446,
+      "channels_caught": 521
+    },
+    "test_by_history": {
+      "with_train_faults": {
+        "channels": 2960,
+        "decisions": 310864,
+        "positives": 56179,
+        "tp": 36023,
+        "fp": 9664,
+        "fn": 20156,
+        "precision": 0.7885,
+        "recall": 0.6412,
+        "f1": 0.7073,
+        "average_precision": 0.7926
+      },
+      "without_train_faults": {
+        "channels": 4168,
+        "decisions": 420778,
+        "positives": 19134,
+        "tp": 3303,
+        "fp": 1638,
+        "fn": 15831,
+        "precision": 0.6685,
+        "recall": 0.1726,
+        "f1": 0.2744,
+        "average_precision": 0.3969
+      }
+    }
+  },
+  "trained_at": "2026-09-26T03:56:28+00:00"
+}

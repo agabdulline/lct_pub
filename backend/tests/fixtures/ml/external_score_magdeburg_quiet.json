@@ -1,0 +1,55 @@
+{
+ "model": "magdeburg-fire-v0",
+ "dataset": "magdeburg",
+ "decision_time": "2023-07-13T12:25:00+03:00",
+ "results": [
+  {
+   "target": 9010106,
+   "target_channel_id": 901000600,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.001968,
+   "alert": false,
+   "classes": {
+    "background": 0.991361,
+    "nuisance": 0.006671,
+    "fire": 0.001968
+   },
+   "class": "background",
+   "factors": []
+  },
+  {
+   "target": 9010108,
+   "target_channel_id": 901000800,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 0.000599,
+   "alert": false,
+   "classes": {
+    "background": 0.995484,
+    "nuisance": 0.003917,
+    "fire": 0.000599
+   },
+   "class": "background",
+   "factors": []
+  },
+  {
+   "target": 1,
+   "target_channel_id": null,
+   "threshold": 0.5,
+   "model": "magdeburg-fire-v0",
+   "status": "skipped",
+   "skip_reason": "unknown_target",
+   "score": null,
+   "alert": null,
+   "classes": null,
+   "class": null,
+   "factors": []
+  }
+ ],
+ "elapsed_ms": 0
+}

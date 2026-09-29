@@ -1,0 +1,94 @@
+{
+ "model": "vast-gate-v0",
+ "dataset": "vast2017",
+ "decision_time": "2015-07-10T10:40:00+03:00",
+ "results": [
+  {
+   "target": 902001601,
+   "target_channel_id": 902001601,
+   "event_ts": "2015-07-10T10:35:47+03:00",
+   "value": "20152810102803-808",
+   "decision_time": "2015-07-10T10:35:48.101721+03:00",
+   "threshold": 2.677447,
+   "model": "vast-gate-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 6.332371,
+   "alert": true,
+   "classes": null,
+   "class": "violation",
+   "factors": [
+    {
+     "feature": "no_permit",
+     "value": true,
+     "contribution": null
+    },
+    {
+     "feature": "route",
+     "value": "entrance1 → ranger-stop1",
+     "contribution": 6.3324
+    }
+   ]
+  },
+  {
+   "target": 902001201,
+   "target_channel_id": 902001201,
+   "event_ts": "2015-07-10T10:12:40+03:00",
+   "value": "20150210100210-101",
+   "decision_time": "2015-07-10T10:12:41.792127+03:00",
+   "threshold": 2.677447,
+   "model": "vast-gate-v0",
+   "status": "scored",
+   "skip_reason": null,
+   "score": 2.574858,
+   "alert": false,
+   "classes": null,
+   "class": null,
+   "factors": [
+    {
+     "feature": "route",
+     "value": "entrance0 → general-gate1",
+     "contribution": 0.3508
+    },
+    {
+     "feature": "segment_time_slow",
+     "value": 630.0,
+     "contribution": 2.224
+    }
+   ]
+  },
+  {
+   "target": 1,
+   "target_channel_id": 1,
+   "event_ts": "2015-07-10T10:36:00+03:00",
+   "value": "20152810102803-808",
+   "decision_time": "2015-07-10T10:36:01.101721+03:00",
+   "threshold": 2.677447,
+   "model": "vast-gate-v0",
+   "status": "skipped",
+   "skip_reason": "unknown_target",
+   "score": null,
+   "alert": null,
+   "classes": null,
+   "class": null,
+   "factors": []
+  },
+  {
+   "target": 902001100,
+   "target_channel_id": 902001100,
+   "event_ts": "2015-07-10T10:45:00+03:00",
+   "value": "20150210100210-101",
+   "decision_time": "2015-07-10T10:45:01.792127+03:00",
+   "threshold": 2.677447,
+   "model": "vast-gate-v0",
+   "status": "skipped",
+   "skip_reason": "future_event",
+   "score": null,
+   "alert": null,
+   "classes": null,
+   "class": null,
+   "factors": []
+  }
+ ],
+ "elapsed_ms": 0
+}

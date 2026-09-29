@@ -1,0 +1,83 @@
+# Реестр внешних открытых наборов (docs/architecture/external-data.md §2).
+# Номер k задаёт диапазоны id набора (§3.1): объекты 9 000 000 + k·10 000 + n, каналы 900 000 000 + k·1 000 000 + n.
+# Файлы скачивает `python -m app.cli external download --dataset <ключ>` в data/external/<ключ>/raw/ и сверяет sha256.
+# Наборы добавляются на своих этапах: VAST 2016 — 14.3.
+
+datasets:
+  magdeburg:
+    k: 1
+    title: Indoor Fire Dataset with Distributed Multi-Sensor Nodes (Industrial Hall)
+    short: Magdeburg · цех
+    direction: fire_risk
+    description: >
+      Опыты в промышленном цехе 10×22×8 м без вентиляции: 4 вида тления и горения (дерево, свечи, кабель, хлопок)
+      и 8 видов помех (дым-машина, дезодорант, этанол, выброс CO, выхлоп, садовый мусор, сварка, абразивная резка),
+      между опытами — фон. 9 мультисенсорных узлов, шаг 10 с, 10–13.07.2023.
+    url: https://data.mendeley.com/datasets/yghykzm4km/1
+    doi: 10.17632/yghykzm4km.1
+    license: CC BY 4.0
+    license_url: https://creativecommons.org/licenses/by/4.0/
+    synthetic: false
+    source_timezone: Europe/Berlin  # метки в данных с поясом +02:00; при подготовке — в московское время
+    files:
+      - name: industrial_hall.csv
+        url: https://data.mendeley.com/public-files/datasets/yghykzm4km/files/ac22049a-6c73-4276-8583-05b2cf735601/file_downloaded
+        size: 35800222
+        sha256: b431b611a44e4282510bd53158aaa71512554481433d8f3a90f9475c17134839
+
+  vast2017:
+    k: 2
+    title: VAST Challenge 2017, Mini-Challenge 1 — Lekagul Preserve
+    short: VAST 2017 · заповедник
+    direction: unauthorized_access
+    description: >
+      Синтетический журнал датчиков проезда заповедника Lekagul, 01.05.2015 — 31.05.2016: 40 датчиков (въезды,
+      общие ворота, закрытые ворота, посты рейнджеров, кемпинги), машина получает на въезде билет с RF-меткой и класс.
+      Закрытые ворота пропускают только машины рейнджеров (класс 2P) — правило из описания набора.
+    url: https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202017/challenges/Mini-Challenge%201/
+    license: Бенчмарк VAST Challenge (IEEE VIS), лицензия не указана — для исследований и обучения
+    synthetic: true
+    source_timezone: без пояса, летнего времени в заповеднике нет — берётся как есть (A1)
+    solution: https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202017/challenges/Mini-Challenge%201/solution/VAST%20Challenge%202017%20MC1%20Solution%20Final.pdf
+    files:
+      - name: MC1Data.zip
+        url: https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202017/challenges/Mini-Challenge%201/dataset/MC1Data.zip
+        size: 1335548
+        sha256: 2a051c6713c9f0b0c48e1e985411902900aa5e8c3fb8ee05cb7b742bb9be3ed7
+
+  # k = 3 — за VAST 2016 (14.3)
+  azure_pdm:
+    k: 4
+    title: Azure AI Predictive Maintenance (Microsoft)
+    short: Azure PdM · агрегаты
+    direction: wear
+    description: >
+      Синтетический набор Microsoft: 100 агрегатов 4 моделей возрастом 0–20 лет, телеметрия по часам за 2015 год
+      (напряжение, скорость вращения, давление, вибрация), журнал ошибок, записи ТО с июня 2014 года, 761 отказ
+      компонентов.
+    url: https://github.com/microsoft/sqlworkshops/tree/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data
+    license: MIT
+    license_url: https://github.com/microsoft/sqlworkshops/blob/master/LICENSE
+    synthetic: true
+    source_timezone: без пояса — берётся как есть (A1)
+    files:
+      - name: PdM_machines.csv
+        url: https://raw.githubusercontent.com/microsoft/sqlworkshops/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data/PdM_machines.csv
+        size: 1582
+        sha256: 5e8e1571c4999bf88abb7cae3925964c218d946fe851a9a100bb3d19330652bc
+      - name: PdM_telemetry.csv
+        url: https://raw.githubusercontent.com/microsoft/sqlworkshops/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data/PdM_telemetry.csv
+        size: 80142329
+        sha256: d957f3c45bb83416b716600da8cffd72f4b6961db89867d9696ad19f7cb1bd4e
+      - name: PdM_errors.csv
+        url: https://raw.githubusercontent.com/microsoft/sqlworkshops/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data/PdM_errors.csv
+        size: 129077
+        sha256: 9c2a2a010ad77227e2bb0c94e7971bca78810790ddd1f28a8bee4f12c2f62370
+      - name: PdM_maint.csv
+        url: https://raw.githubusercontent.com/microsoft/sqlworkshops/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data/PdM_maint.csv
+        size: 104903
+        sha256: 481ed4e155f609e6ca6130754d2c035453093902a507cce5b3f3e235995f1db6
+      - name: PdM_failures.csv
+        url: https://raw.githubusercontent.com/microsoft/sqlworkshops/ebdc49e7ef15808b75660921d7cfdc0c661f78e9/SQLServerAndAzureMachineLearning/ML%20Services%20for%20SQL%20Server/data/PdM_failures.csv
+        size: 24336
+        sha256: 0c6c31a4fd52ef2df95ad7c44e8b0c8c32917bcef29ba5a1ba3ba45531ded3b7

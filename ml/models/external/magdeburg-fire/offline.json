@@ -1,0 +1,778 @@
+{
+ "sha256": "95e4e4d4d2a211b2ba4c27da6b357101de14f7193590b8751c7bf91cd38fbb28",
+ "computed_at": "2026-09-27T00:44:56+00:00",
+ "model": "magdeburg_fire",
+ "version": "v0",
+ "period": {
+  "from": "2023-07-10 08:36:00+00:00",
+  "to": "2023-07-13 12:43:00+00:00",
+  "label": "10–13.07.2023, все опыты"
+ },
+ "threshold": 0.5,
+ "eval_scheme": "leave-one-experiment-out",
+ "test": {
+  "decisions": 40671,
+  "positives": 4581,
+  "alerts": 4790,
+  "tp": 3681,
+  "fp": 1109,
+  "fn": 900,
+  "tn": 34981,
+  "precision": 0.7685,
+  "recall": 0.8035,
+  "f1": 0.7856,
+  "ap": 0.8833,
+  "lead_time": null
+ },
+ "fire_vs_nuisance": {
+  "decisions": 6759,
+  "positives": 4581,
+  "alerts": 4374,
+  "tp": 3681,
+  "fp": 693,
+  "fn": 900,
+  "tn": 1485,
+  "precision": 0.8416,
+  "recall": 0.8035,
+  "f1": 0.8221,
+  "ap": 0.9325,
+  "lead_time": null
+ },
+ "seen": null,
+ "unseen": null,
+ "seen_rule": null,
+ "lead_time": {
+  "min_s": 1.0,
+  "p10_s": 30.0,
+  "p25_s": 50.0,
+  "p50_s": 167.5,
+  "p75_s": 322.0,
+  "p90_s": 551.5,
+  "max_s": 1067.0
+ },
+ "pr_curve": [
+  {
+   "threshold": 0.9999,
+   "precision": 1.0,
+   "recall": 0.0002
+  },
+  {
+   "threshold": 0.9997,
+   "precision": 1.0,
+   "recall": 0.0205
+  },
+  {
+   "threshold": 0.9996,
+   "precision": 1.0,
+   "recall": 0.041
+  },
+  {
+   "threshold": 0.9995,
+   "precision": 1.0,
+   "recall": 0.0613
+  },
+  {
+   "threshold": 0.9994,
+   "precision": 1.0,
+   "recall": 0.0819
+  },
+  {
+   "threshold": 0.9993,
+   "precision": 1.0,
+   "recall": 0.1022
+  },
+  {
+   "threshold": 0.9993,
+   "precision": 1.0,
+   "recall": 0.1227
+  },
+  {
+   "threshold": 0.9992,
+   "precision": 1.0,
+   "recall": 0.143
+  },
+  {
+   "threshold": 0.9991,
+   "precision": 1.0,
+   "recall": 0.1635
+  },
+  {
+   "threshold": 0.999,
+   "precision": 1.0,
+   "recall": 0.1838
+  },
+  {
+   "threshold": 0.9989,
+   "precision": 1.0,
+   "recall": 0.2043
+  },
+  {
+   "threshold": 0.9988,
+   "precision": 1.0,
+   "recall": 0.2246
+  },
+  {
+   "threshold": 0.9987,
+   "precision": 1.0,
+   "recall": 0.2451
+  },
+  {
+   "threshold": 0.9985,
+   "precision": 1.0,
+   "recall": 0.2654
+  },
+  {
+   "threshold": 0.9983,
+   "precision": 1.0,
+   "recall": 0.286
+  },
+  {
+   "threshold": 0.9981,
+   "precision": 1.0,
+   "recall": 0.3063
+  },
+  {
+   "threshold": 0.9978,
+   "precision": 1.0,
+   "recall": 0.3268
+  },
+  {
+   "threshold": 0.9975,
+   "precision": 1.0,
+   "recall": 0.3471
+  },
+  {
+   "threshold": 0.997,
+   "precision": 1.0,
+   "recall": 0.3674
+  },
+  {
+   "threshold": 0.9965,
+   "precision": 1.0,
+   "recall": 0.3879
+  },
+  {
+   "threshold": 0.9958,
+   "precision": 0.9989,
+   "recall": 0.4082
+  },
+  {
+   "threshold": 0.9948,
+   "precision": 0.9964,
+   "recall": 0.4287
+  },
+  {
+   "threshold": 0.9938,
+   "precision": 0.9961,
+   "recall": 0.449
+  },
+  {
+   "threshold": 0.9928,
+   "precision": 0.9949,
+   "recall": 0.4695
+  },
+  {
+   "threshold": 0.9912,
+   "precision": 0.9907,
+   "recall": 0.4898
+  },
+  {
+   "threshold": 0.99,
+   "precision": 0.9882,
+   "recall": 0.5104
+  },
+  {
+   "threshold": 0.988,
+   "precision": 0.9822,
+   "recall": 0.5307
+  },
+  {
+   "threshold": 0.9858,
+   "precision": 0.9745,
+   "recall": 0.5512
+  },
+  {
+   "threshold": 0.9821,
+   "precision": 0.9569,
+   "recall": 0.5715
+  },
+  {
+   "threshold": 0.9768,
+   "precision": 0.9342,
+   "recall": 0.592
+  },
+  {
+   "threshold": 0.9701,
+   "precision": 0.9188,
+   "recall": 0.6123
+  },
+  {
+   "threshold": 0.9597,
+   "precision": 0.9014,
+   "recall": 0.6328
+  },
+  {
+   "threshold": 0.9428,
+   "precision": 0.8784,
+   "recall": 0.6531
+  },
+  {
+   "threshold": 0.9262,
+   "precision": 0.8683,
+   "recall": 0.6734
+  },
+  {
+   "threshold": 0.8977,
+   "precision": 0.8606,
+   "recall": 0.694
+  },
+  {
+   "threshold": 0.8557,
+   "precision": 0.8485,
+   "recall": 0.7143
+  },
+  {
+   "threshold": 0.7902,
+   "precision": 0.8359,
+   "recall": 0.7348
+  },
+  {
+   "threshold": 0.7126,
+   "precision": 0.8177,
+   "recall": 0.7551
+  },
+  {
+   "threshold": 0.6266,
+   "precision": 0.7975,
+   "recall": 0.7756
+  },
+  {
+   "threshold": 0.5311,
+   "precision": 0.7759,
+   "recall": 0.7959
+  },
+  {
+   "threshold": 0.452,
+   "precision": 0.7545,
+   "recall": 0.8164
+  },
+  {
+   "threshold": 0.3773,
+   "precision": 0.7311,
+   "recall": 0.8367
+  },
+  {
+   "threshold": 0.3006,
+   "precision": 0.7085,
+   "recall": 0.8572
+  },
+  {
+   "threshold": 0.2105,
+   "precision": 0.6687,
+   "recall": 0.8775
+  },
+  {
+   "threshold": 0.1493,
+   "precision": 0.6286,
+   "recall": 0.8981
+  },
+  {
+   "threshold": 0.0818,
+   "precision": 0.5637,
+   "recall": 0.9184
+  },
+  {
+   "threshold": 0.0429,
+   "precision": 0.5045,
+   "recall": 0.9389
+  },
+  {
+   "threshold": 0.024,
+   "precision": 0.4516,
+   "recall": 0.9592
+  },
+  {
+   "threshold": 0.0093,
+   "precision": 0.3607,
+   "recall": 0.9797
+  },
+  {
+   "threshold": 0.0009,
+   "precision": 0.1741,
+   "recall": 1.0
+  }
+ ],
+ "by_quarter": null,
+ "by_type": null,
+ "by_episode_kind": null,
+ "by_class": [
+  {
+   "class": "fire",
+   "decisions": 40671,
+   "positives": 4581,
+   "alerts": 4790,
+   "tp": 3681,
+   "fp": 1109,
+   "fn": 900,
+   "tn": 34981,
+   "precision": 0.7685,
+   "recall": 0.8035,
+   "f1": 0.7856,
+   "ap": 0.8833,
+   "lead_time": null
+  },
+  {
+   "class": "nuisance",
+   "decisions": 40671,
+   "positives": 2178,
+   "alerts": 1080,
+   "tp": 813,
+   "fp": 267,
+   "fn": 1365,
+   "tn": 38226,
+   "precision": 0.7528,
+   "recall": 0.3733,
+   "f1": 0.4991,
+   "ap": 0.5607,
+   "lead_time": null
+  }
+ ],
+ "by_experiment": [
+  {
+   "experiment": 1,
+   "label": "nuisance",
+   "subtype": "Smoke",
+   "subtypes": [
+    "Smoke"
+   ],
+   "minutes": 14.3,
+   "decisions": 126,
+   "fire_alerts": 85,
+   "nodes_alerted": 9,
+   "first_alert_s": 170.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 2,
+   "label": "fire",
+   "subtype": "Lunts",
+   "subtypes": [
+    "Lunts"
+   ],
+   "minutes": 38.1,
+   "decisions": 342,
+   "fire_alerts": 332,
+   "nodes_alerted": 9,
+   "first_alert_s": 108.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 3,
+   "label": "nuisance",
+   "subtype": "Deodorant",
+   "subtypes": [
+    "Deodorant"
+   ],
+   "minutes": 17.2,
+   "decisions": 153,
+   "fire_alerts": 56,
+   "nodes_alerted": 9,
+   "first_alert_s": 168.0,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 4,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 29.1,
+   "decisions": 261,
+   "fire_alerts": 212,
+   "nodes_alerted": 9,
+   "first_alert_s": 337.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 5,
+   "label": "nuisance",
+   "subtype": "Ethanol",
+   "subtypes": [
+    "Ethanol"
+   ],
+   "minutes": 26.4,
+   "decisions": 234,
+   "fire_alerts": 66,
+   "nodes_alerted": 8,
+   "first_alert_s": 41.0,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 6,
+   "label": "nuisance",
+   "subtype": "CO",
+   "subtypes": [
+    "CO"
+   ],
+   "minutes": 11.6,
+   "decisions": 99,
+   "fire_alerts": 6,
+   "nodes_alerted": 1,
+   "first_alert_s": 178.0,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 7,
+   "label": "nuisance",
+   "subtype": "Exhaust",
+   "subtypes": [
+    "Exhaust"
+   ],
+   "minutes": 19.3,
+   "decisions": 171,
+   "fire_alerts": 0,
+   "nodes_alerted": 0,
+   "first_alert_s": null,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 8,
+   "label": "fire",
+   "subtype": "Candles",
+   "subtypes": [
+    "Candles"
+   ],
+   "minutes": 37.8,
+   "decisions": 342,
+   "fire_alerts": 180,
+   "nodes_alerted": 9,
+   "first_alert_s": 1067.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 9,
+   "label": "fire",
+   "subtype": "Candles",
+   "subtypes": [
+    "Candles"
+   ],
+   "minutes": 28.5,
+   "decisions": 252,
+   "fire_alerts": 140,
+   "nodes_alerted": 9,
+   "first_alert_s": 708.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 10,
+   "label": "nuisance",
+   "subtype": "Deodorant",
+   "subtypes": [
+    "Deodorant"
+   ],
+   "minutes": 10.7,
+   "decisions": 90,
+   "fire_alerts": 0,
+   "nodes_alerted": 0,
+   "first_alert_s": null,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 11,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 40.1,
+   "decisions": 360,
+   "fire_alerts": 311,
+   "nodes_alerted": 9,
+   "first_alert_s": 33.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 12,
+   "label": "fire",
+   "subtype": "Cable",
+   "subtypes": [
+    "Cable"
+   ],
+   "minutes": 6.8,
+   "decisions": 54,
+   "fire_alerts": 0,
+   "nodes_alerted": 0,
+   "first_alert_s": null,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 14,
+   "label": "fire",
+   "subtype": "Cable",
+   "subtypes": [
+    "Cable"
+   ],
+   "minutes": 10.4,
+   "decisions": 99,
+   "fire_alerts": 83,
+   "nodes_alerted": 9,
+   "first_alert_s": 1.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 15,
+   "label": "fire",
+   "subtype": "Candles",
+   "subtypes": [
+    "Candles"
+   ],
+   "minutes": 30.1,
+   "decisions": 270,
+   "fire_alerts": 187,
+   "nodes_alerted": 9,
+   "first_alert_s": 53.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 16,
+   "label": "nuisance",
+   "subtype": "Smoke",
+   "subtypes": [
+    "Smoke"
+   ],
+   "minutes": 9.3,
+   "decisions": 90,
+   "fire_alerts": 89,
+   "nodes_alerted": 9,
+   "first_alert_s": 13.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 17,
+   "label": "nuisance",
+   "subtype": "CO",
+   "subtypes": [
+    "CO"
+   ],
+   "minutes": 14.0,
+   "decisions": 126,
+   "fire_alerts": 80,
+   "nodes_alerted": 8,
+   "first_alert_s": 93.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 18,
+   "label": "fire",
+   "subtype": "Lunts",
+   "subtypes": [
+    "Lunts"
+   ],
+   "minutes": 32.0,
+   "decisions": 288,
+   "fire_alerts": 267,
+   "nodes_alerted": 9,
+   "first_alert_s": 157.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 19,
+   "label": "nuisance",
+   "subtype": "Deodorant",
+   "subtypes": [
+    "Deodorant"
+   ],
+   "minutes": 11.7,
+   "decisions": 108,
+   "fire_alerts": 7,
+   "nodes_alerted": 2,
+   "first_alert_s": 66.0,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 20,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 31.4,
+   "decisions": 279,
+   "fire_alerts": 268,
+   "nodes_alerted": 9,
+   "first_alert_s": 41.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 21,
+   "label": "nuisance",
+   "subtype": "Ethanol",
+   "subtypes": [
+    "Ethanol",
+    "Green_Waste"
+   ],
+   "minutes": 75.3,
+   "decisions": 675,
+   "fire_alerts": 207,
+   "nodes_alerted": 9,
+   "first_alert_s": 21.0,
+   "predicted": "background"
+  },
+  {
+   "experiment": 22,
+   "label": "fire",
+   "subtype": "Candles",
+   "subtypes": [
+    "Candles"
+   ],
+   "minutes": 27.4,
+   "decisions": 243,
+   "fire_alerts": 203,
+   "nodes_alerted": 9,
+   "first_alert_s": 53.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 23,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 42.4,
+   "decisions": 378,
+   "fire_alerts": 324,
+   "nodes_alerted": 9,
+   "first_alert_s": 395.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 24,
+   "label": "fire",
+   "subtype": "Cable",
+   "subtypes": [
+    "Cable"
+   ],
+   "minutes": 21.8,
+   "decisions": 198,
+   "fire_alerts": 162,
+   "nodes_alerted": 9,
+   "first_alert_s": 240.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 25,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 32.5,
+   "decisions": 288,
+   "fire_alerts": 237,
+   "nodes_alerted": 9,
+   "first_alert_s": 225.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 26,
+   "label": "nuisance",
+   "subtype": "Exhaust",
+   "subtypes": [
+    "Exhaust"
+   ],
+   "minutes": 9.9,
+   "decisions": 90,
+   "fire_alerts": 0,
+   "nodes_alerted": 0,
+   "first_alert_s": null,
+   "predicted": "background"
+  },
+  {
+   "experiment": 27,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 40.3,
+   "decisions": 360,
+   "fire_alerts": 292,
+   "nodes_alerted": 9,
+   "first_alert_s": 27.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 28,
+   "label": "nuisance",
+   "subtype": "Exhaust",
+   "subtypes": [
+    "Exhaust"
+   ],
+   "minutes": 9.0,
+   "decisions": 81,
+   "fire_alerts": 0,
+   "nodes_alerted": 0,
+   "first_alert_s": null,
+   "predicted": "nuisance"
+  },
+  {
+   "experiment": 29,
+   "label": "fire",
+   "subtype": "Lunts",
+   "subtypes": [
+    "Lunts"
+   ],
+   "minutes": 31.8,
+   "decisions": 279,
+   "fire_alerts": 256,
+   "nodes_alerted": 9,
+   "first_alert_s": 178.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 30,
+   "label": "fire",
+   "subtype": "Wood",
+   "subtypes": [
+    "Wood"
+   ],
+   "minutes": 31.7,
+   "decisions": 288,
+   "fire_alerts": 227,
+   "nodes_alerted": 9,
+   "first_alert_s": 317.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 31,
+   "label": "nuisance",
+   "subtype": "Welding",
+   "subtypes": [
+    "Welding"
+   ],
+   "minutes": 10.2,
+   "decisions": 90,
+   "fire_alerts": 86,
+   "nodes_alerted": 9,
+   "first_alert_s": 45.0,
+   "predicted": "fire"
+  },
+  {
+   "experiment": 32,
+   "label": "nuisance",
+   "subtype": "Abrasive_Cutting",
+   "subtypes": [
+    "Abrasive_Cutting"
+   ],
+   "minutes": 5.1,
+   "decisions": 45,
+   "fire_alerts": 11,
+   "nodes_alerted": 8,
+   "first_alert_s": 171.0,
+   "predicted": "nuisance"
+  }
+ ],
+ "rule": null
+}

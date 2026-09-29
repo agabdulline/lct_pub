@@ -1,0 +1,105 @@
+{
+  "family": "each_channel",
+  "version": "pump-separate",
+  "label": "Состояние насоса: отдельная модель",
+  "type": "Состояние насоса",
+  "artifact": "pump.cbm",
+  "sha256": "5db1396d6470d09c56420065e6de903ee1967d1644001515ceb509ac24bddada",
+  "features": [
+    "sensor_type",
+    "events_1d",
+    "events_7d",
+    "events_30d",
+    "events_90d",
+    "days_active_30d",
+    "days_active_90d",
+    "alarms_7d",
+    "alarms_30d",
+    "alarms_90d",
+    "faults_msg_7d",
+    "faults_msg_30d",
+    "faults_msg_90d",
+    "num_mean_7d",
+    "num_mean_30d",
+    "num_max_7d",
+    "onsets_7d",
+    "onsets_30d",
+    "onsets_90d",
+    "onsets_365d",
+    "days_since_onset",
+    "days_since_recovery",
+    "fault_hours_30d",
+    "mean_episode_hours_365d",
+    "obj_in_fault",
+    "obj_onsets_7d",
+    "month_sin",
+    "month_cos",
+    "weekday"
+  ],
+  "categorical": [
+    "sensor_type"
+  ],
+  "threshold": 0.7191326796175387,
+  "periods": {
+    "train": [
+      "2022-01-01",
+      "2025-01-01"
+    ],
+    "early_stop": [
+      "2025-01-01",
+      "2025-07-01"
+    ],
+    "selection": [
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "calibration": [
+      "2025-10-01",
+      "2026-01-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-06-30"
+    ]
+  },
+  "history_days": 400,
+  "horizon_days": [
+    1,
+    30
+  ],
+  "metrics": {
+    "test": {
+      "decisions": 19746,
+      "positives": 15937,
+      "alerts": 15583,
+      "tp": 13222,
+      "fp": 2361,
+      "fn": 2715,
+      "precision": 0.8484887377270102,
+      "recall": 0.8296417142498588,
+      "f1": 0.8389593908629441,
+      "ap": 0.8680184463368414,
+      "passes_both": true,
+      "lead_days": {
+        "0.25": 3.4407176971435547,
+        "0.5": 7.47502326965332,
+        "0.75": 14.621308326721191
+      },
+      "channels": 180,
+      "positive_channels": 178,
+      "caught_channels": 176,
+      "represented_episodes": 2001,
+      "caught_represented_episodes": 1873,
+      "represented_episode_recall": 0.936031984007996,
+      "episode_first_alert_median_days": 4.98450231552124
+    }
+  },
+  "report": "ml/remaining_channels/REPORT.md",
+  "deployment_status": "delivered_not_recommended",
+  "recommendation": "Keep baseline v0: it has higher recall on the same rows (95.7%); separate model recall is 83.0%.",
+  "baseline_v0_same_rows": {
+    "precision": 0.815,
+    "recall": 0.957
+  },
+  "warning": "High prevalence means daily rows are not independent physical failures."
+}
