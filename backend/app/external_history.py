@@ -7,7 +7,9 @@
 
 Тем же кодом, что такт прогона (`app.domain.external`): те же вызовы ml-service по событиям основы, та же запись, исходы
 по разметке набора на конец его журнала (`outcome_source = history`). Заявок и уведомлений нет — это история, не поток.
-Повторный запуск заменяет решения модели в основе; ML-сервис недоступен посреди — ошибка, база как была.
+Повторный запуск заменяет решения модели в основе; ML-сервис недоступен посреди — ошибка, решения модели как были.
+Вызовы модели идут вне транзакции: у Azure PdM это около часа, а база рвёт простаивающую транзакцию через 5 минут
+(`idle_in_transaction_session_timeout`). Замена решений модели — короткая транзакция уже после расчёта.
 """
 
 import asyncio
@@ -56,6 +58,7 @@ async def _decide(
     if model.get("trigger") == "on_event":
         now = base.sim_end or base.sim_start
         events = [e for lo, hi in windows for e in await external.run_events(session, base.id, dataset, lo, hi, None)]
+        await session.commit()  # без открытой транзакции на время вызовов модели
         rows, complete = await external.event_rows(ml, base.id, model, now, events)
         if not complete:
             raise BackfillError(f"{model['name']}: ML-сервис недоступен — история набора не записана")
@@ -69,6 +72,7 @@ async def _decide(
         for t in external.decision_times(lo, None, hi - dt.timedelta(microseconds=1), step, limit=None)
     ]
     targets = await external.target_channels(session, dataset, model.get("target_tag"))
+    await session.commit()  # без открытой транзакции на время вызовов модели
     chunks = [times[i : i + CHUNK] for i in range(0, len(times), CHUNK)]
     rows: list[dict] = []
     for i in range(0, len(chunks), PARALLEL):
@@ -91,10 +95,11 @@ async def backfill(session: AsyncSession, base: Run, ml: MlClient) -> dict:
         started = time.perf_counter()
         windows = test_windows(model, base)
         name = model["name"]
+        decisions, rows = await _decide(session, base, dataset, model, ml, windows) if windows else (0, [])
+        # прежние решения модели заменяются уже посчитанными — запись одним коротким куском транзакции
         await session.execute(
             text("DELETE FROM predictions WHERE run_id = :run AND model = :model"), {"run": base.id, "model": name}
         )
-        decisions, rows = await _decide(session, base, dataset, model, ml, windows) if windows else (0, [])
         written = 0
         for i in range(0, len(rows), 5_000):
             part = rows[i : i + 5_000]

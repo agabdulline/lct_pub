@@ -14,8 +14,8 @@ type Props = {
   external?: boolean
   /**
    * The decision is in the metrics (`inMetrics` of lib/outcome). `false` with a known outcome — the horizon is not over
-   * by the run's «now»: the fault has started, or the outcome was recounted after the run; the metrics card counts it
-   * among «ещё N — горизонт не истёк», and so does the row.
+   * by the run's «now»: the metrics card counts it among «ещё N — горизонт не истёк». A fault that has already started
+   * is final, so the row shows «Сбылся» / «Пропуск» at once with a note; a recounted «no fault» shows «Горизонт не истёк».
    */
   counted?: boolean
 }
@@ -41,7 +41,8 @@ const VIEW_EXTERNAL = {
 // Outcome of a forecast against the journal (docs/api.md, «Исход прогноза»).
 export function OutcomeBadge({ outcome, alert, outcomeAt, horizonEnd, source, external = false, counted = true }: Props) {
   const kind = outcomeKind(outcome, alert)
-  if (!counted && kind !== 'open' && kind !== 'skipped')
+  const early = !counted && outcome === 'fault'
+  if (!counted && !early && kind !== 'open' && kind !== 'skipped')
     return (
       <Tooltip>
         <TooltipTrigger render={<span className="inline-flex cursor-default items-center gap-1.5" />}>
@@ -73,11 +74,18 @@ export function OutcomeBadge({ outcome, alert, outcomeAt, horizonEnd, source, ex
       <TooltipTrigger render={<span className="inline-flex cursor-default items-center gap-1.5" />}>
         <StatusBadge status={v.status}>{v.label}</StatusBadge>
         {source === 'history' && <span className="text-xs text-muted-foreground">по журналу</span>}
+        {early && <span className="text-xs text-muted-foreground">в метрики — после горизонта</span>}
       </TooltipTrigger>
       <TooltipContent>
         <div>{v.hint}</div>
         {when && <div>{when}</div>}
         {source === 'history' && <div>Досчитан по журналу после конца прогона: горизонт выходит за его часы.</div>}
+        {early && (
+          <div>
+            Горизонт{horizonEnd ? ` — до ${fmtDateTimeShort(horizonEnd)}` : ''} не истёк: в метрики решение войдёт после
+            него, исход уже не изменится.
+          </div>
+        )}
       </TooltipContent>
     </Tooltip>
   )
