@@ -19,8 +19,7 @@ export function StartDialog({ scenario, onClose }: { scenario: Scenario | null; 
   const [params] = useSearchParams()
   const [speed, setSpeed] = useState<number | null>(null)
   const chosen = speed ?? scenario?.default_speed ?? 10
-  // An external data set's run has no event model. Otherwise primary_model is not sent: the service starts the v3 → v0 chain.
-  const withModel = !scenario?.dataset
+  // primary_model is not sent: the service starts the run with its own event model.
   const active = em && (em.state === 'running' || em.state === 'paused') ? em.run_id : null
 
   const start = () => {
@@ -69,14 +68,6 @@ export function StartDialog({ scenario, onClose }: { scenario: Scenario | null; 
             ×60 — минута симуляции за секунду. Во всплесках плановой проверки время замедляется, события не теряются.
           </p>
         </div>
-        {withModel && (
-          <div className="space-y-1 text-xs text-muted-foreground">
-            <p>
-              Основная модель — v3 → v0: вердикт по v3 ML-разработчика, а где v3 тревогу не оценила (день без данных журнала и
-              др.), — по v0 команды. В ленте и журнале видно, чьё решение.
-            </p>
-          </div>
-        )}
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Отмена

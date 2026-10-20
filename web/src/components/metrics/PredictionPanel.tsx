@@ -1,11 +1,9 @@
 import { ArrowUpRight } from 'lucide-react'
 
-import { PredictionDecision } from '@/components/domain/ChainDecision'
 import { FactorList } from '@/components/domain/FactorList'
 import { ObjectHistoryMark } from '@/components/domain/ObjectHistoryMark'
 import { OutcomeBadge } from '@/components/domain/OutcomeBadge'
 import { RiskMeter } from '@/components/domain/RiskMeter'
-import { VersionScores } from '@/components/domain/VersionScores'
 import { RunLink } from '@/components/domain/RunLink'
 import { SensorTypeIcon } from '@/components/domain/SensorTypeIcon'
 import { Button } from '@/components/ui/button'
@@ -14,8 +12,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { Skeleton } from '@/components/ui/skeleton'
 import { useModels, usePrediction } from '@/lib/api/queries'
 import { fmtDateTime, fmtSince } from '@/lib/format'
-import { chainOf, externalClassLabel, externalHorizonHours, isHackathonModel, MODEL_DESCRIPTION, MODEL_LABEL, skipReasonLabel, versionLabel } from '@/lib/labels'
-import { useRun } from '@/lib/run'
+import { externalClassLabel, externalHorizonHours, isHackathonModel, MODEL_DESCRIPTION, MODEL_LABEL, skipReasonLabel } from '@/lib/labels'
 
 import { ClassProbabilities, ClassWithoutAlert } from './ClassProbabilities'
 import { classesOf } from './prediction-context'
@@ -52,8 +49,6 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 // Forecast detail beside the journal: decision, horizon, outcome, factors, context.
 export function PredictionPanel({ id, onClose }: { id: number | null; onClose: () => void }) {
   const { data: p, isPending } = usePrediction(id)
-  const { run } = useRun()
-  const chain = chainOf(run?.primary_model)
   const models = useModels().data?.items
   const external = p ? !isHackathonModel(p.model) : false
   const info = external ? models?.find((m) => m.model === p?.model) : undefined
@@ -77,7 +72,8 @@ export function PredictionPanel({ id, onClose }: { id: number | null; onClose: (
           <div className="space-y-4 px-4 pb-4 text-sm">
             <div className="rounded-lg p-3 ring-1 ring-foreground/10">
               <Row label="Модель">
-                {isHackathonModel(p.model) ? MODEL_LABEL[p.model] : p.model} · {versionLabel(p.model_version)}
+                {/* the hackathon models by their task only (owner's decision: no versions); external — as before */}
+                {isHackathonModel(p.model) ? MODEL_LABEL[p.model] : `${p.model} · ${p.model_version}`}
               </Row>
               <div className="pb-1 text-xs text-muted-foreground">
                 {isHackathonModel(p.model) ? MODEL_DESCRIPTION[p.model] : `Модель внешнего набора${info?.title ? `: ${info.title}` : ''}`}
@@ -100,26 +96,6 @@ export function PredictionPanel({ id, onClose }: { id: number | null; onClose: (
                 </Row>
               ) : (
                 <Row label="Пропуск">{p.skip_reason ? skipReasonLabel(p.skip_reason) : '—'}</Row>
-              )}
-              {!!p.paired?.length && (
-                <Row label="Другая модель">
-                  <VersionScores
-                    scores={[
-                      { model_version: p.model_version, prediction_id: p.id, status: p.status, score: p.score, threshold: p.threshold, alert: p.alert, primary: false, inherited: false, skip_reason: p.skip_reason },
-                      ...p.paired,
-                    ]}
-                    current={p.model_version}
-                    disagree={
-                      p.status === 'scored' && p.paired.every((o) => o.status === 'scored') ? p.paired.some((o) => o.alert !== p.alert) : null
-                    }
-                    detailed
-                  />
-                </Row>
-              )}
-              {chain && p.decided === true && (
-                <Row label={`Решение ${versionLabel(run?.primary_model)}`}>
-                  <PredictionDecision prediction={p} chain={chain} className="text-sm text-foreground" />
-                </Row>
               )}
               <Row label="Исход">
                 <OutcomeBadge

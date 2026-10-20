@@ -3,10 +3,10 @@
 import datetime as dt
 from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import Depends, Query
-from sqlalchemy import text
+from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.errors import ApiError
@@ -37,16 +37,33 @@ class RunContext:
     run: Run | None
     now: dt.datetime
     source: str = HACKATHON  # набор данных прогона: справочник экранов — только его (этап 14)
+    # «Все данные» (`?run=all`): база хакатона и прогоны-основы всех наборов — каждый со своим временем, не смешиваются
+    all_data: bool = False
+    dataset_runs: tuple[Run, ...] = ()
 
     @property
     def run_id(self) -> int | None:
         return self.run.id if self.run else None
 
 
-RunQuery = Annotated[int | None, Query(description="прогон; без параметра — последний, 0 — только базовая история")]
+ALL = "all"
+RunQuery = Annotated[
+    int | Literal["all"] | None,
+    Query(
+        description="прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона "
+        "и прогоны-основы всех наборов"
+    ),
+]
 
 
-async def resolve_context(session: AsyncSession, run: int | None) -> RunContext:
+async def dataset_base_runs(session: AsyncSession) -> list[Run]:
+    """Прогоны-основы внешних наборов (`kind = dataset`) — их история целиком."""
+    return list((await session.scalars(select(Run).where(Run.kind == "dataset").order_by(Run.id))).all())
+
+
+async def resolve_context(session: AsyncSession, run: int | Literal["all"] | None) -> RunContext:
+    if run == ALL:
+        return RunContext(None, await base_now(session), HACKATHON, True, tuple(await dataset_base_runs(session)))
     try:
         found = await resolve_run(session, run)
     except RunError as e:
@@ -54,6 +71,17 @@ async def resolve_context(session: AsyncSession, run: int | None) -> RunContext:
     if found is None:
         return RunContext(None, await base_now(session))
     return RunContext(found, found.sim_now or found.sim_start, await run_source(session, found))
+
+
+async def for_channel(session: AsyncSession, ctx: RunContext, channel_id: int) -> RunContext:
+    """«Все данные»: канал внешнего набора смотрится в прогоне-основе своего набора, канал хакатона — в базе."""
+    if not ctx.all_data:
+        return ctx
+    source = await session.scalar(text("SELECT source FROM channels WHERE id = :id"), {"id": channel_id})
+    run = next((r for r in ctx.dataset_runs if (r.params or {}).get("dataset") == source), None)
+    if run is None:
+        return ctx
+    return RunContext(run, run.sim_now or run.sim_end or run.sim_start, source)
 
 
 async def run_context(session: Session, run: RunQuery = None) -> RunContext:

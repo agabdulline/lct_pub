@@ -5,9 +5,10 @@ import { useRun } from '@/lib/run'
 
 // A pinned run that the API does not know (a link from another stand, a deleted run): say so and offer the latest.
 export function RunMissingBanner() {
-  const { pinned, run, runs, runId, ready } = useRun()
+  const { pinned, run, runs, runId, ready, history } = useRun()
   const [params, setParams] = useSearchParams()
-  if (!pinned || !ready || !runs.length || run) return null
+  // «Вся история» (`?run=0`) is not a run: it is the base and always exists
+  if (!pinned || history || !ready || !runs.length || run) return null
   const unpin = () => {
     const next = new URLSearchParams(params)
     next.delete('run')

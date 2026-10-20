@@ -1,21 +1,26 @@
-import { Bot, CircleAlert, Database, GitCompareArrows } from 'lucide-react'
+import { Bot, ChevronDown, CircleAlert, Database, GitCompareArrows, ShieldQuestion } from 'lucide-react'
+import { useState } from 'react'
 
+import { DatasetCard } from '@/components/emulator/DatasetCard'
+import { PageInfo } from '@/components/layout/PageInfo'
 import { DatasetBadge } from '@/components/domain/DatasetBadge'
 import { QueryError } from '@/components/domain/QueryError'
 import { SensorTypeIcon } from '@/components/domain/SensorTypeIcon'
 import { StatusBadge } from '@/components/domain/StatusBadge'
+import { AccessModelCard } from '@/components/metrics/AccessModelCard'
 import { DailyRoutingCard } from '@/components/metrics/DailyRouting'
 import { MetricsPanel } from '@/components/metrics/MetricsPanel'
 import { experimentStats } from '@/components/metrics/experiments'
 import { OfflineReportCard } from '@/components/metrics/OfflineReportCard'
 import { TargetMeter } from '@/components/metrics/TargetMeter'
 import { VersionsCompare } from '@/components/metrics/VersionsCompare'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useDataset, useMetrics, useModelCompare, useModels } from '@/lib/api/queries'
-import type { DailyRouting, ModelInfo, ModelName } from '@/lib/api/types'
+import { useDataset, useDatasets, useMetrics, useModelCompare, useModels } from '@/lib/api/queries'
+import type { DailyRouting, ModelInfo, ModelName, OfflineMetrics } from '@/lib/api/types'
 import { fmtInt, fmtPercent, plural } from '@/lib/format'
 import {
   byVersion,
@@ -24,7 +29,6 @@ import {
   EVAL_SCHEME_LABEL,
   historyNote,
   horizonLabel,
-  isHackathonModel,
   MODEL_DESCRIPTION,
   MODEL_LABEL,
   triggerLabel,
@@ -33,6 +37,7 @@ import {
 } from '@/lib/labels'
 import { OFFLINE, REQUIREMENT, routingF1 } from '@/lib/offline-metrics'
 import { useSearchState } from '@/lib/search-state'
+import { cn } from '@/lib/utils'
 
 const f1 = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v.toFixed(3).replace('.', ','))
 
@@ -277,21 +282,35 @@ function CompareSummary({ items }: { items: ModelInfo[] }) {
 function RoutingSummary({ routing, items }: { routing: DailyRouting | null | undefined; items: ModelInfo[] }) {
   const mix = routing?.offline?.routing
   if (!routing || !mix) return null
-  const v0 = routing.offline?.v0_only
-  const parts = [...new Set(routing.routes.map((r) => r.model))].sort(byVersion).map((m) => {
-    const types = routing.routes.filter((r) => r.model === m).map((r) => r.sensor_type)
-    const who = items.find((i) => i.model === 'daily' && i.version === m)?.author
-    const what = types.length > 2 ? `${types.length} ${plural(types.length, ['тип', 'типа', 'типов'])}` : types.join(', ')
-    return `${what} — ${versionLabel(m)}${who ? ` (${who})` : ''}`
-  })
+  const base = routing.offline?.v0_only
+  // whose model leads each type — by the author in /models, without version names (owner's decision)
+  const team = (m: string) => items.find((i) => i.model === 'daily' && i.version === m)?.author === 'команда'
+  const teamTypes = routing.routes.filter((r) => team(r.model)).length
+  const devTypes = routing.routes.filter((r) => !team(r.model)).map((r) => r.sensor_type)
   const none = routing.unrouted.length
   return (
     <li>
-      Ежедневный прогноз — по таблице маршрутизации: {parts.join(', ')}
-      {none > 0 && `; у ${none} ${plural(none, ['типа', 'типов', 'типов'])} прогноза нет`}. На строках, общих с v0 ({fmtInt(mix.decisions)} канал-дней,{' '}
+      Ежедневная модель — у каждого типа канала своя: у {teamTypes} {plural(teamTypes, ['типа', 'типов', 'типов'])} модель команды
+      {devTypes.length > 0 && `, на типах ${devTypes.map((t) => `«${t}»`).join(' и ')} — модели ML-разработчика`}
+      {none > 0 && `; у ${none} ${plural(none, ['типа', 'типов', 'типов'])} прогноза нет`}. Офлайн ({fmtInt(mix.decisions)} канал-дней,{' '}
       {routing.test?.label ?? 'офлайн'}): P {fmtPercent(mix.precision)} / R {fmtPercent(mix.recall)}
-      {v0 && ` против ${fmtPercent(v0.precision)} / ${fmtPercent(v0.recall)} у одной v0`}
-      {mix.caught_episodes != null && v0?.caught_episodes != null && `; эпизодов «Неисправен» найдено ${fmtInt(mix.caught_episodes)} против ${fmtInt(v0.caught_episodes)}`}.
+      {base && ` против ${fmtPercent(base.precision)} / ${fmtPercent(base.recall)} у одной модели команды`}
+      {mix.caught_episodes != null && base?.caught_episodes != null && `; эпизодов «Неисправен» найдено ${fmtInt(mix.caught_episodes)} против ${fmtInt(base.caught_episodes)}`}
+      ; горизонт ≥ 24 ч.
+    </li>
+  )
+}
+
+/** «Коротко о метриках» line of the event model: what the service decides, on its offline check. */
+function EventSummary({ items }: { items: ModelInfo[] }) {
+  const off = serviceOffline('smoke_alarm', items)
+  if (!off) return null
+  const pass = off.precision >= REQUIREMENT.precision && off.recall >= REQUIREMENT.recall
+  return (
+    <li>
+      Событийная модель ({off.period}, {fmtInt(off.decisions)} {plural(off.decisions, ['решение', 'решения', 'решений'])}): P {fmtPercent(off.precision)} / R{' '}
+      {fmtPercent(off.recall)}
+      {pass ? ' — проходит пороги ТЗ' : ''}; упреждение — минуты: это триаж тревоги, а не предупреждение за сутки.
     </li>
   )
 }
@@ -299,7 +318,9 @@ function RoutingSummary({ routing, items }: { routing: DailyRouting | null | und
 /** A difference of shares in percentage points with its sign: «+1,9 п.п.», «−3,5 п.п.». */
 const signedPp = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v * 100).toFixed(1).replace('.', ',')} п.п.`
 
-function ModelSection({ model, versions, routing }: { model: ModelName; versions: ModelInfo[]; routing?: DailyRouting | null }) {
+/** Everything about the team's and the ML developer's models of a task — inside the collapsed comparison (owner's
+ * decision: the interface shows what the service decides, the versions only here). */
+function VersionsDetail({ model, versions, routing }: { model: ModelName; versions: ModelInfo[]; routing?: DailyRouting | null }) {
   const off = OFFLINE[model]
   const metrics = useMetrics(model)
   // Daily models the routing table does not pick (task C) — a line of names, not cards.
@@ -314,10 +335,11 @@ function ModelSection({ model, versions, routing }: { model: ModelName; versions
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        {MODEL_DESCRIPTION[model]}. Цель: {off.target.charAt(0).toLowerCase() + off.target.slice(1)}.
-      </p>
-
+      {model === 'smoke_alarm' && (
+        <ul className="list-disc space-y-1.5 pl-4 text-sm">
+          <CompareSummary items={versions} />
+        </ul>
+      )}
       {model === 'daily' && routing && (
         <DailyRoutingCard routing={routing} models={versions} live={metrics.data?.by_sensor_type} liveAll={live} />
       )}
@@ -500,6 +522,108 @@ function ModelSection({ model, versions, routing }: { model: ModelName; versions
         </Card>
       </div>
 
+    </div>
+  )
+}
+
+/** How the service decides a task — one line for the ⓘ of its card. */
+const DEVICE: Record<ModelName, string> = {
+  smoke_alarm:
+    'Решает модель ML-разработчика, а где она тревогу не оценила (день без данных журнала, канал не в «Норме» и др.), — модель команды. В ленте и журнале — одна оценка и вердикт сервиса.',
+  daily:
+    'У каждого типа канала своя модель по таблице маршрутизации: модель ML-разработчика, где она проходит пороги и не хуже модели команды, иначе модель команды; у пяти типов прогноза нет.',
+}
+
+/** The task's final offline result — of what the service decides: the event model's chain, the daily routing mix. */
+function serviceOffline(model: ModelName, items: ModelInfo[], routing?: DailyRouting | null): OfflineMetrics | null {
+  if (model === 'daily') {
+    const mix = routing?.offline?.routing
+    if (!mix?.precision || mix.recall === null) return null
+    const f = routingF1(mix) ?? 0
+    return { period: routing?.test?.label ?? 'офлайн', precision: mix.precision, recall: mix.recall, f1: f, ap: null, tp: mix.tp, fp: mix.fp, decisions: mix.decisions, positives: mix.positives }
+  }
+  const chain = items.find((m) => m.model === 'smoke_alarm' && m.family === 'chain' && m.active)
+  if (chain?.offline_metrics) return chain.offline_metrics
+  const row = OFFLINE.smoke_alarm.rows.find((r) => chainOf(r.version))
+  return row ? { ...row, decisions: row.decisions ?? OFFLINE.smoke_alarm.decisions, positives: row.positives ?? OFFLINE.smoke_alarm.positives } : null
+}
+
+/** A task as the service runs it: its final offline and live metrics; the versions — in the collapsed comparison. */
+function ModelSection({ model, versions, items, routing }: { model: ModelName; versions: ModelInfo[]; items: ModelInfo[]; routing?: DailyRouting | null }) {
+  const off = OFFLINE[model]
+  const metrics = useMetrics(model)
+  const live = metrics.data?.all
+  const offline = serviceOffline(model, items, routing)
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-1">
+            {MODEL_LABEL[model]} модель <PageInfo>{DEVICE[model]}</PageInfo>
+          </CardTitle>
+          <CardDescription>
+            {MODEL_DESCRIPTION[model]}. Цель: {off.target.charAt(0).toLowerCase() + off.target.slice(1)}. Требование ТЗ — Precision
+            &gt; {REQUIREMENT.precision * 100}%, Recall &gt; {REQUIREMENT.recall * 100}% (отметка на полосе).
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="overflow-x-auto px-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="pl-4">Проверка</TableHead>
+                <TableHead>Precision</TableHead>
+                <TableHead>Recall</TableHead>
+                <TableHead className="text-right">F1</TableHead>
+                <TableHead className="text-right">TP / FP</TableHead>
+                <TableHead className="pr-4 text-right">Решений · положит.</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {offline && (
+                <TableRow>
+                  <TableCell className="pl-4">
+                    <div className="font-medium">Офлайн</div>
+                    <div className="text-xs text-muted-foreground">{offline.period}</div>
+                  </TableCell>
+                  <TableCell>
+                    <TargetMeter value={offline.precision} target={REQUIREMENT.precision} />
+                  </TableCell>
+                  <TableCell>
+                    <TargetMeter value={offline.recall} target={REQUIREMENT.recall} />
+                  </TableCell>
+                  <TableCell className="text-right tabular-nums">{f1(offline.f1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">
+                    {fmtInt(offline.tp)} / {fmtInt(offline.fp)}
+                  </TableCell>
+                  <TableCell className="pr-4 text-right tabular-nums">
+                    {fmtInt(offline.decisions)} · {fmtInt(offline.positives)}
+                  </TableCell>
+                </TableRow>
+              )}
+              <TableRow>
+                <TableCell className="pl-4">
+                  <div className="font-medium">Живые</div>
+                  <div className="text-xs text-muted-foreground">
+                    этот прогон, закрытые прогнозы
+                    {live && metrics.data && metrics.data.history > 0 && <> · {historyNote(metrics.data.history, live.decisions)}</>}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <TargetMeter value={live?.precision} target={REQUIREMENT.precision} />
+                </TableCell>
+                <TableCell>
+                  <TargetMeter value={live?.recall} target={REQUIREMENT.recall} />
+                </TableCell>
+                <TableCell className="text-right tabular-nums">{f1(live?.f1)}</TableCell>
+                <TableCell className="text-right tabular-nums">{live ? `${fmtInt(live.tp)} / ${fmtInt(live.fp)}` : '—'}</TableCell>
+                <TableCell className="pr-4 text-right tabular-nums">{live ? `${fmtInt(live.decisions)} · ${fmtInt(live.positives)}` : '—'}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Живые метрики этого прогона</CardTitle>
@@ -513,6 +637,28 @@ function ModelSection({ model, versions, routing }: { model: ModelName; versions
           )}
         </CardContent>
       </Card>
+
+      {/* the team's and the ML developer's models — collapsed: the jury sees what the service decides */}
+      <Card size="sm">
+        <CardHeader>
+          <Button variant="ghost" className="justify-start gap-2 px-0 font-semibold hover:bg-transparent" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+            <ChevronDown className={cn('transition-transform', !open && '-rotate-90')} />
+            Сравнение моделей команды и ML-разработчика
+          </Button>
+          {!open && (
+            <CardDescription>
+              {model === 'smoke_alarm'
+                ? 'Обе модели на одних решениях, расхождения, офлайн-отчёты и ограничения каждой.'
+                : 'Какая модель ведёт какой тип канала, отчёты и ограничения каждой.'}
+            </CardDescription>
+          )}
+        </CardHeader>
+        {open && (
+          <CardContent>
+            <VersionsDetail model={model} versions={versions} routing={routing} />
+          </CardContent>
+        )}
+      </Card>
     </div>
   )
 }
@@ -522,20 +668,24 @@ function ModelSection({ model, versions, routing }: { model: ModelName; versions
 export function ModelsPage() {
   const s = useSearchState()
   const models = useModels()
+  const datasets = useDatasets().data ?? []
   const items = models.data?.items ?? []
   const external = items.filter((v) => v.family === 'external')
+  const access = items.filter((v) => v.family === 'access')
   const asked = s.get('model')
-  const tab = asked === 'daily' ? 'daily' : asked === 'external' && external.length ? 'external' : 'smoke_alarm'
+  const tab =
+    asked === 'daily'
+      ? 'daily'
+      : asked === 'external' && external.length
+        ? 'external'
+        : asked === 'datasets' && datasets.length
+          ? 'datasets'
+          : asked === 'access' && access.length
+            ? 'access'
+            : 'smoke_alarm'
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-4">
-      <div>
-        <h1 className="text-xl font-semibold">Модели</h1>
-        <p className="text-sm text-muted-foreground">
-          Две модели для двух режимов: оперативный триаж дымовой тревоги и плановое ТО. Показываем раздельно и честно.
-          {external.length > 0 && ' Модели на внешних наборах — отдельной вкладкой.'}
-        </p>
-      </div>
 
       <Card>
         <CardHeader>
@@ -543,24 +693,8 @@ export function ModelsPage() {
         </CardHeader>
         <CardContent>
           <ul className="list-disc space-y-1.5 pl-4 text-sm">
-            <li>
-              Событийная v3 проходит Precision &gt; 70% и Recall &gt; 50% на 2026 (84.8% / 74.7%), но упреждение — минуты: это триаж
-              тревоги, а не предупреждение за сутки.
-            </li>
-            <CompareSummary items={items} />
-            <li>Ежедневная v3 даёт горизонт ≥ 24 ч и Precision 73.7%, но Recall 29.2% — требование по полноте не выполнено.</li>
+            <EventSummary items={items} />
             <RoutingSummary routing={models.data?.daily_routing} items={items} />
-            {items
-              .filter((v) => v.family === 'baseline' && v.offline_metrics && isHackathonModel(v.model))
-              .map((v) => (
-                <li key={`${v.model}-${v.version}`}>
-                  {MODEL_LABEL[v.model as ModelName]} базовая модель команды {v.version} ({v.offline_metrics!.period}): Precision{' '}
-                  {fmtPercent(v.offline_metrics!.precision)}, Recall {fmtPercent(v.offline_metrics!.recall)} на {fmtInt(v.offline_metrics!.decisions)}{' '}
-                  решениях
-                  {v.offline_metrics!.precision >= REQUIREMENT.precision && v.offline_metrics!.recall >= REQUIREMENT.recall ? ' — проходит пороги ТЗ' : ''}
-                  {v.model === 'smoke_alarm' ? '; упреждение, как у v3, — минуты.' : '; горизонт ≥ 24 ч.'} Наборы решений с v3 не совпадают.
-                </li>
-              ))}
             {external.map((v) => (
               <ExternalSummary key={`${v.model}-${v.version}`} m={v} />
             ))}
@@ -570,19 +704,51 @@ export function ModelsPage() {
         </CardContent>
       </Card>
 
-      <Tabs value={tab} onValueChange={(v) => s.set({ model: v === 'daily' || v === 'external' ? v : null })}>
+      <Tabs value={tab} onValueChange={(v) => s.set({ model: v === 'daily' || v === 'external' || v === 'datasets' || v === 'access' ? v : null })}>
         <TabsList>
           <TabsTrigger value="smoke_alarm">{MODEL_LABEL.smoke_alarm}</TabsTrigger>
           <TabsTrigger value="daily">{MODEL_LABEL.daily}</TabsTrigger>
+          {access.length > 0 && (
+            <TabsTrigger value="access">
+              <ShieldQuestion /> Доступ
+            </TabsTrigger>
+          )}
           {external.length > 0 && (
             <TabsTrigger value="external">
               <Database className="text-source-external" /> Внешние наборы
             </TabsTrigger>
           )}
+          {datasets.length > 0 && (
+            <TabsTrigger value="datasets">
+              <Database className="text-source-external" /> Наборы данных
+            </TabsTrigger>
+          )}
         </TabsList>
         {models.isPending && <Skeleton className="h-64" />}
         {models.isError && (
-          <QueryError error={models.error} onRetry={() => void models.refetch()} what="Версии моделей из API" compact />
+          <QueryError error={models.error} onRetry={() => void models.refetch()} what="Модели из API" compact />
+        )}
+        {datasets.length > 0 && (
+          <TabsContent value="datasets">
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Открытые наборы других организаций для направлений ТЗ, где у хакатона нет данных. Это не данные Москоллектора: у
+                прогона — своя плашка на всех экранах, свои объекты и модели. Сценарии наборов запускаются на экране «Эмулятор СМВУ».
+              </p>
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {datasets.map((d) => (
+                  <DatasetCard key={d.key} d={d} />
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+        )}
+        {access.length > 0 && (
+          <TabsContent value="access" className="space-y-3">
+            {access.map((m) => (
+              <AccessModelCard key={m.version} m={m} />
+            ))}
+          </TabsContent>
         )}
         {external.length > 0 && (
           <TabsContent value="external">
@@ -593,7 +759,7 @@ export function ModelsPage() {
           <TabsContent key={m} value={m}>
             {/* Offline metrics are static: shown even when the API has no model list. */}
             {(models.data || models.isError) && (
-              <ModelSection model={m} versions={items.filter((v) => v.model === m)} routing={models.data?.daily_routing} />
+              <ModelSection model={m} versions={items.filter((v) => v.model === m)} items={items} routing={models.data?.daily_routing} />
             )}
           </TabsContent>
         ))}

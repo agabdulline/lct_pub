@@ -2,12 +2,10 @@ import { ChevronDown, ChevronRight, PlugZap, ShieldAlert } from 'lucide-react'
 import { Fragment, useState } from 'react'
 
 import { AccessMarks } from '@/components/access/AccessMarks'
-import { accessHeadline, accessStateLabel, accessStatus, armedText, channelsText as accessChannelsText, endText, openingsText } from '@/components/access/access-view'
-import { AlarmDecision } from '@/components/domain/ChainDecision'
+import { accessHeadline, accessStateLabel, accessStatus, armedText, channelsText as accessChannelsText, decisionText, endText, openingsText } from '@/components/access/access-view'
 import { ChannelLink } from '@/components/domain/ChannelLink'
 import { PprAlertMark } from '@/components/domain/PprAlertMark'
 import { RiskMeter } from '@/components/domain/RiskMeter'
-import { VersionScores } from '@/components/domain/VersionScores'
 import { RunLink } from '@/components/domain/RunLink'
 import { StatusBadge } from '@/components/domain/StatusBadge'
 import { VerdictBadge } from '@/components/domain/VerdictBadge'
@@ -21,7 +19,6 @@ import {
   ACCESS_NOTE,
   ACCESS_RESOLUTION_LABEL,
   ALARM_KIND_LABEL,
-  chainOf,
   EQUIPMENT_ACTION,
   EQUIPMENT_KIND_LABEL,
   OBJECT_HISTORY_NOTE,
@@ -29,7 +26,6 @@ import {
   skipReasonLabel,
   VERDICT_ACTION,
 } from '@/lib/labels'
-import { useRun } from '@/lib/run'
 import { cn } from '@/lib/utils'
 
 import { alarmContext, feedRows, withEvents } from './alarm-view'
@@ -67,8 +63,8 @@ type Props = {
 // Left edge of an access row: an open incident by its priority, a finished one is neutral.
 const ACCESS_EDGE = { alarm: 'border-l-status-alarm', risk: 'border-l-status-risk' } as const
 
+// One score — the one the service decided by (owner's decision: no model versions in the interface).
 function ScoreCell({ a }: { a: Alarm }) {
-  const chain = chainOf(useRun().run?.primary_model)
   const p = a.prediction
   if (a.verdict === 'pending')
     return (
@@ -77,28 +73,18 @@ function ScoreCell({ a }: { a: Alarm }) {
       </span>
     )
   if (!p) return <span className="text-muted-foreground">—</span>
-  // Stage 15: the other versions' scores under the primary one, and whether they disagree; under a chain — whose
-  // decision it is and why not the first version's.
-  const others = a.scores && a.scores.length > 1 && (
-    <div>
-      <VersionScores scores={a.scores} disagree={a.disagree} />
-      {chain && <AlarmDecision alarm={a} chain={chain} short />}
-    </div>
-  )
   if (p.score === null)
     return (
       <div className="space-y-0.5">
         <div className="text-xs text-muted-foreground" title={p.skip_reason ? skipReasonLabel(p.skip_reason) : undefined}>
           пропуск
         </div>
-        {others}
       </div>
     )
   const meter = <RiskMeter value={p.score} threshold={p.threshold} label={p.inherited ? 'Оценка по более ранней тревоге' : 'Оценка событийной модели'} />
   return (
     <div className="space-y-0.5">
       <div>{meter}</div>
-      {others}
       {p.object_history === false && (
         <div className="text-xs text-muted-foreground" title={OBJECT_HISTORY_NOTE}>
           нет истории объекта
@@ -218,9 +204,10 @@ export function AlarmTable({
                     {armedText(inc) ? ` · ${armedText(inc)}` : ''}
                   </div>
                 </TableCell>
-                <TableCell>
-                  <span className="text-xs text-muted-foreground" title={ACCESS_NOTE}>
-                    по правилам охраны
+                <TableCell className="max-w-48 whitespace-normal">
+                  {/* the access model is a proxy «own or not» by whether the guard is taken off — the tooltip says so */}
+                  <span className="text-xs text-muted-foreground" title={`${decisionText(inc).long} ${inc.source_note || ACCESS_NOTE}`}>
+                    {decisionText(inc).short}
                   </span>
                 </TableCell>
                 <TableCell>

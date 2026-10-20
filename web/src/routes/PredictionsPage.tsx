@@ -6,10 +6,9 @@ import { OutcomeBadge } from '@/components/domain/OutcomeBadge'
 import { Pager } from '@/components/domain/Pager'
 import { QueryError } from '@/components/domain/QueryError'
 import { RiskMeter } from '@/components/domain/RiskMeter'
-import { VersionScores } from '@/components/domain/VersionScores'
-import { PredictionDecision } from '@/components/domain/ChainDecision'
 import { ClassProbabilities, ClassWithoutAlert, TopReason } from '@/components/metrics/ClassProbabilities'
 import { ExternalMetricsPanel, MetricsPanel } from '@/components/metrics/MetricsPanel'
+import { AllDataJournal } from '@/components/metrics/AllDataJournal'
 import { PredictionPanel } from '@/components/metrics/PredictionPanel'
 import { classesOf } from '@/components/metrics/prediction-context'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,9 +18,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useExternalModels, useMetrics, useModels, useOfflineRef, usePredictions } from '@/lib/api/queries'
-import type { ModelInfo, ModelName, ModelScore, Prediction } from '@/lib/api/types'
+import type { ModelInfo, ModelName } from '@/lib/api/types'
 import { fmtDateTimeShort, fmtSince } from '@/lib/format'
-import { byVersion, chainOf, externalHorizonHours, MODEL_DESCRIPTION, MODEL_LABEL, skipReasonLabel, triggerLabel, versionAuthor, versionLabel } from '@/lib/labels'
+import { externalHorizonHours, MODEL_DESCRIPTION, MODEL_LABEL, skipReasonLabel, triggerLabel } from '@/lib/labels'
 import { closingNow, inMetrics } from '@/lib/outcome'
 import { useRun } from '@/lib/run'
 import { useSearchState } from '@/lib/search-state'
@@ -55,11 +54,6 @@ const OUTCOMES_FORECAST: Option[] = [
   { value: 'no_fault', label: 'Отказа не было' },
   { value: 'open', label: 'Ожидается' },
 ]
-// Stage 15: decisions where the event-model versions disagree.
-const COMPARE: Option[] = [
-  { value: 'all', label: 'Любые оценки моделей' },
-  { value: 'disagree', label: 'Модели расходятся' },
-]
 const HISTORY: Option[] = [
   { value: 'all', label: 'Любая история' },
   { value: 'true', label: 'Есть история объекта' },
@@ -84,29 +78,6 @@ function FilterSelect({ options, value, onChange, label, className }: { options:
 }
 
 const HACKATHON: ModelName[] = ['smoke_alarm', 'daily']
-/** The whole daily forecast — every model of the routing table (task C). */
-const MIX = 'mix'
-
-/** The row's own decision as a score, to show it among the other versions' ones. */
-const ownScore = (p: Prediction): ModelScore => ({
-  model_version: p.model_version,
-  prediction_id: p.id,
-  status: p.status,
-  score: p.score,
-  threshold: p.threshold,
-  alert: p.alert,
-  primary: false,
-  inherited: false,
-  skip_reason: p.skip_reason,
-})
-
-/** Both versions scored and exactly one is above its threshold; `null` — one of them skipped. */
-function disagrees(p: Prediction): boolean | null {
-  if (!p.paired?.length) return null
-  if (p.status !== 'scored' || p.paired.some((o) => o.status !== 'scored')) return null
-  return p.paired.some((o) => o.alert !== p.alert)
-}
-
 /** Name of an external model in the switch: its task title from /models, else the task key. */
 const externalName = (m: ModelInfo) => m.title || m.model
 
@@ -114,8 +85,14 @@ const externalName = (m: ModelInfo) => m.title || m.model
 // the event model's numbers are not the numbers of all faults (AGENTS.md §5). A run of an external data set has only
 // the data set's models: their decisions are detections checked against the data set's labels.
 export function PredictionsPage() {
+  const { all } = useRun()
+  return all ? <AllDataJournal /> : <SourceJournal />
+}
+
+/** The journal of one source: a run, «Вся история» of the hackathon or a dataset's base run. */
+function SourceJournal() {
   const s = useSearchState()
-  const { run } = useRun()
+  const { run, history: wholeHistory } = useRun()
   const dataset = run?.dataset ?? null
   const externals = useExternalModels(dataset)
   const models = useModels()
@@ -124,19 +101,11 @@ export function PredictionsPage() {
   const externalModel = dataset ? (externals.find((m) => m.model === asked) ?? externals[0] ?? null) : null
   const model = dataset ? (externalModel?.model ?? null) : ((asked === 'daily' ? 'daily' : 'smoke_alarm') as ModelName)
   const hackathonModel: ModelName = model === 'daily' ? 'daily' : 'smoke_alarm'
-  // Stage 15: the event model is scored by several versions; the journal shows one of them, the primary by default.
-  // A chain primary (lct-95) is chosen as a whole — its decisions, one per alarm — or by each of its parts.
-  const chain = chainOf(run?.primary_model)
-  const versions =
-    model === 'smoke_alarm' && run?.primary_model ? [...new Set([run.primary_model, ...(chain ?? []), ...(run.shadow_models ?? [])])].sort(byVersion) : []
-  const askedVersion = s.get('version')
-  const version = versions.length > 1 ? (askedVersion && versions.includes(askedVersion) ? askedVersion : (run?.primary_model ?? versions[0])) : null
-  const compare = versions.length > 1 && s.get('compare') === 'disagree'
-  // Task C: the daily forecast is a mix of models by the routing table — all of them by default, or one.
-  const dailyModels = model === 'daily' ? (models.data?.items ?? []).filter((m) => m.model === 'daily' && m.routes?.length) : []
-  const dailyVersions = dailyModels.map((m) => m.version).sort(byVersion)
-  const dailyVersion = askedVersion && dailyVersions.includes(askedVersion) ? askedVersion : null
-  const shownVersion = version ?? dailyVersion
+  // Only what the service decides (owner's decision: no model versions in the interface): the event model — the
+  // decisions of the run's primary (the chain), the daily forecast — the routing mix. «Вся история» has no run: its
+  // primary is the one of new runs — the active event model in /models.
+  const primary = run?.primary_model ?? (wholeHistory ? models.data?.items.find((m) => m.model === 'smoke_alarm' && m.active)?.version : undefined)
+  const shownVersion = model === 'smoke_alarm' ? (primary ?? null) : null
   const alert = s.get('alert') ?? 'all'
   const outcome = s.get('outcome') ?? 'all'
   const history = s.get('history') ?? 'all'
@@ -162,7 +131,6 @@ export function PredictionsPage() {
       object_history: history === 'all' || dataset ? null : history,
       object_id: objectId,
       model_version: shownVersion,
-      disagree: compare ? 'true' : null,
     },
     model !== null,
   )
@@ -174,10 +142,6 @@ export function PredictionsPage() {
   return (
     <div className={cn('mx-auto w-full max-w-7xl space-y-4', selected !== null && '2xl:mr-[26rem] 2xl:w-[calc(100%-26rem)]')}>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold">Журнал прогнозов</h1>
-          <p className="text-sm text-muted-foreground">Все решения моделей с фактическим исходом — живая проверка Precision и Recall.</p>
-        </div>
         {external ? (
           externals.length > 1 && (
             <ToggleGroup value={model ? [model] : []} onValueChange={(v) => v[0] && s.set({ model: v[0] })} variant="outline">
@@ -190,44 +154,9 @@ export function PredictionsPage() {
           )
         ) : (
           <div className="flex flex-wrap items-center gap-2">
-            {version && (
-              <ToggleGroup
-                value={[version]}
-                onValueChange={(v) => v[0] && s.set({ version: v[0] === run?.primary_model ? null : v[0] })}
-                variant="outline"
-                aria-label="Версия событийной модели"
-              >
-                {versions.map((v) => (
-                  <ToggleGroupItem key={v} value={v} title={versionAuthor(v)}>
-                    {versionLabel(v)}
-                    {v === run?.primary_model && <span className="text-xs text-muted-foreground">основная</span>}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
-            )}
-            {dailyVersions.length > 1 && (
-              <ToggleGroup
-                value={[dailyVersion ?? MIX]}
-                onValueChange={(v) => v[0] && s.set({ version: v[0] === MIX ? null : v[0] })}
-                variant="outline"
-                aria-label="Модель ежедневного прогноза"
-              >
-                <ToggleGroupItem value={MIX} title="Все модели таблицы маршрутизации, каждая — на своих типах каналов">
-                  по таблице
-                </ToggleGroupItem>
-                {dailyVersions.map((v) => {
-                  const m = dailyModels.find((d) => d.version === v)
-                  return (
-                    <ToggleGroupItem key={v} value={v} title={[m?.author, m?.routes?.join(', ')].filter(Boolean).join(': ')}>
-                      {versionLabel(v)}
-                    </ToggleGroupItem>
-                  )
-                })}
-              </ToggleGroup>
-            )}
             <ToggleGroup
               value={[hackathonModel]}
-              onValueChange={(v) => v[0] && s.set({ model: v[0] === 'daily' ? 'daily' : null, version: null, compare: null })}
+              onValueChange={(v) => v[0] && s.set({ model: v[0] === 'daily' ? 'daily' : null })}
               variant="outline"
             >
               {HACKATHON.map((m) => (
@@ -270,10 +199,10 @@ export function PredictionsPage() {
               <>
                 <CardTitle>
                   Метрики — {MODEL_LABEL[hackathonModel].toLowerCase()} модель{' '}
-                  {metrics.data?.model_version ? `· ${versionLabel(metrics.data.model_version)}` : model === 'daily' && dailyVersions.length ? '· смесь по таблице' : ''}
+
                 </CardTitle>
                 <CardDescription>
-                  {MODEL_DESCRIPTION[hackathonModel]}. Только прогнозы с истёкшим горизонтом. Упреждение офлайн {offline.version}:{' '}
+                  {MODEL_DESCRIPTION[hackathonModel]}. Только прогнозы с истёкшим горизонтом. Упреждение офлайн:{' '}
                   {offline.lead}.
                 </CardDescription>
               </>
@@ -301,9 +230,6 @@ export function PredictionsPage() {
           onChange={(v) => s.set({ outcome: v === 'all' ? null : v })}
           className={external ? 'w-48' : undefined}
         />
-        {versions.length > 1 && (
-          <FilterSelect label="Сравнение моделей" options={COMPARE} value={compare ? 'disagree' : 'all'} onChange={(v) => s.set({ compare: v === 'all' ? null : v })} className="w-52" />
-        )}
         {model === 'smoke_alarm' && (
           <FilterSelect label="История объекта" options={HISTORY} value={history} onChange={(v) => s.set({ history: v === 'all' ? null : v })} className="w-56" />
         )}
@@ -332,7 +258,6 @@ export function PredictionsPage() {
                   <TableHead>Канал</TableHead>
                   <TableHead>Объект</TableHead>
                   <TableHead>Оценка</TableHead>
-                  {version && <TableHead>Другая модель</TableHead>}
                   {detector ? <TableHead>{withClasses ? 'Классы' : 'Причина'}</TableHead> : <TableHead>Горизонт до</TableHead>}
                   <TableHead>Исход</TableHead>
                   {!detector && <TableHead className="text-right">Упреждение</TableHead>}
@@ -358,18 +283,7 @@ export function PredictionsPage() {
                       ) : (
                         <span className="text-xs text-muted-foreground">{p.skip_reason ? skipReasonLabel(p.skip_reason) : 'пропуск'}</span>
                       )}
-                      {chain && chainOf(version) && <PredictionDecision prediction={p} chain={chain} short />}
-                      {dailyVersions.length > 1 && !dailyVersion && (
-                        <div className="text-xs text-muted-foreground" title={versionAuthor(p.model_version)}>
-                          {versionLabel(p.model_version)}
-                        </div>
-                      )}
                     </TableCell>
-                    {version && (
-                      <TableCell>
-                        <VersionScores scores={[ownScore(p), ...(p.paired ?? [])]} current={p.model_version} disagree={disagrees(p)} />
-                      </TableCell>
-                    )}
                     {detector ? (
                       <TableCell className="max-w-72">
                         {withClasses ? (

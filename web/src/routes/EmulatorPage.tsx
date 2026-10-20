@@ -1,15 +1,14 @@
-import { CalendarRange, CircleAlert, Database, FileSearch, Gauge, Network, Pause, Play, Radio, Square, TriangleAlert, Upload, Wind } from 'lucide-react'
+import { CalendarRange, CircleAlert, FileSearch, Gauge, Pause, Play, Radio, Square, TriangleAlert, Upload, Wind } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
+import { DirectionBadge } from '@/components/domain/DirectionBadge'
 import { DatasetBadge } from '@/components/domain/DatasetBadge'
 import { QueryError } from '@/components/domain/QueryError'
 import { RunLink } from '@/components/domain/RunLink'
 import { StatusBadge } from '@/components/domain/StatusBadge'
 import { DatasetFacts } from '@/components/emulator/DatasetFacts'
-import { PrimaryModelSwitch } from '@/components/emulator/PrimaryModel'
-import { RunAuditLink } from '@/components/emulator/RunAudit'
 import { ScenarioSourceBadge } from '@/components/emulator/ScenarioSourceBadge'
 import { StartDialog } from '@/components/emulator/StartDialog'
 import { Button } from '@/components/ui/button'
@@ -18,11 +17,12 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Slider } from '@/components/ui/slider'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { useDatasets, useEmulatorCommand, useEmulatorState, useModels, useScenarios } from '@/lib/api/queries'
-import type { Dataset, EmulatorStateName, LiveMetrics, Run, RunStatus, Scenario, Status } from '@/lib/api/types'
+import { useEmulatorCommand, useEmulatorState, useModels, useScenarios } from '@/lib/api/queries'
+import type { EmulatorStateName, LiveMetrics, Run, RunStatus, Scenario, Status } from '@/lib/api/types'
+import { DIRECTION_ORDER, DIRECTION_TEXT, DIRECTION_TITLE, directionOf, type Direction } from '@/lib/directions'
 import { eventsWord, lossWindowText } from '@/lib/event-loss'
-import { fmtDate, fmtDateTime, fmtDateTimeShort, fmtInt, fmtPercent, fmtTime, plural } from '@/lib/format'
-import { byVersion, historyNote, RUN_STATUS_LABEL, versionLabel } from '@/lib/labels'
+import { fmtDateTime, fmtDateTimeShort, fmtInt, fmtPercent, fmtTime, plural } from '@/lib/format'
+import { historyNote, RUN_STATUS_LABEL } from '@/lib/labels'
 import { useRun } from '@/lib/run'
 import { cn } from '@/lib/utils'
 
@@ -57,9 +57,7 @@ function RunPr({ run }: { run: Run }) {
       </div>
     )
   }
-  // Stage 15: every version on the decisions scored by all of them.
-  const versions = Object.entries(run.live?.versions ?? {}).sort(([a], [b]) => byVersion(a, b))
-  if (versions.length > 1) return <VersionsPr run={run} versions={versions} />
+  // The service's decisions only (owner's decision: no model versions in the interface).
   return <LivePr live={run.live?.smoke_alarm} />
 }
 
@@ -103,38 +101,6 @@ function LivePr({ live, label }: { live: LiveMetrics | undefined; label?: string
   )
 }
 
-/**
- * v0 and v3 of one run side by side (15.3): each on the decisions scored by both, so the numbers compare directly —
- * one line per version with a decimal, one shared note, a link to the full comparison.
- */
-function VersionsPr({ run, versions }: { run: Run; versions: [string, LiveMetrics][] }) {
-  const first = versions[0][1]
-  const decided = first.decisions
-  return (
-    <div className="space-y-0.5">
-      {versions.map(([v, live]) => {
-        const l = liveLine(live, 1)
-        return (
-          <div key={v} title={l.title} className="whitespace-nowrap">
-            <span className={cn('mr-1.5 inline-block w-5', v === run.primary_model ? 'font-medium' : 'text-muted-foreground')}>{versionLabel(v)}</span>
-            {l.main}
-          </div>
-        )
-      })}
-      <div className="text-muted-foreground">
-        {decided
-          ? `общих закрытых решений: ${fmtInt(decided)}`
-          : `общих закрытых решений пока нет${first.open ? ` · открыто ${fmtInt(first.open)}` : ''}`}
-        {run.primary_model && ` · основная ${versionLabel(run.primary_model)}`}
-      </div>
-      {decided > 0 && first.history > 0 && <div className="text-muted-foreground">{historyNote(first.history, decided)}</div>}
-      <Link to={{ pathname: '/models', search: `?run=${run.id}` }} className="block text-foreground underline-offset-4 hover:underline">
-        Сравнить версии
-      </Link>
-      <RunAuditLink runId={run.id} title={run.scenario_title} />
-    </div>
-  )
-}
 
 function ControlPanel() {
   const { data: em, isPending, isError, error, refetch } = useEmulatorState()
@@ -255,63 +221,20 @@ function ControlPanel() {
             )}
           </div>
         </div>
-        {run && !run.dataset && (
-          <div className="border-t pt-4 lg:col-span-2">
-            <PrimaryModelSwitch run={run} />
-          </div>
-        )}
       </CardContent>
     </Card>
   )
 }
 
-/** Card facts of an external dataset: task direction, real or synthetic, license and source with links. */
-
-/**
- * A loaded external dataset: what its journal covers and a link to its whole history — the dataset's service run,
- * which is not in the run list.
- */
-function DatasetCard({ d }: { d: Dataset & { base_run_id: number } }) {
+function ScenarioCard({ s, onStart, showDirection = false }: { s: Scenario; onStart: (s: Scenario) => void; showDirection?: boolean }) {
   return (
     <Card className="flex flex-col">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-source-external">
-          <Database className="size-4 shrink-0" /> {d.short}
-        </CardTitle>
-        <CardDescription className="space-y-1">
-          <span className="line-clamp-2 block text-xs font-medium text-foreground">{d.title}</span>
-          <span className="line-clamp-4 block">{d.description}</span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 space-y-1.5 text-sm">
-        <div className="flex items-center gap-1.5 text-muted-foreground">
-          <CalendarRange className="size-4" />
-          журнал {fmtDate(d.period_start)} — {fmtDate(d.period_end)}
+        <CardTitle className="min-w-0 break-words">{s.title}</CardTitle>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {showDirection && <DirectionBadge scenarioId={s.id} dataset={s.dataset} />}
+          <ScenarioSourceBadge source={s.source} dataset={s.dataset} />
         </div>
-        <div className="text-muted-foreground">
-          {fmtInt(d.objects)} {plural(d.objects, ['объект', 'объекта', 'объектов'])} · {fmtInt(d.channels)}{' '}
-          {plural(d.channels, ['канал', 'канала', 'каналов'])}
-          {d.events !== null && ` · ${fmtInt(d.events)} ${plural(d.events, ['событие', 'события', 'событий'])}`}
-        </div>
-        <DatasetFacts dataset={d.key} />
-      </CardContent>
-      <CardFooter>
-        <Button variant="outline" className="w-full" nativeButton={false} render={<Link to={{ pathname: '/objects', search: `?run=${d.base_run_id}` }} />}>
-          <Network /> Вся история набора
-        </Button>
-      </CardFooter>
-    </Card>
-  )
-}
-
-function ScenarioCard({ s, onStart }: { s: Scenario; onStart: (s: Scenario) => void }) {
-  return (
-    <Card className="flex flex-col">
-      <CardHeader>
-        <CardTitle className="flex items-start justify-between gap-2">
-          {s.title}
-          <ScenarioSourceBadge source={s.source} dataset={s.dataset} className="shrink-0" />
-        </CardTitle>
         <CardDescription className="line-clamp-4">{s.description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 space-y-1.5 text-sm">
@@ -442,20 +365,17 @@ function RunsTable() {
 // SMVU emulator (docs/product/v1-scope.md, экран 7; docs/architecture/emulator.md): scenarios, start, speed, runs.
 export function EmulatorPage() {
   const scenarios = useScenarios()
-  const datasets = useDatasets()
   const [starting, setStarting] = useState<Scenario | null>(null)
-  // Only datasets loaded into this stand: the rest have nothing to open or run.
-  const loaded = (datasets.data ?? []).filter((d): d is Dataset & { base_run_id: number } => d.base_run_id !== null)
-  const external = scenarios.data?.items.filter((s) => s.dataset) ?? []
+  const items = scenarios.data?.items ?? []
+  const [filter, setFilter] = useState<Direction | 'all'>('all')
+  const allGroups = DIRECTION_ORDER.map((direction) => ({
+    direction,
+    items: items.filter((s) => s.source !== 'upload' && directionOf(s.id, s.dataset) === direction),
+  })).filter((g) => g.items.length > 0)
+  const groups = allGroups.filter((g) => filter === 'all' || g.direction === filter)
+  const uploaded = items.filter((s) => s.source === 'upload' && (filter === 'all' || directionOf(s.id, s.dataset) === filter))
   return (
     <div className="mx-auto w-full max-w-7xl space-y-4">
-      <div>
-        <h1 className="text-xl font-semibold">Эмулятор СМВУ</h1>
-        <p className="text-sm text-muted-foreground">
-          Реальные серии событий журнала в реальном времени по OPC UA. Сценарии 2026 года модели при обучении не видели;
-          декабрь 2025 — период подбора порога базовой модели.
-        </p>
-      </div>
       <ControlPanel />
       <div>
         <div className="mb-2 flex items-center justify-between gap-2">
@@ -464,56 +384,65 @@ export function EmulatorPage() {
             <Upload /> Загрузить журнал
           </Button>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {scenarios.isPending && Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-56" />)}
-          {scenarios.isError && (
-            <QueryError error={scenarios.error} onRetry={() => void scenarios.refetch()} what="Сценарии" compact className="md:col-span-2 xl:col-span-4" />
-          )}
-          {scenarios.data?.items.filter((s) => !s.dataset).map((s) => <ScenarioCard key={s.id} s={s} onStart={setStarting} />)}
-        </div>
-      </div>
-      {(loaded.length > 0 || external.length > 0) && (
-        <div>
-          <div className="mb-2">
-            <h2 className="flex items-center gap-2 text-base font-semibold">
-              <Database className="size-4 text-source-external" /> Внешние данные
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Открытые наборы других организаций для направлений ТЗ, где у хакатона нет данных. Это не данные Москоллектора: у
-              прогона — своя плашка на всех экранах, свои объекты и модели.
-            </p>
+        {scenarios.isPending && (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }, (_, i) => (
+              <Skeleton key={i} className="h-56" />
+            ))}
           </div>
-          {loaded.length > 0 && (
-            <>
-              <h3 className="mb-2 text-sm font-medium">Наборы</h3>
+        )}
+        {scenarios.isError && <QueryError error={scenarios.error} onRetry={() => void scenarios.refetch()} what="Сценарии" compact />}
+        {allGroups.length > 1 && (
+          <div className="mb-3 flex flex-wrap gap-1.5" role="group" aria-label="Направление ТЗ">
+            <Button size="sm" variant={filter === 'all' ? 'secondary' : 'outline'} onClick={() => setFilter('all')}>
+              Все
+            </Button>
+            {allGroups.map(({ direction, items }) => (
+              <Button
+                key={direction}
+                size="sm"
+                variant={filter === direction ? 'secondary' : 'outline'}
+                className={DIRECTION_TEXT[direction]}
+                onClick={() => setFilter(direction)}
+              >
+                {DIRECTION_TITLE[direction]} {items.length}
+              </Button>
+            ))}
+          </div>
+        )}
+        <div className="space-y-4">
+          {groups.map(({ direction, items }) => (
+            <section key={direction}>
+              <h3 className={cn('mb-2 flex items-center gap-2 text-sm font-semibold', DIRECTION_TEXT[direction])}>
+                {DIRECTION_TITLE[direction]}
+              </h3>
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                {loaded.map((d) => (
-                  <DatasetCard key={d.key} d={d} />
-                ))}
-              </div>
-            </>
-          )}
-          {external.length > 0 && (
-            <>
-              <h3 className="mt-4 mb-2 text-sm font-medium">Сценарии наборов</h3>
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                {external.map((s) => (
+                {items.map((s) => (
                   <ScenarioCard key={s.id} s={s} onStart={setStarting} />
                 ))}
               </div>
-            </>
+            </section>
+          ))}
+          {uploaded.length > 0 && (
+            <section>
+              <h3 className="mb-2 text-sm font-medium">Загруженные журналы</h3>
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {uploaded.map((s) => (
+                  <ScenarioCard key={s.id} s={s} onStart={setStarting} showDirection />
+                ))}
+              </div>
+            </section>
           )}
         </div>
-      )}
+      </div>
       <Card className="py-0">
         <CardHeader className="pt-4">
           <CardTitle>Прогоны</CardTitle>
           <CardDescription>
             Каждый запуск — отдельный прогон, данные прошлых прогонов остаются. «Открыть» переключает все экраны на прогон.
             P / R событийной модели считается по прогнозам с истёкшим горизонтом (24 ч). У коротких прогонов закрытых ещё нет —
-            тогда показана нижняя граница Precision по тревогам, после которых отказ уже случился. Если тревоги оценивали v0 и
-            v3 — обе на одних решениях, то есть тревогах, оценённых обеими; основная версия прогона выделена. «Сравнить версии»
-            открывает офлайн- и живое сравнение с расхождениями. У прогонов внешних наборов — модели набора, исход по разметке.
+            тогда показана нижняя граница Precision по тревогам, после которых отказ уже случился. У прогонов внешних наборов —
+            модели набора, исход по разметке.
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">

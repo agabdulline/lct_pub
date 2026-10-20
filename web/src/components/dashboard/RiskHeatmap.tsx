@@ -64,9 +64,12 @@ export function RiskHeatmap({ rows, types }: { rows: ObjectRisk[]; types: Sensor
               <th className="pb-1.5 text-left text-xs font-medium text-muted-foreground">Объект</th>
               {types.map((t) => (
                 <th key={t} className="w-12 pb-1.5 text-center">
-                  <span className="inline-flex justify-center">
-                    <SensorTypeIcon type={t} />
-                  </span>
+                  <Tooltip>
+                    <TooltipTrigger render={<span className="inline-flex justify-center" />}>
+                      <SensorTypeIcon type={t} />
+                    </TooltipTrigger>
+                    <TooltipContent>{t}</TooltipContent>
+                  </Tooltip>
                 </th>
               ))}
               <th className="w-16 pb-1.5 text-right text-xs font-medium text-muted-foreground">Всего</th>

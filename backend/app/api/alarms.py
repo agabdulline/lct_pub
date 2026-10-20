@@ -100,7 +100,8 @@ async def alarms(
     scope_where, scope_params = await _filters(session, ctx.run_id, from_, to, object_id, channel_id, kind, None, alert)
     base = (
         "FROM run_alarms(:run) a JOIN channels c ON c.id = a.channel_id "
-        "LEFT JOIN alarm_episodes e ON e.id = a.episode_id LEFT JOIN predictions p ON p.id = a.prediction_id"
+        "LEFT JOIN alarm_episodes e ON e.id = a.episode_id "
+        "LEFT JOIN predictions p ON p.id = a.prediction_id AND p.run_id IS NOT DISTINCT FROM :run"
     )
     total = await session.scalar(text(f"SELECT count(*) {base} WHERE {where}"), params)
     rows = await session.execute(

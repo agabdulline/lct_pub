@@ -1,11 +1,9 @@
 import { ArrowUpRight, Map as MapIcon } from 'lucide-react'
 
-import { AlarmDecision } from '@/components/domain/ChainDecision'
 import { FactorList } from '@/components/domain/FactorList'
 import { ObjectHistoryMark } from '@/components/domain/ObjectHistoryMark'
 import { PprAlertMark } from '@/components/domain/PprAlertMark'
 import { RiskMeter } from '@/components/domain/RiskMeter'
-import { VersionScores } from '@/components/domain/VersionScores'
 import { RunLink } from '@/components/domain/RunLink'
 import { SensorTypeIcon } from '@/components/domain/SensorTypeIcon'
 import { StatusDot } from '@/components/domain/StatusBadge'
@@ -18,8 +16,7 @@ import { isPprAlert } from '@/lib/alarm'
 import { useAlarm, useEmulatorState } from '@/lib/api/queries'
 import type { AlarmDetail } from '@/lib/api/types'
 import { fmtDateTime, fmtScore, fmtSince, fmtTime } from '@/lib/format'
-import { ALARM_KIND_LABEL, chainOf, skipReasonLabel, STATUS_LABEL, versionLabel } from '@/lib/labels'
-import { useRun } from '@/lib/run'
+import { ALARM_KIND_LABEL, skipReasonLabel, STATUS_LABEL } from '@/lib/labels'
 
 // Scoring takes up to ~10 real seconds (object debounce 5 s + model); on an accelerated run
 // that is minutes of run time.
@@ -73,8 +70,6 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 // Alarm detail beside the feed: non-modal, the feed stays clickable.
 export function AlarmPanel({ alarmId, onClose }: { alarmId: number | null; onClose: () => void }) {
   const { data: a, isPending } = useAlarm(alarmId)
-  const { run } = useRun()
-  const chain = chainOf(run?.primary_model)
   const em = useEmulatorState().data
   const speed = em?.state === 'running' ? Math.round(em.target_speed) : null
   return (
@@ -111,18 +106,8 @@ export function AlarmPanel({ alarmId, onClose }: { alarmId: number | null; onClo
             <div className="rounded-lg p-3 ring-1 ring-foreground/10">
               <Row label="Значение">{a.value}</Row>
               {a.prediction?.score !== null && a.prediction?.score !== undefined && (
-                <Row label={`Оценка модели${a.scores?.length ? ` ${versionLabel(a.scores.find((x) => x.primary)?.model_version)}` : ''}`}>
+                <Row label="Оценка модели">
                   <RiskMeter value={a.prediction.score} threshold={a.prediction.threshold} />
-                </Row>
-              )}
-              {(a.scores?.length ?? 0) > 1 && (
-                <Row label="Другая модель">
-                  <VersionScores scores={a.scores} disagree={a.disagree} detailed />
-                </Row>
-              )}
-              {chain && (a.scores?.length ?? 0) > 0 && (
-                <Row label={`Решение ${versionLabel(run?.primary_model)}`}>
-                  <AlarmDecision alarm={a} chain={chain} className="text-sm text-foreground" />
                 </Row>
               )}
               <Row label="Эпизод">

@@ -66,12 +66,6 @@ function ChooseFile() {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-4">
       <BackLink to="/emulator">Эмулятор СМВУ</BackLink>
-      <div>
-        <h1 className="text-xl font-semibold">Загрузить журнал</h1>
-        <p className="text-sm text-muted-foreground">
-          Свой журнал событий станет сценарием эмулятора: его сигналы будут переданы в систему так же, как встроенные.
-        </p>
-      </div>
       <Card>
         <CardContent>
           <button

@@ -172,7 +172,7 @@ def test_access_api(client):
         ("10:00:00", "closed", run_id),
         ("07:00:00", "closed", None),
     ]
-    assert page["counts"] == {"open": 1, "closed": 2, "dismissed": 0}
+    assert page["counts"] == {"candidate": 0, "open": 1, "closed": 2, "dismissed": 0}
     item = page["items"][1]
     assert item["channels"] == [
         {"id": DOOR, "name": "КД дверь ПК50", "sensor_type": "КД Дверь"},

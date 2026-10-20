@@ -17,9 +17,11 @@ import { fmtDateTime, fmtDateTimeShort, fmtInt, fmtTime, mskDay } from '@/lib/fo
 import { ACCESS_END_LABEL, ACCESS_NOTE, ACCESS_RESOLUTION_LABEL, ACCESS_RULE_TEXT, ACCESS_TITLE, PRIORITY_LABEL, PRIORITY_STATUS } from '@/lib/labels'
 
 import { AccessMarks } from './AccessMarks'
-import { accessHeadline, accessStateLabel, accessStatus, endText, openingsText } from './access-view'
+import { ACCESS_MODEL_CAVEAT, accessHeadline, accessStateLabel, accessStatus, decisionText, endText, openingsText } from './access-view'
 
 const RESOLUTIONS: AccessResolution[] = ['works', 'intrusion', 'false_alarm']
+
+const num2 = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v.toFixed(2).replace('.', ','))
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -131,8 +133,8 @@ function Review({ inc, patch }: { inc: AccessIncidentDetail; patch: ReturnType<t
 
 /**
  * Opened under guard beside the feed (docs/architecture/access.md §5): openings in time, guard transitions, marks,
- * the dispatcher's review, the work order. Non-modal, like the alarm and equipment cards. No model verdict — this is
- * a rule of the guard system, and the panel says so.
+ * the dispatcher's review, the work order. Non-modal, like the alarm and equipment cards. Who opened the incident — the
+ * access model at once or the rule after 5 min — with what the model is not (a proxy, not intrusion detection).
  */
 export function AccessPanel({ incidentId, onClose }: { incidentId: number | null; onClose: () => void }) {
   const { data: inc, isPending } = useAccessIncident(incidentId)
@@ -169,10 +171,23 @@ export function AccessPanel({ incidentId, onClose }: { incidentId: number | null
                 {inc.status !== 'open' && <span className="text-muted-foreground">{endText(inc)}</span>}
               </div>
               <AccessMarks incident={inc} />
-              <div className="rounded-lg p-3 ring-1 ring-foreground/10">
-                <p className="font-medium">{ACCESS_NOTE}.</p>
-                <p className="mt-1 text-xs text-muted-foreground">{ACCESS_RULE_TEXT}</p>
-              </div>
+              {inc.verdict || inc.model_note ? (
+                <div className="space-y-1 rounded-lg p-3 ring-1 ring-foreground/10">
+                  <p className="font-medium">{decisionText(inc).long}</p>
+                  {inc.score !== null && inc.score !== undefined && (
+                    <p className="text-xs text-muted-foreground">
+                      Оценка модели {num2(inc.score)} при пороге {num2(inc.threshold)} · {inc.model_version}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground">{ACCESS_MODEL_CAVEAT}</p>
+                  <p className="text-xs text-muted-foreground">{ACCESS_RULE_TEXT}</p>
+                </div>
+              ) : (
+                <div className="rounded-lg p-3 ring-1 ring-foreground/10">
+                  <p className="font-medium">{ACCESS_NOTE}.</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{ACCESS_RULE_TEXT}</p>
+                </div>
+              )}
             </div>
 
             <div className="rounded-lg p-3 ring-1 ring-foreground/10">
@@ -192,7 +207,11 @@ export function AccessPanel({ incidentId, onClose }: { incidentId: number | null
                 )}
               </Row>
               <Row label="Первое открытие">{fmtDateTime(inc.start_ts)}</Row>
-              {inc.qualified_ts && <Row label="Стал инцидентом">{`${fmtTime(inc.qualified_ts)} — 5 мин без снятия охраны`}</Row>}
+              {inc.qualified_ts && (
+                <Row label="Стал инцидентом">
+                  {`${fmtTime(inc.qualified_ts)} — ${inc.decided_by === 'model' ? 'сразу по оценке модели' : '5 мин без снятия охраны'}`}
+                </Row>
+              )}
               <Row label="Конец">
                 {inc.end_ts ? `${fmtTime(inc.end_ts)} · ${inc.end_reason ? ACCESS_END_LABEL[inc.end_reason] : '—'}` : 'идёт'}
               </Row>

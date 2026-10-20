@@ -9,6 +9,7 @@ from sqlalchemy import text
 from app.api.deps import RunCtx, Session
 from app.api.errors import ApiError
 from app.api.params import csv_list, page_params
+from app.db.models import HACKATHON
 from app.domain.metrics import metrics_now, model_metrics
 from app.domain.ml_client import MlClient, MlUnavailable
 from app.domain.model_versions import (
@@ -57,12 +58,25 @@ async def predictions(
         bool | None, Query(description="эта и другая версия оценили ту же тревогу, тревога модели разная (15.2)")
     ] = None,
     paired: Annotated[bool | None, Query(description="тревогу оценили без пропуска все версии прогона (15.2)")] = None,
+    source: Annotated[
+        str | None, Query(description="«все данные» (run=all): hackathon — база хакатона, ключ набора — его основа")
+    ] = None,
     page: int = 1,
     size: int = 50,
 ) -> dict:
-    """Журнал прогнозов прогона, новые сверху; `from`, `to` — по времени решения."""
+    """Журнал прогнозов прогона, новые сверху; `from`, `to` — по времени решения. «Все данные» (`run=all`) — решения
+    истории хакатона и прогонов-основ наборов, `source` — один из них."""
     page, size = page_params(page, size)
     where, params = [f"p.{RUN}", "p.decision_time <= :now"], {"run": ctx.run_id, "now": ctx.now}
+    if ctx.all_data:
+        runs = {(r.params or {}).get("dataset"): r.id for r in ctx.dataset_runs}
+        if source == HACKATHON:
+            where[0] = "p.run_id IS NULL"
+        elif source is not None:
+            where[0], params["source_run"] = "p.run_id = :source_run", runs.get(source, -1)
+        else:
+            where[0] = "(p.run_id IS NULL OR p.run_id = ANY(:dataset_runs))"
+            params["dataset_runs"] = list(runs.values())
     if disagree is not None:
         where.append(other_disagrees_sql("p.") if disagree else f"NOT {other_disagrees_sql('p.')}")
     if paired is not None:
@@ -107,7 +121,11 @@ async def predictions(
         params["subs"] = sorted(tree.sub_objects_under(object_id))
     condition = " AND ".join(where)
     total = await session.scalar(
-        text(f"SELECT count(*) FROM predictions p JOIN channels c ON c.id = p.channel_id WHERE {condition}"), params
+        text(
+            "SELECT count(*) FROM predictions p JOIN LATERAL (SELECT ch.object_id FROM channels ch "
+            f"WHERE ch.id = p.channel_id LIMIT 1) c ON true WHERE {condition}"
+        ),
+        params,
     )
     rows = await session.execute(
         text(
@@ -192,6 +210,8 @@ def _external_model_info(m: dict, active: bool) -> dict:
 def _model_info(m: dict, active: bool) -> dict:
     if m.get("family") == "external":
         return _external_model_info(m, active)
+    if m.get("family") == "access":
+        return _access_model_info(m, active)
     name = m.get("name", "")
     each_channel = m.get("family") == "each_channel"
     # task — с 15.1 в /v1/models; без него отдельные модели типов (each_channel, #243) — ежедневные, старые v3 —
@@ -245,6 +265,41 @@ def _model_info(m: dict, active: bool) -> dict:
         "artifact_sha256": m.get("sha256"),
         "offline_metrics": offline,
         "offline": report,
+    }
+
+
+ACCESS_TYPES = ["КД Дверь", "КД Люк", "9-секционный люк"]  # двери и люки подобъекта (triage.yaml, раздел access)
+
+
+def _access_model_info(m: dict, active: bool) -> dict:
+    """Модель доступа «свой или нужна реакция» (lct-8f): прокси по тому, снимут ли охрану за 5 мин, — не обнаружение
+    проникновения. Офлайн-итог с интервалами и ориентиром — правилом охранной системы на тех же решениях."""
+    off = m.get("offline_metrics") or {}
+    rule = off.get("rule") or {}
+
+    def block(b: dict) -> dict | None:
+        keys = ("precision", "recall", "f1", "ap", "tp", "fp", "decisions", "positives")
+        return {"period": off.get("period", "тест")} | {k: b.get(k) for k in keys} if b.get("decisions") else None
+
+    return {
+        "model": m.get("task") or "access_open",
+        "version": version_of(m),
+        "family": "access",
+        "author": m.get("author"),
+        "title": m.get("title") or "Модель доступа",
+        "loaded": True,
+        "active": active,
+        "threshold": m.get("threshold"),
+        "features": m.get("features") or 0,
+        "trained_on": m.get("trained_on") or "",
+        "horizon": "5 мин после первого открытия",
+        "sensor_types": ACCESS_TYPES,
+        "artifact_sha256": m.get("sha256"),
+        "offline_metrics": block(off),
+        "offline_ci90": off.get("ci90"),
+        "offline_rule": block(rule),
+        "offline_rule_label": rule.get("name"),
+        "limitations": m.get("limitations"),
     }
 
 

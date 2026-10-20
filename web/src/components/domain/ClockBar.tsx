@@ -5,9 +5,9 @@ import { RunSelect } from '@/components/domain/RunSelect'
 import { StatusBadge, StatusDot } from '@/components/domain/StatusBadge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { MOCK } from '@/lib/api/client'
-import { useClock, useEmulatorState, useHealth } from '@/lib/api/queries'
-import { fmtDateTime } from '@/lib/format'
-import { chainOf, RUN_STATUS_LABEL, versionLabel } from '@/lib/labels'
+import { useClock, useEmulatorState, useHealth, useHistorySummary } from '@/lib/api/queries'
+import { fmtDate, fmtDateTime } from '@/lib/format'
+import { RUN_STATUS_LABEL } from '@/lib/labels'
 import { useRun } from '@/lib/run'
 import { useStreamStatus } from '@/lib/sse/bus'
 
@@ -17,7 +17,8 @@ export function ClockBar() {
   const clock = useClock()
   const health = useHealth()
   const emulator = useEmulatorState()
-  const { run, ready } = useRun()
+  const { run, ready, history, all } = useRun()
+  const historyEnd = useHistorySummary(history).data?.to
   const stream = useStreamStatus()
 
   const streaming = clock.data?.mode === 'stream'
@@ -37,7 +38,13 @@ export function ClockBar() {
       )}
       <RunSelect />
       {/* until /runs answers the run is unknown: the emulator clock may belong to another run */}
-      {ready && <span className="hidden font-mono tabular-nums sm:inline">{fmtDateTime(now)}</span>}
+      {/* «Вся история» has no clock: it is the journal up to the end of its data */}
+      {ready && history && (
+        <span className="hidden text-xs text-muted-foreground sm:inline">
+          {all ? 'все данные · у источников своё время' : `весь журнал${historyEnd ? ` до ${fmtDate(historyEnd)}` : ''}`}
+        </span>
+      )}
+      {ready && !history && <span className="hidden font-mono tabular-nums sm:inline">{fmtDateTime(now)}</span>}
       {active && (
         <Tooltip>
           <TooltipTrigger render={<span className="hidden items-center gap-1 text-xs text-muted-foreground md:inline-flex" />}>
@@ -61,20 +68,6 @@ export function ClockBar() {
         <StatusBadge status={streaming ? 'ppr' : 'unknown'} className="hidden sm:inline-flex">
           {streaming ? 'поток эмулятора' : 'реальное время'}
         </StatusBadge>
-      )}
-      {run?.primary_model && (!!run.shadow_models?.length || !!chainOf(run.primary_model)) && (
-        <Tooltip>
-          <TooltipTrigger render={<Link to={{ pathname: '/emulator', search: run ? `?run=${run.id}` : '' }} className="hidden xl:inline-flex" />}>
-            <StatusBadge status="unknown">модель {versionLabel(run.primary_model)}</StatusBadge>
-          </TooltipTrigger>
-          <TooltipContent>
-            Основная модель прогона — {versionLabel(run.primary_model)}: по ней вердикты и заявки.{' '}
-            {chainOf(run.primary_model)
-              ? `Решает ${versionLabel(chainOf(run.primary_model)![0])}, где она оценила тревогу, иначе следующая — в ленте видно, чьё решение.`
-              : `${run.shadow_models.map(versionLabel).join(', ')} оценивает те же тревоги рядом.`}{' '}
-            Переключить — на пульте эмулятора.
-          </TooltipContent>
-        </Tooltip>
       )}
       <Tooltip>
         <TooltipTrigger render={<span className="inline-flex items-center" />}>

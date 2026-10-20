@@ -5,10 +5,11 @@ import datetime as dt
 from fastapi import APIRouter
 from sqlalchemy import text
 
-from app.api.deps import RunCtx, Session
+from app.api.deps import RunCtx, Session, base_now, dataset_base_runs
+from app.domain.history import dataset_history, history_summary
 from app.domain.metrics import live, model_metrics
 from app.domain.views import aggregate, by_sensor_type, by_sub_object, channel_views, object_tree
-from app.schemas.api import DashboardRisk, DashboardSummary
+from app.schemas.api import DashboardRisk, DashboardSummary, DatasetHistory, HistorySummary
 
 router = APIRouter(tags=["дашборд"])
 
@@ -115,3 +116,18 @@ async def risk(ctx: RunCtx, session: Session) -> dict:
             }
         )
     return {"top": [c.as_dict() for c in top], "by_object": by_object}
+
+
+@router.get("/dashboard/history", response_model=HistorySummary, response_model_by_alias=True)
+async def history(session: Session) -> dict:
+    """Режим «Вся история»: журнал хакатона без прогона (база, `run_id IS NULL`) — помесячно дымовые тревоги и доля
+    ППР, начавшиеся неисправности, инциденты вскрытия под охраной; проблемные объекты за год до конца данных. Только
+    агрегаты, без сырых событий. Прогоны и внешние наборы сюда не входят."""
+    return await history_summary(session, await base_now(session))
+
+
+@router.get("/dashboard/datasets-history", response_model=list[DatasetHistory], response_model_by_alias=True)
+async def datasets_history(session: Session) -> list[dict]:
+    """Режим «Все данные»: история каждого внешнего набора по месяцам — его прогон-основа, своя шкала времени (у наборов
+    2014–2023, у хакатона 2019–2026 — `/dashboard/history`). Только агрегаты `channel_daily` и `predictions`."""
+    return [await dataset_history(session, run) for run in await dataset_base_runs(session)]

@@ -1,0 +1,101 @@
+{
+ "model": "access_open",
+ "family": "access",
+ "version": "v0",
+ "label": "access-open-v0",
+ "author": "команда",
+ "title": "Открытие под охраной: снимут ли охрану — свой или нужна реакция",
+ "features": [
+  "hour",
+  "weekday",
+  "off_hours",
+  "hatch",
+  "is_alarm",
+  "guard_faulty",
+  "armed_log_min",
+  "disarms_24h",
+  "disarms_7d",
+  "since_disarm_log_min",
+  "disarm_same_hour_28d",
+  "opens_same_hour_28d",
+  "door_opens_30d",
+  "door_candidates_365d",
+  "door_dismissed_share_365d",
+  "sub_candidates_30d",
+  "sub_dismissed_share_30d",
+  "sub_candidates_365d",
+  "sub_dismissed_share_365d",
+  "other_opens_10m"
+ ],
+ "categorical": [],
+ "threshold": 0.607704,
+ "trees": 400,
+ "positive": "нужна реакция",
+ "positive_class": "охрану не сняли в [T, T + 5 мин] — правило завело бы инцидент",
+ "decision": "первое открытие кандидата правила «вскрытие под охраной» (docs/architecture/access.md §3)",
+ "train": {
+  "from": "2019-01-01",
+  "to": "2025-01-01"
+ },
+ "threshold_period": {
+  "from": "2025-01-01",
+  "to": "2026-01-01"
+ },
+ "test": {
+  "from": "2026-01-01",
+  "to": "2026-07-01",
+  "label": "I полугодие 2026"
+ },
+ "trained_on": "2019–2024",
+ "sha256": "54f8fbfb95f2dec60fbe1e2713986f210c76a5024741e086de24acfa556dbfa1",
+ "offline_metrics": {
+  "period": "I полугодие 2026",
+  "precision": 0.911504424778761,
+  "recall": 0.8110236220472441,
+  "f1": 0.8583333333333333,
+  "ap": 0.9464624231824994,
+  "tp": 103,
+  "fp": 10,
+  "decisions": 215,
+  "positives": 127,
+  "ci90": {
+   "P": [
+    0.8441558441558441,
+    0.9491525423728814
+   ],
+   "R": [
+    0.7110818713450293,
+    0.875
+   ]
+  },
+  "rule": {
+   "name": "флаг тревоги охранной системы у открытия",
+   "precision": 0.8169014084507042,
+   "recall": 0.9133858267716536,
+   "f1": 0.862453531598513,
+   "ap": null,
+   "tp": 116,
+   "fp": 26,
+   "decisions": 215,
+   "positives": 127,
+   "ci90": {
+    "P": [
+     0.709877358490566,
+     0.8807051043219076
+    ],
+    "R": [
+     0.808686401480111,
+     0.9787308960143841
+    ]
+   }
+  }
+ },
+ "limitations": [
+  "Прокси «свой или чужой» по тому, снимут ли охрану, а не обнаружение проникновения",
+  "Метка — «охрану не сняли за 5 мин»; снятие охраны — код или ключ, а не подтверждённый допуск",
+  "Какие двери в зоне канала охраны — допущение: зона — подобъект (Q23)",
+  "Проверка — 215 решений на 29 подобъектах, 20% из них — один подобъект («объект Гамма ОС»)"
+ ],
+ "report": "ml/reports/access/REPORT.md",
+ "trained_at": "2026-10-20T13:52:25+00:00"
+}

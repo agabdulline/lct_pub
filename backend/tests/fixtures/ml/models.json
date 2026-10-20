@@ -1,6 +1,91 @@
 {
  "models": [
   {
+   "name": "access_open",
+   "task": "access_open",
+   "active": true,
+   "version": "access-open",
+   "label": "access-open-v0",
+   "family": "access",
+   "file": "access_open.cbm",
+   "sha256": "54f8fbfb95f2dec60fbe1e2713986f210c76a5024741e086de24acfa556dbfa1",
+   "trees": 400,
+   "features": 20,
+   "features_used": 20,
+   "categorical": [],
+   "threshold": 0.607704,
+   "scoring": "available",
+   "periods": null,
+   "metrics": null,
+   "title": "Открытие под охраной: снимут ли охрану — свой или нужна реакция",
+   "dataset": null,
+   "synthetic": null,
+   "trigger": null,
+   "eval_scheme": null,
+   "target": null,
+   "target_tag": null,
+   "horizon": null,
+   "outcome": null,
+   "label_key": null,
+   "positive_labels": null,
+   "ignore_labels": null,
+   "history_minutes": null,
+   "decision_lag_s": null,
+   "unseen_windows": null,
+   "offline": null,
+   "routes": [],
+   "author": "команда",
+   "offline_metrics": {
+    "period": "I полугодие 2026",
+    "precision": 0.911504424778761,
+    "recall": 0.8110236220472441,
+    "f1": 0.8583333333333333,
+    "ap": 0.9464624231824994,
+    "tp": 103,
+    "fp": 10,
+    "decisions": 215,
+    "positives": 127,
+    "ci90": {
+     "P": [
+      0.8441558441558441,
+      0.9491525423728814
+     ],
+     "R": [
+      0.7110818713450293,
+      0.875
+     ]
+    },
+    "rule": {
+     "name": "флаг тревоги охранной системы у открытия",
+     "precision": 0.8169014084507042,
+     "recall": 0.9133858267716536,
+     "f1": 0.862453531598513,
+     "ap": null,
+     "tp": 116,
+     "fp": 26,
+     "decisions": 215,
+     "positives": 127,
+     "ci90": {
+      "P": [
+       0.709877358490566,
+       0.8807051043219076
+      ],
+      "R": [
+       0.808686401480111,
+       0.9787308960143841
+      ]
+     }
+    }
+   },
+   "limitations": [
+    "Прокси «свой или чужой» по тому, снимут ли охрану, а не обнаружение проникновения",
+    "Метка — «охрану не сняли за 5 мин»; снятие охраны — код или ключ, а не подтверждённый допуск",
+    "Какие двери в зоне канала охраны — допущение: зона — подобъект (Q23)",
+    "Проверка — 215 решений на 29 подобъектах, 20% из них — один подобъект («объект Гамма ОС»)"
+   ],
+   "trained_on": "2019–2024"
+  },
+  {
    "name": "smoke_alarm",
    "task": "smoke_alarm",
    "active": true,
@@ -122,6 +207,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": {
     "computed_at": "2026-09-26T04:27:58+00:00",
     "model": "smoke_alarm",
@@ -1002,6 +1088,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": {
     "computed_at": "2026-09-26T04:30:28+00:00",
     "model": "daily",
@@ -1754,6 +1841,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": []
   },
@@ -1830,6 +1918,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": [
     "Ручной извещатель"
@@ -1915,6 +2004,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": []
   },
@@ -1969,6 +2059,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": []
   },
@@ -2026,6 +2117,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": []
   },
@@ -2077,6 +2169,7 @@
    "ignore_labels": [],
    "history_minutes": 10080,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": {
     "computed_at": "2026-09-27T01:28:12+00:00",
     "model": "pdm_failure_24h",
@@ -2466,6 +2559,33 @@
    ],
    "history_minutes": 65,
    "decision_lag_s": null,
+   "unseen_windows": [
+    {
+     "from": "2023-07-12 03:00",
+     "to": "2023-07-12 04:00",
+     "tz": "Europe/Moscow"
+    },
+    {
+     "from": "2023-07-12 16:35",
+     "to": "2023-07-12 17:20",
+     "tz": "Europe/Moscow"
+    },
+    {
+     "from": "2023-07-13 11:05",
+     "to": "2023-07-13 12:25",
+     "tz": "Europe/Moscow"
+    },
+    {
+     "from": "2023-07-13 12:45",
+     "to": "2023-07-13 13:40",
+     "tz": "Europe/Moscow"
+    },
+    {
+     "from": "2023-07-13 14:05",
+     "to": "2023-07-13 14:55",
+     "tz": "Europe/Moscow"
+    }
+   ],
    "offline": {
     "computed_at": "2026-09-27T00:44:56+00:00",
     "model": "magdeburg_fire",
@@ -3350,6 +3470,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": {
     "computed_at": "2026-09-27T06:21:50+00:00",
     "model": "smoke_alarm",
@@ -3959,6 +4080,7 @@
    "ignore_labels": [],
    "history_minutes": 57600,
    "decision_lag_s": 1,
+   "unseen_windows": null,
    "offline": {
     "computed_at": "2026-09-27T00:54:43+00:00",
     "model": "vast_gate",
@@ -4550,6 +4672,7 @@
    "ignore_labels": null,
    "history_minutes": null,
    "decision_lag_s": null,
+   "unseen_windows": null,
    "offline": null,
    "routes": [
     "ИБП"

@@ -25,7 +25,6 @@ export function SystemPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-4">
-      <h1 className="text-xl font-semibold">Состояние системы</h1>
       {isError && <StatusBadge status="alarm">API недоступен</StatusBadge>}
       {isPending && <Skeleton className="h-40" />}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

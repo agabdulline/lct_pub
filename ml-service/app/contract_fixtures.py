@@ -7,7 +7,8 @@
 
 Файлы: `<имя>.json` — ответ как есть, `<имя>_request.json` — запрос, которым он получен. `models_compare.json` —
 `GET /v1/models/compare?model=smoke_alarm`, `alarm_score_<версия>.json` — одна пачка тревог, оценённая каждой версией
-событийной модели (теневой скоринг, 15.2), `daily_score.json` — ежедневный прогноз по типам (15.4).
+событийной модели (теневой скоринг, 15.2), `daily_score.json` — ежедневный прогноз по типам (15.4),
+`access_score.json` — модель доступа «свой или нужна реакция» (lct-8f).
 """
 
 import json
@@ -193,6 +194,36 @@ ALARMS = [  # решение, повтор за сутки, неисправно
     {"channel_id": 14, "ts": "2025-03-06T10:00:00+03:00"},
     {"channel_id": 99, "ts": "2025-04-02T09:00:00+03:00"},
 ]
+# Модель доступа: две точки решения одного подобъекта — днём у «своей» двери и ночью у люка (access.md §4)
+ACCESS_REQUEST = {
+    "run_id": 7,
+    "points": [
+        {"sub_object_id": 500, "channel_id": 5001, "start_ts": "2026-03-02T10:05:00+03:00", "is_alarm": False,
+         "hatch": False, "armed_since": "2026-03-02T09:40:00+03:00", "guard_faulty": False,
+         "guard_channel_id": 5000, "opener_ids": [5001, 5002]},
+        {"sub_object_id": 500, "channel_id": 5002, "start_ts": "2026-03-02T23:30:00+03:00", "is_alarm": True,
+         "hatch": True, "armed_since": "2026-03-02T19:10:00+03:00", "guard_faulty": False,
+         "guard_channel_id": 5000, "opener_ids": [5001, 5002]},
+    ],
+}  # fmt: skip
+
+
+def access_world() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Месяц подобъекта 500: снятия охраны по будням в 9–10, открытия двери 5001 в рабочие часы, прошлые кандидаты —
+    дверь: охрану сняли за 5 мин (0), люк ночью: не сняли (1)."""
+    days = pd.date_range("2026-02-02", "2026-03-01", freq="B", tz="Europe/Moscow")
+    guard = pd.DataFrame({"sub_object_id": 500, "channel_id": 5000, "ts": days + pd.Timedelta(hours=9, minutes=50),
+                          "value": "Снято с охраны"})  # fmt: skip
+    openers = pd.DataFrame({"sub_object_id": 500, "channel_id": 5001, "ts": days + pd.Timedelta(hours=10),
+                            "value": "Не замкнут"})  # fmt: skip
+    past = pd.DataFrame({"sub_object_id": 500, "channel_id": [5001, 5001, 5002],
+                         "start_ts": pd.to_datetime(["2026-02-10T09:48:00+03:00", "2026-02-17T09:47:00+03:00",
+                                                     "2026-02-20T23:10:00+03:00"]),
+                         "label": [0, 0, 1]})  # fmt: skip
+    frames = ((past, "start_ts"), (guard, "ts"), (openers, "ts"))
+    return tuple(f.assign(**{c: f[c].dt.tz_convert("UTC")}) for f, c in frames)
+
+
 ALARM_REQUESTS = {  # теневой скоринг (15.2): одна пачка тревог — запрос на каждую версию
     "alarm_score_v3": {"run_id": 7, "alarms": ALARMS, "explain": True, "model_version": "v3"},
     "alarm_score_baseline": {"run_id": 7, "alarms": ALARMS, "explain": True, "model_version": "baseline-v0"},
@@ -267,6 +298,7 @@ def snapshots() -> dict[str, dict]:
         "daily_inputs": lambda run, date, types, ids, days: v0_inputs,
         "routed_inputs": lambda run, date, types: routed,
         "known_channels": lambda ids: {i for i in ids if i == 1007},
+        "access_inputs": lambda run, points: access_world(),
     }
     out = {}
     with ExitStack() as stack:
@@ -284,6 +316,8 @@ def snapshots() -> dict[str, dict]:
                 out[f"{name}_request"] = body
             out["daily_score"] = client.post("/v1/daily/score", json=DAILY_REQUEST).json() | {"elapsed_ms": 0}
             out["daily_score_request"] = DAILY_REQUEST
+            out["access_score"] = client.post("/v1/access/score", json=ACCESS_REQUEST).json() | {"elapsed_ms": 0}
+            out["access_score_request"] = ACCESS_REQUEST
     return out
 
 

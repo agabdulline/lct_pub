@@ -8,6 +8,7 @@ import { ExternalRunBanner } from '@/components/layout/ExternalRunBanner'
 import { RunMissingBanner } from '@/components/domain/RunMissingBanner'
 import { StreamToasts } from '@/components/domain/StreamToasts'
 import { navigation } from '@/components/layout/navigation'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -123,6 +124,7 @@ export function AppLayout() {
             <header className="sticky top-0 z-20 flex h-12 shrink-0 items-center gap-2 border-b bg-background/95 px-3 backdrop-blur">
               <SidebarTrigger />
               <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
+              <PageTitle />
               <div className="ml-auto flex min-w-0 items-center gap-2">
                 <ClockBar />
                 <ThemeToggle />

@@ -1,0 +1,33 @@
+{
+ "run_id": 7,
+ "points": [
+  {
+   "sub_object_id": 500,
+   "channel_id": 5001,
+   "start_ts": "2026-03-02T10:05:00+03:00",
+   "is_alarm": false,
+   "hatch": false,
+   "armed_since": "2026-03-02T09:40:00+03:00",
+   "guard_faulty": false,
+   "guard_channel_id": 5000,
+   "opener_ids": [
+    5001,
+    5002
+   ]
+  },
+  {
+   "sub_object_id": 500,
+   "channel_id": 5002,
+   "start_ts": "2026-03-02T23:30:00+03:00",
+   "is_alarm": true,
+   "hatch": true,
+   "armed_since": "2026-03-02T19:10:00+03:00",
+   "guard_faulty": false,
+   "guard_channel_id": 5000,
+   "opener_ids": [
+    5001,
+    5002
+   ]
+  }
+ ]
+}

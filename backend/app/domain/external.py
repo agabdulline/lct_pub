@@ -140,14 +140,14 @@ MAX_EVENTS = 5_000  # событий за один вызов `score_events`; о
 # Цель не из набора и событие позже момента решения не пишутся: у первой нет канала, второе оценится позже
 _NOT_WRITTEN = frozenset({"unknown_target", "future_event"})
 
-# События прогона по каналам набора с водяного знака; сырые каналы — из сырого слоя
+# События прогона по каналам набора в [since, until); сырые каналы — из сырого слоя; `limit` NULL — все
 _RUN_EVENTS = """
 SELECT channel_id, ts, value_raw FROM (
     SELECT channel_id, ts, value_raw FROM events
-    WHERE run_id = :run AND channel_id = ANY(:significant) AND ts >= :since
+    WHERE run_id = :run AND channel_id = ANY(:significant) AND ts >= :since AND ts < :until
     UNION ALL
     SELECT channel_id, ts, value_raw FROM events_raw
-    WHERE run_id = :run AND channel_id = ANY(:raw) AND ts >= :since
+    WHERE run_id = :run AND channel_id = ANY(:raw) AND ts >= :since AND ts < :until
 ) e ORDER BY ts, channel_id LIMIT :limit
 """
 
@@ -184,9 +184,15 @@ async def external_models(dataset: str, ml: MlClient) -> list[dict]:
     ]
 
 
-def decision_times(start: dt.datetime, last: dt.datetime | None, now: dt.datetime, step: dt.timedelta) -> list:
+def decision_times(
+    start: dt.datetime,
+    last: dt.datetime | None,
+    now: dt.datetime,
+    step: dt.timedelta,
+    limit: int | None = MAX_DECISIONS,
+) -> list:
     """Границы шага по часам прогона после последнего решения и не позже «сейчас»; первое — первая граница не раньше
-    старта. Не больше `MAX_DECISIONS`."""
+    старта. Не больше `limit` (такт — `MAX_DECISIONS`, история набора — без предела)."""
     epoch = dt.datetime(2000, 1, 1, tzinfo=dt.UTC)
     if last is None:
         k = -((epoch - start) // step)  # ceil((start − epoch) / step)
@@ -194,13 +200,13 @@ def decision_times(start: dt.datetime, last: dt.datetime | None, now: dt.datetim
     else:
         t = last + step
     out = []
-    while t <= now and len(out) < MAX_DECISIONS:
+    while t <= now and (limit is None or len(out) < limit):
         out.append(t)
         t += step
     return out
 
 
-async def _target_channels(session: AsyncSession, dataset: str, tag: str | None) -> dict[int, int]:
+async def target_channels(session: AsyncSession, dataset: str, tag: str | None) -> dict[int, int]:
     """Объект цели → его служебный канал цели по `target_tag` модели."""
     if not tag:
         return {}
@@ -228,16 +234,36 @@ async def score_model(
     times = decision_times(run.sim_start, last, run_now(run), step)
     if not times:
         return {"decisions": 0}, []
-    targets = await _target_channels(session, dataset, model.get("target_tag"))
+    targets = await target_channels(session, dataset, model.get("target_tag"))
+    rows, _ = await rows_at(ml, run.id, model, times, targets)
+    inserted = (await session.execute(_INSERT, {"run": run.id, "model": name, "rows": rows})).all() if rows else []
+    alerts = [pid for pid, alert in inserted if alert]
+    notifications = [
+        Notification(run.id, "prediction.created", p)
+        for p in await predictions_where(
+            session, "p.id = ANY(:ids)", {"ids": alerts[:MAX_ALERT_EVENTS]}, "ORDER BY p.id"
+        )
+    ]
+    notifications += await apply_prediction_rules(session, run.id, alerts)
+    summary = {"decisions": len(times), "predictions": len(inserted), "alerts": len(alerts)}
+    return summary, notifications
+
+
+async def rows_at(
+    ml: MlClient, run_id: int, model: dict, times: list[dt.datetime], targets: dict[int, int]
+) -> tuple[list[dict], bool]:
+    """Строки `predictions` модели на границах `times` и все ли границы решены: ML-сервис недоступен — обрыв на этой
+    границе, такт повторит с неё."""
+    name = model["name"]
     width = horizon(model)
     rows, lost = [], 0
     for t in times:
         try:
-            response = await ml.score_external(run.id, name, t)
+            response = await ml.score_external(run_id, name, t)
         except MlUnavailable as e:
             # Решения не пишутся: следующий такт повторит с той же границы, когда сервис вернётся
-            log.warning("внешняя модель %s, прогон %s, %s: %s", name, run.id, t.isoformat(), e.reason)
-            break
+            log.warning("внешняя модель %s, прогон %s, %s: %s", name, run_id, t.isoformat(), e.reason)
+            return rows, False
         version = response.get("model") or model.get("label") or "unknown"
         for r in response["results"]:
             channel_id = r.get("target_channel_id") or targets.get(r["target"])
@@ -264,17 +290,7 @@ async def score_model(
         log.warning(
             "внешняя модель %s: %s результатов без канала цели (target_tag %r)", name, lost, model.get("target_tag")
         )
-    inserted = (await session.execute(_INSERT, {"run": run.id, "model": name, "rows": rows})).all() if rows else []
-    alerts = [pid for pid, alert in inserted if alert]
-    notifications = [
-        Notification(run.id, "prediction.created", p)
-        for p in await predictions_where(
-            session, "p.id = ANY(:ids)", {"ids": alerts[:MAX_ALERT_EVENTS]}, "ORDER BY p.id"
-        )
-    ]
-    notifications += await apply_prediction_rules(session, run.id, alerts)
-    summary = {"decisions": len(times), "predictions": len(inserted), "alerts": len(alerts)}
-    return summary, notifications
+    return rows, True
 
 
 async def score_events(
@@ -301,26 +317,52 @@ async def _score_events(
         text("SELECT max(horizon_start) FROM predictions WHERE run_id = :run AND model = :model"),
         {"run": run.id, "model": name},
     )
+    now = run_now(run)
+    events = await run_events(
+        session, run.id, dataset, since or run.sim_start, now + dt.timedelta(seconds=1), MAX_EVENTS
+    )
+    rows, _ = await event_rows(ml, run.id, model, now, events)
+    inserted = (await session.execute(_INSERT, {"run": run.id, "model": name, "rows": rows})).all() if rows else []
+    alerts = [pid for pid, alert in inserted if alert]
+    notifications = [
+        Notification(run.id, "prediction.created", p)
+        for p in await predictions_where(
+            session, "p.id = ANY(:ids)", {"ids": alerts[:MAX_ALERT_EVENTS]}, "ORDER BY p.id"
+        )
+    ]
+    notifications += await apply_prediction_rules(session, run.id, alerts)
+    return {"events": len(events), "predictions": len(inserted), "alerts": len(alerts)}, notifications
+
+
+async def run_events(
+    session: AsyncSession, run_id: int, dataset: str, since: dt.datetime, until: dt.datetime, limit: int | None
+) -> list:
+    """События прогона по каналам набора в `[since, until)`, по времени; не больше `limit`."""
     channels = (await session.execute(text("SELECT id, stream FROM channels WHERE source = :d"), {"d": dataset})).all()
     params = {
-        "run": run.id,
-        "since": since or run.sim_start,
+        "run": run_id,
+        "since": since,
+        "until": until,
         "significant": [c for c, stream in channels if stream != "raw"],
         "raw": [c for c, stream in channels if stream == "raw"],
-        "limit": MAX_EVENTS,
+        "limit": limit,
     }
-    events = (await session.execute(text(_RUN_EVENTS), params)).all()
-    now = run_now(run)
+    return list((await session.execute(text(_RUN_EVENTS), params)).all())
+
+
+async def event_rows(ml: MlClient, run_id: int, model: dict, now: dt.datetime, events: list) -> tuple[list[dict], bool]:
+    """Строки `predictions` событийной модели по событиям — пачками по `EVENT_BATCH` — и все ли пачки решены."""
+    name = model["name"]
     rows = []
     for start in range(0, len(events), EVENT_BATCH):
         batch = [
             {"channel_id": c, "ts": ts.isoformat(), "value": v} for c, ts, v in events[start : start + EVENT_BATCH]
         ]
         try:
-            response = await ml.score_external_events(run.id, name, now, batch)
+            response = await ml.score_external_events(run_id, name, now, batch)
         except MlUnavailable as e:
-            log.warning("событийная модель %s, прогон %s: %s", name, run.id, e.reason)
-            break
+            log.warning("событийная модель %s, прогон %s: %s", name, run_id, e.reason)
+            return rows, False
         version = response.get("model") or model.get("label") or "unknown"
         for r in response["results"]:
             if r.get("skip_reason") in _NOT_WRITTEN or r.get("target_channel_id") is None:
@@ -346,16 +388,7 @@ async def _score_events(
                     "factors": r.get("factors"),
                 }
             )
-    inserted = (await session.execute(_INSERT, {"run": run.id, "model": name, "rows": rows})).all() if rows else []
-    alerts = [pid for pid, alert in inserted if alert]
-    notifications = [
-        Notification(run.id, "prediction.created", p)
-        for p in await predictions_where(
-            session, "p.id = ANY(:ids)", {"ids": alerts[:MAX_ALERT_EVENTS]}, "ORDER BY p.id"
-        )
-    ]
-    notifications += await apply_prediction_rules(session, run.id, alerts)
-    return {"events": len(events), "predictions": len(inserted), "alerts": len(alerts)}, notifications
+    return rows, True
 
 
 async def close_external_outcomes(

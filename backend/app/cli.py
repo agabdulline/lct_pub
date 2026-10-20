@@ -253,6 +253,47 @@ def _access(args: argparse.Namespace) -> None:
     print(f"записано в базу (run_id = NULL): {asyncio.run(run())}")
 
 
+def _history(args: argparse.Namespace) -> None:
+    """Решения моделей на истории: `predictions` — хакатона (`run_id = NULL`) из файлов ML-кода, режим «Вся история»;
+    `external` — внешних моделей на тестовых окнах в прогонах-основах наборов, режим «Все данные»."""
+    import json
+
+    if args.action == "external":
+        _history_external(args)
+        return
+    from app.history_predictions import write
+    from app.loader import pg_conninfo
+
+    missing = [str(f) for f in args.file if not f.exists()]
+    if missing:
+        raise SystemExit(f"нет файлов: {', '.join(missing)}")
+    print(json.dumps(write(pg_conninfo(args.database_url), args.file), ensure_ascii=False, indent=2, default=str))
+
+
+def _history_external(args: argparse.Namespace) -> None:
+    import asyncio
+
+    from app.db.session import SessionLocal
+    from app.domain.ml_client import MlClient
+    from app.external_history import backfill, dataset_bases
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
+
+    async def run() -> list[dict]:
+        reports = []
+        async with SessionLocal() as session:
+            bases = await dataset_bases(session, args.dataset)
+            if not bases:
+                raise SystemExit(f"нет прогона-основы набора {args.dataset or '(ни одного)'}: load-external")
+            for base in bases:
+                reports.append(await backfill(session, base, MlClient()))
+                await session.commit()  # набор за набором: готовый набор не теряется при ошибке следующего
+                print(json.dumps(reports[-1], ensure_ascii=False, indent=2, default=str), flush=True)
+        return reports
+
+    asyncio.run(run())
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -317,6 +358,23 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--archive", type=Path, default=settings.archive_dir, help="папка архива")
     p.add_argument("--memory", default="1GB", help="лимит памяти DuckDB; лишнее — на диск в data/interim")
     p.set_defaults(func=_access)
+
+    p = sub.add_parser(
+        "history",
+        help="predictions — решения моделей на истории (run_id NULL) из файлов ml.history: событийная и ежедневная; "
+        "external — внешних моделей на тестовых окнах в прогонах-основах наборов",
+    )
+    p.add_argument("action", choices=["predictions", "external"])
+    p.add_argument("--dataset", help="external: только этот набор; по умолчанию все загруженные")
+    p.add_argument(
+        "--file",
+        type=Path,
+        nargs="+",
+        default=[settings.interim_dir / "history" / f for f in ("smoke_alarm.parquet", "daily.parquet")],
+        help="файлы parquet из ml.history (smoke_alarm.parquet, daily.parquet)",
+    )
+    p.add_argument("--database-url", default=settings.database_url, help="БД; по умолчанию DATABASE_URL")
+    p.set_defaults(func=_history)
 
     p = sub.add_parser("reconcile-verdicts", help="привести вердикты тревог к виду их эпизодов (A6) — после сбоев")
     p.add_argument("--run", type=int, help="только этот прогон; по умолчанию все прогоны")

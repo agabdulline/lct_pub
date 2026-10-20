@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 from sqlalchemy import text
 
-from app.api.deps import RunCtx, Session
+from app.api.deps import RunCtx, Session, for_channel
 from app.api.errors import ApiError
 from app.api.params import csv_list, page_params
 from app.domain.model_versions import primary_only
@@ -116,6 +116,7 @@ async def _last_prediction(session, run_id, channel_id: int, model: str, now: dt
 @router.get("/channels/{channel_id}", response_model=ChannelDetail)
 async def channel_detail(channel_id: int, ctx: RunCtx, session: Session) -> dict:
     """Карточка канала: метаданные, состояние, последние прогнозы, счётчики, открытые заявки, соседи по группе."""
+    ctx = await for_channel(session, ctx, channel_id)
     views = await channel_views(session, ctx.run_id, ctx.now, ctx.source)
     channel = views.get(channel_id)
     if channel is None:
@@ -185,6 +186,7 @@ async def channel_timeline(
 ) -> dict:
     """События, эпизоды состояний и суточные итоги за период; по умолчанию — 30 суток до «сейчас» прогона.
     Газ — значимые изменения после зоны нечувствительности, движение — из окна сырого потока."""
+    ctx = await for_channel(session, ctx, channel_id)
     info = (
         await session.execute(
             text("SELECT sensor_type, stream, deadband FROM channels WHERE id = :id"), {"id": channel_id}
@@ -249,6 +251,7 @@ async def channel_predictions(
     channel_id: int, ctx: RunCtx, session: Session, model: str | None = None, page: int = 1, size: int = 50
 ) -> dict:
     """Прогнозы канала с исходами, новые сверху."""
+    ctx = await for_channel(session, ctx, channel_id)
     page, size = page_params(page, size)
     where = f"p.{RUN} AND p.channel_id = :ch AND (CAST(:model AS text) IS NULL OR p.model = :model)"
     params = {"run": ctx.run_id, "ch": channel_id, "model": model}

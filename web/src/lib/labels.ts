@@ -82,19 +82,8 @@ export const SKIP_REASON_LABEL: Record<SkipReason, string> = {
   ml_unavailable: 'ML-сервис недоступен',
   model_missing: 'Модель не загружена',
   daily_model_missing: 'Ежедневная модель не загружена',
-  coverage_gap: 'За 8 суток до тревоги был день без данных журнала — v3 молчит 8 суток после пропуска',
-  state_not_normal: 'Перед тревогой канал был не в «Норме» — v3 такие не оценивает',
-}
-
-/** Short skip reasons for a line of the feed or the journal: why the chain's first version did not decide. */
-const SKIP_REASON_SHORT: Partial<Record<SkipReason, string>> = {
-  coverage_gap: 'день без данных журнала за 8 суток',
-  state_not_normal: 'канал перед тревогой не в «Норме»',
-  decided_within_24h: 'решение по каналу за сутки',
-  fault_recent_24h: 'канал был неисправен за сутки',
-  history_lt_7d: 'мало истории канала',
-  in_fault: 'канал неисправен',
-  ml_unavailable: 'ML-сервис недоступен',
+  coverage_gap: 'За 8 суток до тревоги был день без данных журнала — модель ML-разработчика молчит 8 суток после пропуска',
+  state_not_normal: 'Перед тревогой канал был не в «Норме» — модель ML-разработчика такие не оценивает',
 }
 
 /** Skip reasons are an open set filled by the ML service: unknown codes are shown as they are. */
@@ -149,26 +138,6 @@ export const versionAuthor = (v: string): string | undefined => {
 export const byVersion = (a: string, b: string) => {
   const rank = (v: string) => (v === 'baseline-v0' ? 0 : v === 'v3' ? 1 : chainOf(v) ? 2 : 3)
   return rank(a) - rank(b) || a.localeCompare(b)
-}
-
-/** Why a version made no decision: its skip reason or, without one, the general case. */
-export const versionSkipText = (reason: string | null | undefined) =>
-  reason ? skipReasonLabel(reason) : 'тревога не прошла правила допустимости версии'
-
-/**
- * Who made the verdict under a chain and why not the first version: «решение v0 — v3 пропустила: <причина>».
- * `decidedBy` — the version whose decision it is; `fallbackReason` — the first version's skip reason when it did not;
- * `short` — the brief reason for a line of the feed or the journal.
- */
-export function decisionText(chain: string[], decidedBy: string | null, fallbackReason: string | null | undefined, short = false): string {
-  const why = (short && fallbackReason && SKIP_REASON_SHORT[fallbackReason as SkipReason]) || versionSkipText(fallbackReason)
-  const reason = `${why.charAt(0).toLowerCase()}${why.slice(1)}`
-  // No part decided: the verdict points at the last part's skip — «нет оценки».
-  if (!decidedBy) return `${versionLabel(chain[0])} пропустила: ${reason}, ${chain.slice(1).map(versionLabel).join(', ')} тоже без решения`
-  const by = versionLabel(decidedBy)
-  const i = chain.indexOf(decidedBy)
-  if (i <= 0) return `решение ${by}`
-  return `решение ${by} — ${chain.slice(0, i).map(versionLabel).join(', ')} пропустила: ${reason}`
 }
 
 /** Alarm episode kinds in words, for the comparison of versions by kind. */

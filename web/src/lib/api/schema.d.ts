@@ -658,7 +658,8 @@ export interface paths {
         };
         /**
          * Predictions
-         * @description Журнал прогнозов прогона, новые сверху; `from`, `to` — по времени решения.
+         * @description Журнал прогнозов прогона, новые сверху; `from`, `to` — по времени решения. «Все данные» (`run=all`) — решения
+         *     истории хакатона и прогонов-основ наборов, `source` — один из них.
          */
         get: operations["predictions_api_v1_predictions_get"];
         put?: never;
@@ -786,6 +787,49 @@ export interface paths {
          * @description Топ каналов по риску ежедневной модели (без неисправных) и риск по объектам с разбивкой по типам датчиков.
          */
         get: operations["risk_api_v1_dashboard_risk_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dashboard/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * History
+         * @description Режим «Вся история»: журнал хакатона без прогона (база, `run_id IS NULL`) — помесячно дымовые тревоги и доля
+         *     ППР, начавшиеся неисправности, инциденты вскрытия под охраной; проблемные объекты за год до конца данных. Только
+         *     агрегаты, без сырых событий. Прогоны и внешние наборы сюда не входят.
+         */
+        get: operations["history_api_v1_dashboard_history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dashboard/datasets-history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Datasets History
+         * @description Режим «Все данные»: история каждого внешнего набора по месяцам — его прогон-основа, своя шкала времени (у наборов
+         *     2014–2023, у хакатона 2019–2026 — `/dashboard/history`). Только агрегаты `channel_daily` и `predictions`.
+         */
+        get: operations["datasets_history_api_v1_dashboard_datasets_history_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -922,6 +966,11 @@ export interface components {
         };
         /** AccessCounts */
         AccessCounts: {
+            /**
+             * Candidate
+             * @default 0
+             */
+            candidate: number;
             /** Open */
             open: number;
             /** Closed */
@@ -1001,6 +1050,18 @@ export interface components {
             updated_at: string;
             /** Source Note */
             source_note: string;
+            /** Verdict */
+            verdict?: ("reaction" | "own") | null;
+            /** Score */
+            score?: number | null;
+            /** Threshold */
+            threshold?: number | null;
+            /** Model Version */
+            model_version?: string | null;
+            /** Decided By */
+            decided_by?: ("model" | "rule") | null;
+            /** Model Note */
+            model_note?: string | null;
         };
         /** AccessIncidentDetail */
         AccessIncidentDetail: {
@@ -1060,6 +1121,18 @@ export interface components {
             updated_at: string;
             /** Source Note */
             source_note: string;
+            /** Verdict */
+            verdict?: ("reaction" | "own") | null;
+            /** Score */
+            score?: number | null;
+            /** Threshold */
+            threshold?: number | null;
+            /** Model Version */
+            model_version?: string | null;
+            /** Decided By */
+            decided_by?: ("model" | "rule") | null;
+            /** Model Note */
+            model_note?: string | null;
             /** Opening Events */
             opening_events: components["schemas"]["AccessOpening"][];
             /** Guard Events */
@@ -1719,6 +1792,45 @@ export interface components {
              */
             end_ts: string;
         };
+        /**
+         * DatasetHistory
+         * @description Режим «Все данные»: история внешнего набора — его прогон-основа по месяцам, своя шкала времени.
+         */
+        DatasetHistory: {
+            /** Dataset */
+            dataset: string;
+            /** Run Id */
+            run_id: number;
+            /**
+             * From
+             * Format: date-time
+             */
+            from: string;
+            /** To */
+            to: string | null;
+            /** Objects */
+            objects: number;
+            /** Channels */
+            channels: number;
+            /** Months */
+            months: components["schemas"]["DatasetHistoryMonth"][];
+        };
+        /** DatasetHistoryMonth */
+        DatasetHistoryMonth: {
+            /**
+             * Month
+             * Format: date
+             */
+            month: string;
+            /** Events */
+            events: number;
+            /** Alarm Events */
+            alarm_events: number;
+            /** Decisions */
+            decisions: number;
+            /** Alerts */
+            alerts: number;
+        };
         /** DatasetList */
         DatasetList: {
             /** Items */
@@ -1986,6 +2098,75 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /**
+         * HistoryMonth
+         * @description Месяц журнала хакатона (по Москве): дымовые тревоги и ППР, начавшиеся неисправности, инциденты вскрытия.
+         */
+        HistoryMonth: {
+            /**
+             * Month
+             * Format: date
+             */
+            month: string;
+            /** Smoke Alarms */
+            smoke_alarms: number;
+            /** Ppr Alarms */
+            ppr_alarms: number;
+            /** Ppr Share */
+            ppr_share: number | null;
+            /** Faults Started */
+            faults_started: number;
+            /** Faults Equipment */
+            faults_equipment: number;
+            /** Access Incidents */
+            access_incidents: number;
+            /** Access High */
+            access_high: number;
+        };
+        /**
+         * HistoryObject
+         * @description Проблемный объект за год до конца данных: неисправности, дымовые тревоги вне ППР, вскрытия под охраной.
+         */
+        HistoryObject: {
+            /** Object Id */
+            object_id: number;
+            /** Object Name */
+            object_name: string;
+            /** Faults */
+            faults: number;
+            /** Faults Equipment */
+            faults_equipment: number;
+            /** Fault Channels */
+            fault_channels: number;
+            /** Alarms */
+            alarms: number;
+            /** Alarms Out Of Ppr */
+            alarms_out_of_ppr: number;
+            /** Access */
+            access: number;
+        };
+        /**
+         * HistorySummary
+         * @description Режим «Вся история»: базовая история хакатона без прогона — только агрегаты.
+         */
+        HistorySummary: {
+            /** From */
+            from: string | null;
+            /**
+             * To
+             * Format: date-time
+             */
+            to: string;
+            /** Months */
+            months: components["schemas"]["HistoryMonth"][];
+            /**
+             * Top From
+             * Format: date-time
+             */
+            top_from: string;
+            /** Top Objects */
+            top_objects: components["schemas"]["HistoryObject"][];
+        };
         /** IngestResponse */
         IngestResponse: {
             /** Accepted */
@@ -2189,7 +2370,7 @@ export interface components {
              * Family
              * @enum {string}
              */
-            family: "v3" | "baseline" | "external" | "each_channel" | "chain";
+            family: "v3" | "baseline" | "external" | "each_channel" | "chain" | "access";
             /** Title */
             title: string;
             /** Loaded */
@@ -2233,6 +2414,15 @@ export interface components {
             outcome?: string | null;
             /** Positive Labels */
             positive_labels?: string[] | null;
+            /** Offline Ci90 */
+            offline_ci90?: {
+                [key: string]: number[];
+            } | null;
+            offline_rule?: components["schemas"]["OfflineMetrics"] | null;
+            /** Offline Rule Label */
+            offline_rule_label?: string | null;
+            /** Limitations */
+            limitations?: string[] | null;
         };
         /**
          * ModelScore
@@ -3499,8 +3689,8 @@ export interface operations {
     get_clock_api_v1_clock_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -3964,8 +4154,8 @@ export interface operations {
     objects_api_v1_objects_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -3996,8 +4186,8 @@ export interface operations {
     object_detail_api_v1_objects__object_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4030,8 +4220,8 @@ export interface operations {
     graph_api_v1_graph_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4062,8 +4252,8 @@ export interface operations {
     sub_object_graph_api_v1_graph__sub_object_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4108,8 +4298,8 @@ export interface operations {
                 sort?: string | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4140,8 +4330,8 @@ export interface operations {
     channel_detail_api_v1_channels__channel_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4176,8 +4366,8 @@ export interface operations {
             query?: {
                 from?: string | null;
                 to?: string | null;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4213,8 +4403,8 @@ export interface operations {
                 model?: string | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4262,8 +4452,8 @@ export interface operations {
                 disagree?: boolean | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4294,8 +4484,8 @@ export interface operations {
     alarm_detail_api_v1_alarms__alarm_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4339,8 +4529,8 @@ export interface operations {
                 active?: boolean | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4371,8 +4561,8 @@ export interface operations {
     equipment_episode_api_v1_equipment_episodes__episode_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4410,14 +4600,14 @@ export interface operations {
                 to?: string | null;
                 /** @description объект или подобъект */
                 object_id?: number | null;
-                /** @description open, closed, dismissed через запятую; по умолчанию open и closed */
+                /** @description candidate («вероятно свой» по модели), open, closed, dismissed через запятую; по умолчанию candidate, open и closed */
                 status?: string | null;
                 /** @description high, medium через запятую */
                 priority?: string | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4448,8 +4638,8 @@ export interface operations {
     access_incident_api_v1_access_incidents__incident_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4482,8 +4672,8 @@ export interface operations {
     patch_access_incident_api_v1_access_incidents__incident_id__patch: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4520,8 +4710,8 @@ export interface operations {
     stream_api_v1_stream_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4570,10 +4760,12 @@ export interface operations {
                 disagree?: boolean | null;
                 /** @description тревогу оценили без пропуска все версии прогона (15.2) */
                 paired?: boolean | null;
+                /** @description «все данные» (run=all): hackathon — база хакатона, ключ набора — его основа */
+                source?: string | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4604,8 +4796,8 @@ export interface operations {
     prediction_detail_api_v1_predictions__prediction_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4647,8 +4839,8 @@ export interface operations {
                 paired?: boolean;
                 /** @description только каналы этого типа датчика (задача C) */
                 sensor_type?: string | null;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4730,8 +4922,8 @@ export interface operations {
     summary_api_v1_dashboard_summary_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4762,8 +4954,8 @@ export interface operations {
     risk_api_v1_dashboard_risk_get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4791,6 +4983,46 @@ export interface operations {
             };
         };
     };
+    history_api_v1_dashboard_history_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HistorySummary"];
+                };
+            };
+        };
+    };
+    datasets_history_api_v1_dashboard_datasets_history_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetHistory"][];
+                };
+            };
+        };
+    };
     work_orders_api_v1_work_orders_get: {
         parameters: {
             query?: {
@@ -4804,8 +5036,8 @@ export interface operations {
                 rule?: string | null;
                 page?: number;
                 size?: number;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4836,8 +5068,8 @@ export interface operations {
     create_work_order_api_v1_work_orders_post: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4880,8 +5112,8 @@ export interface operations {
                 channel_id?: number | null;
                 /** @description через запятую */
                 rule?: string | null;
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path?: never;
@@ -4910,8 +5142,8 @@ export interface operations {
     work_order_api_v1_work_orders__order_id__get: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {
@@ -4944,8 +5176,8 @@ export interface operations {
     update_work_order_api_v1_work_orders__order_id__patch: {
         parameters: {
             query?: {
-                /** @description прогон; без параметра — последний, 0 — только базовая история */
-                run?: number | null;
+                /** @description прогон; без параметра — последний, 0 — только базовая история, all — все данные: база хакатона и прогоны-основы всех наборов */
+                run?: number | "all" | null;
             };
             header?: never;
             path: {

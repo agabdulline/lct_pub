@@ -5,12 +5,15 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 SOURCE_NOTE = "Метка правил охраны, не подтверждённое проникновение"
+# модель доступа (lct-8f) — прокси по тому, снимут ли охрану, а не обнаружение проникновения
+MODEL_NOTE = "Модель «снимут ли охрану»: прокси «свой или чужой», не обнаружение проникновения"
 
 ACCESS_SELECT = """
 SELECT i.id, i.run_id, i.status, i.priority, i.object_id, o.name AS object_name, i.sub_object_id,
     so.name AS sub_object_name, i.guard_channel_id, i.armed_since, i.start_ts, i.qualified_ts, i.end_ts,
     i.end_reason, i.disarmed_ts, i.openings, i.hatch_openings, i.off_hours, i.motion, i.guard_faulty, i.repeated,
     i.work_order_id, i.resolution, i.comment, i.updated_at,
+    i.verdict, i.score, i.threshold, i.model_version, i.decided_by, i.model_note,
     (SELECT coalesce(jsonb_agg(jsonb_build_object('id', c.id, 'name', c.name, 'sensor_type', c.sensor_type)
                                ORDER BY f.first, c.id), '[]'::jsonb)
      FROM (SELECT channel_id, min(ts) AS first FROM access_incident_openings WHERE incident_id = i.id
@@ -55,7 +58,13 @@ def incident_to_dict(row) -> dict:
         "resolution": row.resolution,
         "comment": row.comment,
         "updated_at": row.updated_at,
-        "source_note": SOURCE_NOTE,
+        "source_note": MODEL_NOTE if row.decided_by == "model" else SOURCE_NOTE,
+        "verdict": row.verdict,
+        "score": row.score,
+        "threshold": row.threshold,
+        "model_version": row.model_version,
+        "decided_by": row.decided_by,
+        "model_note": row.model_note,
     }
 
 

@@ -60,23 +60,29 @@ def version_sql(alias: str = "", param: str = "version") -> str:
     )
 
 
-def verdict_version_sql(alarm: str) -> str:
+def verdict_version_sql(alarm: str, run: str = ":run") -> str:
     """Версия, чьё решение дало вердикт тревоги: версия прогноза по ссылке `alarms.prediction_id` (своего или
     унаследованного), а без ссылки — основная версия прогона. После смены основной прошлые тревоги остаются с той
-    версией, что их решила."""
+    версией, что их решила. `run` — прогон, который смотрят: у базовой тревоги в ленте прогона ссылка на решение
+    истории (`run_id NULL`, режим «Вся история») не в счёт."""
     return f"""coalesce(
-        (SELECT vp.model_version FROM alarms va JOIN predictions vp ON vp.id = va.prediction_id WHERE va.id = {alarm}),
+        (SELECT vp.model_version FROM alarms va JOIN predictions vp ON vp.id = va.prediction_id
+         WHERE va.id = {alarm} AND vp.run_id IS NOT DISTINCT FROM {run}),
         (SELECT r.primary_model FROM alarms va JOIN runs r ON r.id = va.run_id WHERE va.id = {alarm}))"""
 
 
-def scores_sql(alarm: str, exclude: str | None = None) -> str:
+def scores_sql(alarm: str, exclude: str | None = None, run: str = ":run") -> str:
     """JSON-массив оценок тревоги всеми версиями событийной модели (`ModelScore`): версия, прогноз, статус, оценка,
     порог, тревога модели, причина пропуска и `primary` — версия, чьё решение дало вердикт. `exclude` — прогноз,
     который не нужен (`Prediction.paired` — оценки других версий).
 
     Пропуск «одно решение на канал в сутки» (`decided_within_24h`) у версии, чьё решение по каналу за сутки до этого
     есть, — `inherited`: прогноз, статус, оценка, порог и тревога — из того решения, как у `Alarm.prediction`. Иначе
-    под основной версией с унаследованным решением у теневой стояло «пропуск», хотя её решение тоже действует."""
+    под основной версией с унаследованным решением у теневой стояло «пропуск», хотя её решение тоже действует.
+
+    `run` — прогон, который смотрят (SQL-выражение): только его прогнозы. Представление прогона включает базовые
+    тревоги до старта, а у них есть решения истории (`run_id NULL`, режим «Вся история») — в ленту прогона они не
+    подмешиваются."""
     skip = f" AND q.id <> {exclude}" if exclude else ""
     return f"""(SELECT coalesce(jsonb_agg(jsonb_build_object(
         'model_version', q.model_version, 'prediction_id', coalesce(l.id, q.id),
@@ -88,7 +94,7 @@ def scores_sql(alarm: str, exclude: str | None = None) -> str:
         'inherited', l.id IS NOT NULL,
         'primary', q.model_version IS NOT DISTINCT FROM v.version
     ) ORDER BY q.model_version), '[]'::jsonb)
-    FROM predictions q CROSS JOIN (SELECT {verdict_version_sql(alarm)} AS version) v
+    FROM predictions q CROSS JOIN (SELECT {verdict_version_sql(alarm, run)} AS version) v
     LEFT JOIN LATERAL (
         SELECT p.id, p.status, p.score, p.threshold, p.alert FROM predictions p
         WHERE q.status = 'skipped' AND q.skip_reason = '{INHERIT_REASON}'
@@ -97,16 +103,16 @@ def scores_sql(alarm: str, exclude: str | None = None) -> str:
           AND p.decision_time < q.decision_time AND p.decision_time >= q.decision_time - interval '24 hours'
         ORDER BY p.decision_time DESC LIMIT 1
     ) l ON true
-    WHERE q.alarm_id = {alarm} AND q.model = '{TASK}'{skip})"""
+    WHERE q.alarm_id = {alarm} AND q.model = '{TASK}' AND q.run_id IS NOT DISTINCT FROM {run}{skip})"""
 
 
-def disagree_sql(alarm: str) -> str:
+def disagree_sql(alarm: str, run: str = ":run") -> str:
     """Версии расходятся: тревогу оценили не меньше двух версий, все — без пропуска (унаследованное решение —
     оценка), а тревога модели у них разная. Пропуск одной из версий — не расхождение (`Alarm.disagree = null`).
     Считается по тем же `scores`, что `disagree()`: фильтр и `counts.disagree` совпадают с флагом тревоги."""
     return f"""coalesce((SELECT count(*) >= 2 AND bool_and(e->>'status' = 'scored')
         AND bool_or((e->>'alert')::boolean) <> bool_and((e->>'alert')::boolean)
-    FROM jsonb_array_elements({scores_sql(alarm)}) e), false)"""
+    FROM jsonb_array_elements({scores_sql(alarm, run=run)}) e), false)"""
 
 
 def disagree(scores: list[dict]) -> bool | None:
@@ -116,14 +122,18 @@ def disagree(scores: list[dict]) -> bool | None:
     return len({s["alert"] for s in scores}) > 1
 
 
+BASE_VERSIONS = 2  # версии событийной модели в решениях базовой истории: baseline-v0 и v3
+
+
 def paired_sql(alias: str = "") -> str:
     """Решение парное: его тревогу оценили без пропуска все версии прогона (основная — все части связки — и теневые)
-    — метрики версий считаются на одних решениях. У прогона с одной версией парное любое оценённое решение тревоги."""
+    — метрики версий считаются на одних решениях. У прогона с одной версией парное любое оценённое решение тревоги.
+    У базовой истории прогона нет: её решения пишет ML обеими версиями — v0 и v3 (`BASE_VERSIONS`)."""
     a = alias
     return f"""({a}alarm_id IS NOT NULL AND (SELECT count(DISTINCT q.model_version) FROM predictions q
         WHERE q.alarm_id = {a}alarm_id AND q.model = '{TASK}' AND q.status = 'scored')
-        >= (SELECT coalesce(cardinality(string_to_array(r.primary_model, '{CHAIN_SEP}')), 1)
-                   + cardinality(r.shadow_models) FROM runs r WHERE r.id = {a}run_id))"""
+        >= coalesce((SELECT coalesce(cardinality(string_to_array(r.primary_model, '{CHAIN_SEP}')), 1)
+                   + cardinality(r.shadow_models) FROM runs r WHERE r.id = {a}run_id), {BASE_VERSIONS}))"""
 
 
 def other_disagrees_sql(alias: str = "") -> str:

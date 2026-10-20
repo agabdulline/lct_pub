@@ -15,6 +15,8 @@ COPY ml/v3/src /app/ml/v3/src
 COPY ml/v3_bridge /app/ml/v3_bridge
 # Ежедневный прогноз по типам (15.4): адаптер и код входов и признаков отдельных моделей ML-разработчика — только модули
 COPY ml/daily_routing /app/ml/daily_routing
+# модель доступа (lct-8f): только код признаков — dataset и train зависят от backend и архива
+COPY ml/access/__init__.py ml/access/features.py /app/ml/access/
 COPY ml/each_channel/__init__.py ml/each_channel/features.py ml/each_channel/prepare.py ml/each_channel/train.py \
      ml/each_channel/advanced.py ml/each_channel/calendar_study.py ml/each_channel/hard_channel_study.py \
      ml/each_channel/six_channel_study.py /app/ml/each_channel/

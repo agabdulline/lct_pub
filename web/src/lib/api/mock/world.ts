@@ -726,16 +726,27 @@ export class MockWorld {
     }
     rs.access.push(a)
     this.accessOpening(rs, a, first, t)
-    if (rs.rng() < 0.25) {
+    const own = rs.rng() < 0.25
+    // The access model at the first opening (lct-8f): mostly right, sometimes it alarms on staff or misses a stranger.
+    const reaction = own ? rs.rng() < 0.12 : rs.rng() < 0.8
+    const score = Math.round((reaction ? 0.65 + rs.rng() * 0.33 : 0.05 + rs.rng() * 0.5) * 1000) / 1000
+    Object.assign(a.inc, { verdict: reaction ? 'reaction' : 'own', score, threshold: 0.608, model_version: 'access-open-v0', decided_by: null, model_note: null })
+    // «нужна реакция» — an incident at once (after the 2 s burst window); «вероятно свой» — a feed row, the rule waits 5 min
+    if (reaction) this.schedule(rs, t + 2000, () => this.accessQualified(rs, a, t + 2000, 'model'))
+    else this.emit(rs, 'access_incident.updated', { ...a.inc })
+    if (own) {
       // The guard is taken off 30 s – 4 min after the opening: one's own came late to disarm.
       const off = t + Math.round(30_000 + rs.rng() * 210_000)
       this.schedule(rs, off, () => {
         a.guard.push({ ts: iso(off), value: 'Снято с охраны' })
-        Object.assign(a.inc, { status: 'dismissed', end_ts: iso(off), end_reason: 'disarmed', disarmed_after_min: Math.round((off - t) / MIN) })
+        // a model alarm on staff is closed by the disarming, the rule's candidate becomes «снято после открытия»
+        const status = a.inc.status === 'open' ? 'closed' : 'dismissed'
+        Object.assign(a.inc, { status, end_ts: iso(off), end_reason: 'disarmed', disarmed_after_min: Math.round((off - t) / MIN), updated_at: iso(off) })
+        this.emit(rs, 'access_incident.updated', { ...a.inc })
       })
       return
     }
-    this.schedule(rs, t + 5 * MIN, () => this.accessQualified(rs, a, t + 5 * MIN))
+    if (!reaction) this.schedule(rs, t + 5 * MIN, () => this.accessQualified(rs, a, t + 5 * MIN, 'rule'))
     let at = t
     const more = randInt(rs.rng, 1, 5)
     for (let i = 0; i < more; i++) {
@@ -773,7 +784,7 @@ export class MockWorld {
 
   /** The dispatcher's review (PATCH /access-incidents/{id}): stored and announced; the work order is not touched. */
   reviewAccess(rs: RunState, id: number, patch: AccessIncidentPatch): AccessIncident | null {
-    const a = rs.access.find((x) => x.inc.id === id && x.inc.status !== 'candidate')
+    const a = rs.access.find((x) => x.inc.id === id && (x.inc.status !== 'candidate' || x.inc.verdict === 'own'))
     if (!a) return null
     if (patch.resolution !== undefined) a.inc.resolution = patch.resolution
     if (patch.comment !== undefined) a.inc.comment = patch.comment
@@ -784,10 +795,11 @@ export class MockWorld {
 
   private accessPriority = (a: MockAccess) => (a.inc.hatch_openings > 0 || a.inc.flags.off_hours ? 'high' : 'medium') as 'high' | 'medium'
 
-  private accessQualified(rs: RunState, a: MockAccess, t: number) {
+  private accessQualified(rs: RunState, a: MockAccess, t: number, by: 'model' | 'rule') {
     if (a.inc.status !== 'candidate') return
     const recent = rs.access.filter((x) => x.inc.sub_object_id === a.inc.sub_object_id && x.inc.status !== 'candidate' && x.inc.status !== 'dismissed')
-    Object.assign(a.inc, { status: 'open', qualified_ts: iso(t), priority: this.accessPriority(a), updated_at: iso(t) })
+    Object.assign(a.inc, { status: 'open', qualified_ts: iso(t), priority: this.accessPriority(a), updated_at: iso(t), decided_by: by })
+    if (by === 'model') a.inc.source_note = 'Модель «снимут ли охрану»: прокси «свой или чужой», не обнаружение проникновения'
     a.inc.flags.repeated = recent.filter((x) => t - parseIso(x.inc.start_ts) <= 7 * DAY).length >= 3
     const guard = this.topo.channelById.get(a.inc.guard_channel_id)
     if (guard) {

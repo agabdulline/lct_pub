@@ -154,7 +154,7 @@ export function MetricsPanel({ metrics, model }: { metrics: Metrics | undefined;
         <p className="rounded-lg bg-muted/40 p-3 text-sm text-muted-foreground">
           Закрытых прогнозов пока нет: исход известен только после конца горизонта
           {model === 'daily' ? ' — у ежедневной модели это до 30 суток, в коротком прогоне живых метрик не будет' : ''}. Ориентир —
-          офлайн-отчёт {off.version}: Precision {fmtPercent(off.precision)}, Recall {fmtPercent(off.recall)} на{' '}
+          офлайн-отчёт: Precision {fmtPercent(off.precision)}, Recall {fmtPercent(off.recall)} на{' '}
           {fmtInt(off.decisions)} решениях ({off.decisionsLabel}).
         </p>
       )}
@@ -179,7 +179,7 @@ export function MetricsPanel({ metrics, model }: { metrics: Metrics | undefined;
                 <BlockRow label="Канал не был в обучении" m={metrics.unseen} />
                 <BlockRow label="Все" m={metrics.all} />
                 <TableRow className="text-muted-foreground hover:bg-transparent">
-                  <TableCell>Офлайн {off.version}, {off.period}</TableCell>
+                  <TableCell>Офлайн, {off.period}</TableCell>
                   <TableCell className="text-right tabular-nums">{fmtInt(off.decisions)}</TableCell>
                   <TableCell className="text-right tabular-nums">{fmtInt(off.positives)}</TableCell>
                   <TableCell className="text-right tabular-nums">{fmtInt(off.alerts)}</TableCell>

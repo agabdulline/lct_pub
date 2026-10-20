@@ -1,4 +1,4 @@
-import { BellRing, GitCompareArrows } from 'lucide-react'
+import { BellRing } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { AccessPanel } from '@/components/access/AccessPanel'
@@ -6,6 +6,7 @@ import { AlarmPanel } from '@/components/alarms/AlarmPanel'
 import { AlarmTable } from '@/components/alarms/AlarmTable'
 import { ObjectSelect } from '@/components/domain/ObjectSelect'
 import { Pager } from '@/components/domain/Pager'
+import { HistoryUnavailable } from '@/components/domain/HistoryUnavailable'
 import { QueryError } from '@/components/domain/QueryError'
 import { StatusDot } from '@/components/domain/StatusBadge'
 import { EquipmentPanel } from '@/components/equipment/EquipmentPanel'
@@ -16,7 +17,6 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
-import { Toggle } from '@/components/ui/toggle'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useAccessIncidents, useAlarms, useEquipmentEpisodes } from '@/lib/api/queries'
 import type { Verdict } from '@/lib/api/types'
@@ -49,7 +49,8 @@ const PERIODS = [
 // Alarm feed — the main screen (docs/product/v1-scope.md, экран 1). A run of an external data set has no SMVU
 // alarms: its feed is the alerts of the data set's models (stage 14).
 export function AlarmFeedPage() {
-  const { run } = useRun()
+  const { run, history } = useRun()
+  if (history) return <HistoryUnavailable what="Лента тревог" />
   return run?.dataset ? <ExternalFeed /> : <HackathonFeed />
 }
 
@@ -71,7 +72,7 @@ function HackathonFeed() {
   // «Снято после открытия» — a journal mark, not in the feed; shown only when asked for, under «Доступ».
   const withDismissed = s.get('dismissed') === '1'
   const pprAlert = s.get('ppr_alert') === '1'
-  // Stage 15: only the alarms where v0 and v3 disagree.
+  // The «models disagree» filter is gone from the interface (owner's decision); an old link still filters.
   const disagree = s.get('disagree') === 'true'
   // A filter that picks single alarms out of planned checks shows them as rows, not folded into the episode.
   const collapsePpr = s.get('ppr') !== 'expand' && !pprAlert && !disagree
@@ -191,13 +192,6 @@ function HackathonFeed() {
       )}
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold">Лента тревог</h1>
-          <p className="text-sm text-muted-foreground">
-            Дымовые тревоги с вердиктом модели, события оборудования и вскрытия под охраной. Сервис не гасит тревоги —
-            вердикт подсказывает, решает диспетчер.
-          </p>
-        </div>
         <div className="flex items-center gap-2 text-sm">
           <StatusDot status="alarm" pulse={!!counts?.active} />
           Сейчас активно: <span className="font-semibold tabular-nums">{counts ? fmtInt(counts.active) : '—'}</span>
@@ -295,18 +289,6 @@ function HackathonFeed() {
           </SelectContent>
         </Select>
         {from && <span className="text-xs text-muted-foreground">с {fmtDateTimeShort(from)}</span>}
-        {counts?.disagree !== undefined && (
-          <Toggle
-            variant="outline"
-            size="sm"
-            pressed={disagree}
-            onPressedChange={(on) => s.set({ disagree: on ? 'true' : null, kind: on && eventsOnly ? null : kind === 'all' ? null : kind })}
-            title="Тревоги, где одна модель выше своего порога, а другая нет"
-          >
-            <GitCompareArrows /> Модели расходятся
-            <span className="tabular-nums opacity-70">{fmtInt(counts.disagree)}</span>
-          </Toggle>
-        )}
         {accessOnly ? (
           <div className="ml-auto flex items-center gap-2" title="Охрану сняли в течение 5 минут после открытия: свой опоздал снять. В ленте их нет — только отметка в журнале">
             <Switch id="access-dismissed" checked={withDismissed} onCheckedChange={(on) => s.set({ dismissed: on ? '1' : null, page: null }, true)} />

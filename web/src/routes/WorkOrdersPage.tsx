@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import { ChannelLink } from '@/components/domain/ChannelLink'
+import { HistoryUnavailable } from '@/components/domain/HistoryUnavailable'
 import { ObjectSelect } from '@/components/domain/ObjectSelect'
 import { Pager } from '@/components/domain/Pager'
 import { QueryError } from '@/components/domain/QueryError'
@@ -56,6 +57,11 @@ function StatusCounter({ status, active, onClick, count }: { status: WorkOrderSt
 
 // Work orders (docs/product/v1-scope.md, экран 6): list with filters and statuses, CSV export, manual orders.
 export function WorkOrdersPage() {
+  const { history } = useRun()
+  return history ? <HistoryUnavailable what="Заявки на ТО" /> : <WorkOrdersList />
+}
+
+function WorkOrdersList() {
   const s = useSearchState()
   const navigate = useNavigate()
   const runTo = useRunTo()
@@ -110,12 +116,6 @@ export function WorkOrdersPage() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold">Заявки на ТО</h1>
-          <p className="text-sm text-muted-foreground">
-            Автоматические — по правилам и прогнозам моделей, одна открытая на канал и правило; ручные — от диспетчера.
-          </p>
-        </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={exportCsv} disabled={exporting}>
             <Download /> {exporting ? 'Выгружаем…' : 'Выгрузить CSV'}

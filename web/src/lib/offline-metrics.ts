@@ -48,7 +48,7 @@ export const OFFLINE: Record<ModelName, OfflineModel> = {
       // week v3 is silent after a day without journal data. Shown while the ML service does not report it itself.
       {
         version: 'v3>baseline-v0',
-        period: 'I полугодие 2026, решения v0',
+        period: 'I полугодие 2026 с неделей после пропуска журнала',
         precision: 0.869,
         recall: 0.788,
         f1: 0.826,
@@ -128,7 +128,7 @@ export const ROUTE_NOTE: Record<string, string> = {
 export function offlineRef(model: ModelName, models: ModelInfo[] | undefined, version?: string | null, routing?: DailyRouting | null): OfflineRef {
   const mix = routing?.offline?.routing
   if (model === 'daily' && !version && mix) {
-    const label = routing.test?.label ?? 'общие с v0 строки'
+    const label = routing.test?.label ?? 'строки проверки'
     return {
       version: 'смесь по таблице',
       period: label,
@@ -138,7 +138,7 @@ export function offlineRef(model: ModelName, models: ModelInfo[] | undefined, ve
       decisions: mix.decisions,
       positives: mix.positives,
       alerts: mix.alerts,
-      decisionsLabel: `канал-дней, общие с v0 строки, ${label}`,
+      decisionsLabel: `канал-дней, ${label}`,
       lead: routingLead(mix),
     }
   }

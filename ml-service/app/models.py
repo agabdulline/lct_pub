@@ -61,7 +61,7 @@ class LoadedModel:
 
     @property
     def scoring(self) -> bool:
-        return self.task is not None and self.family in ("baseline", "external", "v3", "each_channel")
+        return self.task is not None and self.family in ("baseline", "external", "v3", "each_channel", "access")
 
     @property
     def threshold(self) -> float | None:
@@ -108,11 +108,14 @@ class LoadedModel:
             **{k: self.config.get(k) for k in EXTERNAL_OUTCOME},
             "offline": self.offline,
             "routes": self.routes,
+            # модель доступа (lct-8f): автор, офлайн-итог с интервалами и ориентиром-правилом, ограничения для «Моделей»
+            **{k: self.config[k] for k in ACCESS_PASSTHROUGH if k in self.config},
         }
 
 
+ACCESS_PASSTHROUGH = ("author", "offline_metrics", "limitations", "trained_on")  # из config.json как есть
 EXTERNAL_OUTCOME = ("target", "target_tag", "horizon", "outcome", "label_key", "positive_labels", "ignore_labels",
-                    "history_minutes", "decision_lag_s")  # fmt: skip
+                    "history_minutes", "decision_lag_s", "unseen_windows")  # fmt: skip
 
 
 def load_all(model_dir: Path) -> list[LoadedModel]:

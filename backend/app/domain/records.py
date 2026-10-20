@@ -15,10 +15,16 @@ SELECT p.id, p.run_id, p.model, p.model_version, p.channel_id, c.name AS channel
     CASE WHEN p.alarm_id IS NULL THEN '[]'::jsonb ELSE {paired} END AS paired,
     CASE WHEN p.alarm_id IS NULL THEN NULL ELSE {decided} END AS decided
 FROM predictions p
-JOIN channels c ON c.id = p.channel_id
+-- канал — по ключу на каждую строку: при оценке «одна строка» (связка, база) планировщик иначе перебирал весь
+-- справочник на каждое решение — страница журнала истории шла 4 с. LIMIT 1 не даёт развернуть подзапрос в соединение
+JOIN LATERAL (
+    SELECT ch.name, ch.sensor_type, ch.object_id FROM channels ch WHERE ch.id = p.channel_id LIMIT 1
+) c ON true
 JOIN objects so ON so.id = c.object_id
 LEFT JOIN objects o ON o.id = so.parent_id
-""".replace("{paired}", scores_sql("p.alarm_id", exclude="p.id")).replace("{decided}", decided_sql("p."))
+""".replace("{paired}", scores_sql("p.alarm_id", exclude="p.id", run="p.run_id")).replace(
+    "{decided}", decided_sql("p.")
+)
 
 RUN = "run_id IS NOT DISTINCT FROM :run"
 

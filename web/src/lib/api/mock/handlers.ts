@@ -23,6 +23,8 @@ import type {
   Metrics,
   MetricsBlock,
   ModelCompare,
+  DatasetHistory,
+  HistorySummary,
   ModelInfo,
   ModelName,
   ModelsResponse,
@@ -1045,6 +1047,33 @@ const routes: [string, RegExp, Handler][] = [
         }),
       ),
       {
+        // The access model of lct-8f (ml/models/access-open/config.json): a proxy «own or not», not intrusion detection.
+        model: 'access_open',
+        version: 'access-open-v0',
+        family: 'access',
+        author: 'команда',
+        title: 'Открытие под охраной: снимут ли охрану — свой или нужна реакция',
+        loaded: true,
+        scoring: true,
+        active: true,
+        threshold: 0.607704,
+        features: 20,
+        trained_on: '2019–2024',
+        horizon: '5 мин после первого открытия',
+        sensor_types: ['КД Дверь', 'КД Люк', '9-секционный люк'],
+        artifact_sha256: '54f8fbfb95f2dec60fbe1e2713986f210c76a5024741e086de24acfa556dbfa1',
+        offline_metrics: { period: 'I полугодие 2026', precision: 0.9115, recall: 0.811, f1: 0.8583, ap: 0.9465, tp: 103, fp: 10, decisions: 215, positives: 127 },
+        offline_ci90: { P: [0.8442, 0.9492], R: [0.7111, 0.875] },
+        offline_rule: { period: 'I полугодие 2026', precision: 0.8169, recall: 0.9134, f1: 0.8625, ap: null, tp: 116, fp: 26, decisions: 215, positives: 127 },
+        offline_rule_label: 'флаг тревоги охранной системы у открытия',
+        limitations: [
+          'Прокси «свой или чужой» по тому, снимут ли охрану, а не обнаружение проникновения',
+          'Метка — «охрану не сняли за 5 мин»; снятие охраны — код или ключ, а не подтверждённый допуск',
+          'Какие двери в зоне канала охраны — допущение: зона — подобъект (Q23)',
+          'Проверка — 215 решений на 29 подобъектах, 20% из них — один подобъект («объект Гамма ОС»)',
+        ],
+      },
+      {
         model: 'magdeburg_fire',
         version: 'v0',
         family: 'external',
@@ -1069,6 +1098,62 @@ const routes: [string, RegExp, Handler][] = [
     ],
     daily_routing: DAILY_ROUTING,
   })],
+  // «Вся история»: the hackathon journal 2019 — 06.2026 by month — a seasonal synthetic shape, not the real numbers.
+  // «Все данные»: each dataset's base run by month — a small synthetic shape on the mock's dataset runs.
+  ['GET', /^\/dashboard\/datasets-history$/, (ctx): DatasetHistory[] =>
+    [...ctx.world.runs.values()]
+      .filter((rs) => rs.run.kind === 'dataset' && rs.run.dataset)
+      .map((rs) => ({
+        dataset: rs.run.dataset as string,
+        run_id: rs.run.id,
+        from: rs.run.sim_start,
+        to: rs.run.sim_now,
+        objects: 1,
+        channels: 126,
+        months: [{ month: rs.run.sim_start.slice(0, 7) + '-01', events: 3_230_526, alarm_events: 41_200, decisions: 0, alerts: 0 }],
+      })),
+  ],
+  ['GET', /^\/dashboard\/history$/, (ctx): HistorySummary => {
+    const rng = createRng(2026)
+    const months: HistorySummary['months'] = []
+    for (let y = 2019; y <= 2026; y++) {
+      for (let m = 1; m <= (y === 2026 ? 6 : 12); m++) {
+        const grow = 0.4 + ((y - 2019) * 12 + m) / 90
+        const alarms = Math.round((600 + 1400 * grow) * (0.7 + rng() * 0.6))
+        const ppr = Math.round(alarms * (0.55 + rng() * 0.3))
+        const faults = Math.round((9000 + 20000 * grow) * (0.7 + rng() * 0.6))
+        const access = y < 2021 ? 0 : Math.round(15 + rng() * 25)
+        months.push({
+          month: `${y}-${String(m).padStart(2, '0')}-01`,
+          smoke_alarms: alarms,
+          ppr_alarms: ppr,
+          ppr_share: ppr / alarms,
+          faults_started: faults,
+          faults_equipment: Math.round(faults * (0.15 + rng() * 0.2)),
+          access_incidents: access,
+          access_high: Math.round(access * (0.2 + rng() * 0.3)),
+        })
+      }
+    }
+    const objects = ctx.world.topo.objects.filter((o) => o.level === 'object').slice(0, 10)
+    return {
+      from: '2019-01-01',
+      to: '2026-06-30T20:59:59Z',
+      months,
+      top_from: '2025-06-30T20:59:59Z',
+      top_objects: objects
+        .map((o, i) => ({
+          object_id: o.id,
+          object_name: o.name,
+          faults: 46000 - i * 4100,
+          faults_equipment: 13000 - i * 1100,
+          fault_channels: 360 - i * 25,
+          alarms: 4200 - i * 300,
+          alarms_out_of_ppr: 1600 - i * 120,
+          access: 44 - i * 4,
+        })),
+    }
+  }],
   ['GET', /^\/dashboard\/summary$/, (ctx): DashboardSummary => {
     const rs = ctx.rs
     const now = rs?.simNow ?? Date.now()
@@ -1192,11 +1277,12 @@ const routes: [string, RegExp, Handler][] = [
     const obj = num(q, 'object_id')
     const statuses = list(q, 'status')
     const priorities = list(q, 'priority')
-    // Candidates never reach the API; `dismissed` only when asked for. Counts — the same filters without the status.
+    // Candidates reach the API only as «вероятно свой» of the access model; `dismissed` only when asked for. Counts — the
+    // same filters without the status.
     const base = rs.access
       .map((a) => a.inc)
       .filter((i) => {
-        if (i.status === 'candidate') return false
+        if (i.status === 'candidate' && i.verdict !== 'own') return false
         if (from !== null && i.end_ts !== null && parseIso(i.end_ts) < from) return false
         if (to !== null && parseIso(i.start_ts) >= to) return false
         if (obj !== null && i.object_id !== obj && i.sub_object_id !== obj) return false
@@ -1204,10 +1290,11 @@ const routes: [string, RegExp, Handler][] = [
         return true
       })
       .sort((a, b) => parseIso(b.start_ts) - parseIso(a.start_ts))
-    const shown = statuses.length ? statuses : ['open', 'closed']
+    const shown = statuses.length ? statuses : ['candidate', 'open', 'closed']
     return {
       ...paginate(base.filter((i) => shown.includes(i.status)).map((i) => ({ ...i })), q),
       counts: {
+        candidate: base.filter((i) => i.status === 'candidate').length,
         open: base.filter((i) => i.status === 'open').length,
         closed: base.filter((i) => i.status === 'closed').length,
         dismissed: base.filter((i) => i.status === 'dismissed').length,
@@ -1215,7 +1302,7 @@ const routes: [string, RegExp, Handler][] = [
     }
   }],
   ['GET', /^\/access-incidents\/(\d+)$/, (ctx): AccessIncidentDetail => {
-    const a = requireRun(ctx).access.find((x) => x.inc.status !== 'candidate' && x.inc.id === Number(ctx.params[0]))
+    const a = requireRun(ctx).access.find((x) => (x.inc.status !== 'candidate' || x.inc.verdict === 'own') && x.inc.id === Number(ctx.params[0]))
     if (!a) throw new MockHttpError(404, 'access_incident_not_found', 'Инцидента нет')
     return { ...a.inc, opening_events: a.openings.map((o) => ({ ...o })), guard_events: a.guard.map((g) => ({ ...g })) }
   }],

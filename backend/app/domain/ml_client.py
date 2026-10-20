@@ -83,6 +83,10 @@ class MlClient:
             body["model_version"] = model_version
         return await self._post("/v1/alarm/score", body)
 
+    async def score_access(self, run_id: int | None, points: list[dict]) -> dict:
+        """`POST /v1/access/score` — модель доступа по точкам решения (первые открытия кандидатов правила)."""
+        return await self._post("/v1/access/score", {"run_id": run_id, "points": points})
+
     async def score_daily(self, run_id: int | None, date: dt.date) -> dict:
         body = {"run_id": run_id, "date": date.isoformat(), "channel_ids": None}
         return await self._post("/v1/daily/score", body, timeout=DAILY_TIMEOUT)

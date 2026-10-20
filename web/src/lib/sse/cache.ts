@@ -40,7 +40,7 @@ export function alarmMatches(alarm: Alarm, params: QueryParams): boolean {
 }
 
 /** Inserts or replaces an alarm in every cached feed page of the run. */
-function upsertAlarm(qc: QueryClient, runKey: number | 'base', alarm: Alarm) {
+function upsertAlarm(qc: QueryClient, runKey: number | 'base' | 'all', alarm: Alarm) {
   for (const [key, page] of qc.getQueriesData<AlarmPage>({ queryKey: ['alarms', runKey] })) {
     if (!page) continue
     const params = ((key as QueryKey)[3] ?? {}) as QueryParams
@@ -81,7 +81,7 @@ export function accessMatches(inc: AccessIncident, params: QueryParams): boolean
  * An incident from the stream goes into every cached list of the run at once — the feed row comes with the toast,
  * not 3 s later. Counts are adjusted where the previous state is known; the throttled refetch settles the rest.
  */
-function upsertAccess(qc: QueryClient, runKey: number | 'base', inc: AccessIncident) {
+function upsertAccess(qc: QueryClient, runKey: number | 'base' | 'all', inc: AccessIncident) {
   for (const [key, page] of qc.getQueriesData<AccessIncidentPage>({ queryKey: ['access-incidents', runKey] })) {
     if (!page) continue
     const params = ((key as QueryKey)[3] ?? {}) as QueryParams
@@ -113,9 +113,9 @@ export class StreamCache {
   private pending = new Set<string>()
   private timer: ReturnType<typeof setTimeout> | null = null
   private readonly qc: QueryClient
-  private readonly runKey: number | 'base'
+  private readonly runKey: number | 'base' | 'all'
 
-  constructor(qc: QueryClient, runKey: number | 'base') {
+  constructor(qc: QueryClient, runKey: number | 'base' | 'all') {
     this.qc = qc
     this.runKey = runKey
   }

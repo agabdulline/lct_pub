@@ -41,7 +41,6 @@ export function ExternalFeed() {
   const ongoing = groups.filter((g) => isOngoing(g, simNow, running)).length
   const classes = [...new Set(groups.map((g) => g.cls))]
   const shown = cls ? groups.filter((g) => g.cls === cls) : groups
-  const titles = models.map((m) => m.title || m.model).join(', ')
   const classLabel = (c: string) => alertClassLabel(c, models)
 
   // New alerts flash for a few seconds.
@@ -65,13 +64,6 @@ export function ExternalFeed() {
   return (
     <div className={cn('mx-auto w-full max-w-7xl space-y-4', selected !== null && '2xl:mr-[26rem] 2xl:w-[calc(100%-26rem)]')}>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold">Лента тревог</h1>
-          <p className="text-sm text-muted-foreground">
-            Тревоги модели внешнего набора{titles ? `: ${titles}` : ''}. Исход — разметка набора, а не подтверждённый отказ.
-            Сервис не гасит тревоги — решает диспетчер.
-          </p>
-        </div>
         <div className="flex items-center gap-2 text-sm">
           <StatusDot status="alarm" pulse={ongoing > 0} />
           Сейчас идёт: <span className="font-semibold tabular-nums">{list.data ? fmtInt(ongoing) : '—'}</span>

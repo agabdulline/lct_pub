@@ -440,3 +440,46 @@ async def test_event_model_scores_passages(session, monkeypatch):
         (GATE2, "ext_access_violation", "medium", "Разобрать проезд через Ворота 2: билет car-B"),
     ]
     assert [n.type for n in notes].count("work_order.created") == 2
+
+
+async def test_dataset_history_on_test_windows(session, monkeypatch):
+    """«Все данные»: решения внешней модели в прогоне-основе набора — только на её тестовом окне, исходы по разметке на
+    конец журнала, без заявок; повторный запуск заменяет решения (app/external_history.py)."""
+    from app.external_history import backfill, dataset_bases, test_windows
+
+    monkeypatch.setattr(external, "_models_cache", None)
+    ml = FakeMl()
+    fire = FIRE | {
+        "periods": {"train": ["2023-07-10", "2023-07-10 10:00"], "test": ["2023-07-10 10:00", "2023-07-10 10:03"]}
+    }
+    monkeypatch.setattr(ml, "models", lambda: _models([fire]))
+    await dataset_run(session)
+    (base,) = await dataset_bases(session, "test")
+    assert test_windows(fire, base) == [(at("10:00:00"), at("10:03:00"))]
+    unseen = FIRE | {"unseen_windows": [{"from": "2023-07-10 08:00", "to": "2023-07-10 09:02", "tz": "Europe/Moscow"}]}
+    assert test_windows(unseen, base) == [(at("09:00:00"), at("09:02:00"))]  # обрезано по журналу основы
+    assert test_windows(FIRE, base) == []
+
+    for _ in range(2):
+        report = await backfill(session, base, ml)
+    assert report["models"]["test_fire"] | {"seconds": 0} == {
+        "windows": [(at("10:00:00").isoformat(), at("10:03:00").isoformat())],
+        "decisions": 3,
+        "predictions": 6,
+        "alerts": 1,
+        "seconds": 0,
+    }
+    assert await outcomes(session, base.id, "test_fire") == [
+        ("10:00", TARGET1, "scored", "no_fault", "history"),
+        ("10:00", TARGET2, "skipped", None, None),
+        ("10:01", TARGET1, "scored", "fault", "history"),
+        ("10:01", TARGET2, "skipped", None, None),
+        ("10:02", TARGET1, "scored", "fault", "history"),
+        ("10:02", TARGET2, "skipped", None, None),
+    ]
+    orders = await session.scalar(text("SELECT count(*) FROM work_orders WHERE run_id = :r"), {"r": base.id})
+    assert orders == 0
+
+
+async def _models(models: list[dict]) -> list[dict]:
+    return models

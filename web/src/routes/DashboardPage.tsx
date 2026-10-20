@@ -1,6 +1,8 @@
-import { BellRing, CalendarCheck, ClipboardList, Gauge, ScrollText, Wrench } from 'lucide-react'
+import { BellRing, CalendarCheck, ClipboardList, ScrollText } from 'lucide-react'
 
 import { AlarmsByHourChart } from '@/components/dashboard/AlarmsByHourChart'
+import { AllDataDashboard } from '@/components/dashboard/AllDataDashboard'
+import { HistoryDashboard } from '@/components/dashboard/HistoryDashboard'
 import { RiskHeatmap } from '@/components/dashboard/RiskHeatmap'
 import { ChannelLink } from '@/components/domain/ChannelLink'
 import { MetricCard } from '@/components/domain/MetricCard'
@@ -13,40 +15,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useDashboardRisk, useDashboardSummary, useModels } from '@/lib/api/queries'
-import type { LivePR, SensorType } from '@/lib/api/types'
+import type { SensorType } from '@/lib/api/types'
 import { fmtDateTime, fmtInt, fmtPercent } from '@/lib/format'
-import { historyNote } from '@/lib/labels'
 import { useRun } from '@/lib/run'
 import { cn } from '@/lib/utils'
 
-type Confirmed = { all: number; confirmed: number } | null
-
-// Alerts already confirmed by a fault come with the live summary itself.
-const confirmedOf = (pr: LivePR | undefined): Confirmed => (pr ? { all: pr.alerts, confirmed: pr.alerts_confirmed } : null)
-
-/** Live P/R tile text: always with its denominator (AGENTS.md §5, «Честные метрики»). */
-function prHint(pr: LivePR | undefined, c: Confirmed) {
-  if (!pr) return '—'
-  if (!pr.decisions && c?.confirmed)
-    return `${fmtInt(c.confirmed)} из ${fmtInt(c.all)} тревог уже подтвердились отказом — P не ниже этой доли; закрытых решений пока нет`
-  if (!pr.decisions) return 'Закрытых решений пока нет — горизонт прогноза не истёк'
-  const base = `по ${fmtInt(pr.decisions)} закрытым решениям, положительных ${fmtInt(pr.positives)}`
-  const history = historyNote(pr.history, pr.decisions)
-  const full = history ? `${base}; ${history}` : base
-  return pr.positives < 20 ? `${full} — мало положительных для устойчивой оценки` : full
-}
-
-// Nothing closed yet: the lower bound of Precision from alerts already confirmed by faults (MetricsPanel).
-// «94% / 100%» does not fit a sixth of the row below 1536 px at full KPI size: one line, a step smaller.
-const prValue = (pr: LivePR | undefined, c: Confirmed) => (
-  <span className="whitespace-nowrap text-2xl 2xl:text-3xl">
-    {pr && pr.decisions
-      ? `${pr.alerts ? fmtPercent(pr.precision, 0) : '—'} / ${fmtPercent(pr.recall, 0)}`
-      : pr && c?.confirmed
-        ? `≥ ${fmtPercent(c.confirmed / c.all, 0)} / —`
-        : '—'}
-  </span>
-)
 
 function FleetBar({ total, risk, fault }: { total: number; risk: number; fault: number }) {
   const pct = (n: number) => `${(n / Math.max(1, total)) * 100}%`
@@ -76,7 +49,9 @@ function FleetBar({ total, risk, fault }: { total: number; risk: number; fault: 
 
 // Dashboard (docs/product/v1-scope.md, экран 2). A data set run gets its models' dashboard instead (stage 14).
 export function DashboardPage() {
-  const { run } = useRun()
+  const { run, history, all } = useRun()
+  if (all) return <AllDataDashboard />
+  if (history) return <HistoryDashboard />
   return run?.dataset ? <DatasetDashboard /> : <HackathonDashboard />
 }
 
@@ -96,15 +71,11 @@ function HackathonDashboard() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <h1 className="text-xl font-semibold">Дашборд</h1>
-          <p className="text-sm text-muted-foreground">Оперативная сводка и каналы с наибольшим риском отказа через 1–30 суток.</p>
-        </div>
         {s && <span className="text-xs text-muted-foreground">на {fmtDateTime(s.now)}</span>}
       </div>
 
       {summary.isError && <QueryError error={summary.error} onRetry={() => void summary.refetch()} what="Сводка дашборда" compact />}
-      <div className={cn('grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6', summary.isError && 'hidden', summary.isFetching && s && 'opacity-90')}>
+      <div className={cn('grid gap-3 sm:grid-cols-2 lg:grid-cols-4', summary.isError && 'hidden', summary.isFetching && s && 'opacity-90')}>
         <MetricCard
           title="Каналы в тревоге"
           icon={BellRing}
@@ -143,8 +114,6 @@ function HackathonDashboard() {
           loading={!s}
           hint={s && (s.overdue_work_orders ? <span className="text-status-alarm">просрочено {fmtInt(s.overdue_work_orders)}</span> : 'просроченных нет')}
         />
-        <MetricCard title="Событийная: P / R" icon={Gauge} value={prValue(s?.live.smoke_alarm, confirmedOf(s?.live.smoke_alarm))} loading={!s} hint={prHint(s?.live.smoke_alarm, confirmedOf(s?.live.smoke_alarm))} />
-        <MetricCard title="Ежедневная: P / R" icon={Wrench} value={prValue(s?.live.daily, confirmedOf(s?.live.daily))} loading={!s} hint={prHint(s?.live.daily, confirmedOf(s?.live.daily))} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -173,20 +142,6 @@ function HackathonDashboard() {
               <FleetBar total={s.channels_total} risk={s.channels_at_risk} fault={s.channels_in_fault} />
             ) : summary.isError ? null : (
               <Skeleton className="h-16" />
-            )}
-            <p className="text-xs text-muted-foreground">
-              {daily
-                ? `В риске — оценка ежедневной модели ${daily.version} выше порога${daily.threshold !== null ? ` ${daily.threshold.toFixed(2).replace('.', ',')}` : ''}.${
-                    daily.sensor_types.length ? ` Модель покрывает ${daily.sensor_types.length} типов каналов; остальные в риск не попадают.` : ''
-                  }`
-                : 'В риске — оценка ежедневной модели выше порога. Ежедневная модель в сервис пока не загружена.'}
-            </p>
-            {daily?.offline_metrics && (
-              <p className="text-xs text-muted-foreground">
-                Офлайн {daily.version}: Precision {fmtPercent(daily.offline_metrics.precision, 0)}, Recall{' '}
-                {fmtPercent(daily.offline_metrics.recall, 0)} — модель находит {fmtPercent(daily.offline_metrics.recall, 0)} будущих
-                отказов. Список ниже — «на что посмотреть в первую очередь», а не все, что откажут.
-              </p>
             )}
           </CardContent>
         </Card>
@@ -242,7 +197,11 @@ function HackathonDashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Риск: объект × тип датчика</CardTitle>
-            <CardDescription>Число каналов в риске; цвет — их доля среди каналов типа на объекте</CardDescription>
+            <CardDescription>
+              Строка — объект, столбец — тип датчика. В клетке — сколько каналов этого типа ежедневная модель считает в риске
+              отказа на 1–30 суток; чем насыщеннее цвет, тем больше их доля на объекте. Серая клетка — каналы есть, риска нет;
+              точка — таких каналов нет. «Всего» — в риске / всего каналов. Наведите на клетку или значок — подробности.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {r ? (

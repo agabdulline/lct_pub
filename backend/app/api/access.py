@@ -16,12 +16,13 @@ from app.schemas.api import AccessIncident, AccessIncidentDetail, AccessIncident
 
 router = APIRouter(tags=["доступ"])
 
-# Представление прогона: инциденты прогона и базовые, закончившиеся до его старта; кандидаты не видны
+# Представление прогона: инциденты прогона и базовые, закончившиеся до его старта. Кандидаты не видны, кроме
+# оценённых моделью доступа «вероятно свой»: строка ленты без заявки, пока не сняли охрану или не решило правило
 _VIEW = (
-    "i.status <> 'candidate' AND (i.run_id IS NOT DISTINCT FROM :run OR (CAST(:run AS integer) IS NOT NULL "
-    "AND i.run_id IS NULL AND i.end_ts < run_sim_start(:run)))"
+    "(i.status <> 'candidate' OR i.verdict = 'own') AND (i.run_id IS NOT DISTINCT FROM :run OR "
+    "(CAST(:run AS integer) IS NOT NULL AND i.run_id IS NULL AND i.end_ts < run_sim_start(:run)))"
 )
-STATUSES = ("open", "closed", "dismissed")
+STATUSES = ("candidate", "open", "closed", "dismissed")
 
 
 def _filters(
@@ -57,7 +58,11 @@ async def access_incidents(
     to: dt.datetime | None = None,
     object_id: Annotated[int | None, Query(description="объект или подобъект")] = None,
     status: Annotated[
-        str | None, Query(description="open, closed, dismissed через запятую; по умолчанию open и closed")
+        str | None,
+        Query(
+            description="candidate («вероятно свой» по модели), open, closed, dismissed через запятую; "
+            "по умолчанию candidate, open и closed"
+        ),
     ] = None,
     priority: Annotated[str | None, Query(description="high, medium через запятую")] = None,
     page: int = 1,
@@ -66,7 +71,7 @@ async def access_incidents(
     """Инциденты «вскрытие под охраной», новые сверху по началу; `counts` — по тем же фильтрам без `status`."""
     page, size = page_params(page, size)
     scope, params = _filters(ctx.run_id, ctx.now, from_, to, object_id, csv_list(priority))
-    statuses = [s for s in csv_list(status) or ["open", "closed"] if s in STATUSES]
+    statuses = [s for s in csv_list(status) or ["candidate", "open", "closed"] if s in STATUSES]
     where = " AND ".join([*scope, "i.status = ANY(:statuses)"])
     params["statuses"] = statuses
     total = await session.scalar(text(f"SELECT count(*) FROM access_incidents i WHERE {where}"), params)

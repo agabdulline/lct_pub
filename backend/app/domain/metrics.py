@@ -14,7 +14,8 @@ import math
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.model_versions import CHAIN_SEP, TASK, decided_sql, is_chain, paired_sql, version_sql
+from app.core.config import settings
+from app.domain.model_versions import CHAIN_SEP, TASK, chain_of, decided_sql, is_chain, paired_sql, version_sql
 
 _RUN = "run_id IS NOT DISTINCT FROM :run"
 DAILY = "daily"
@@ -67,6 +68,47 @@ def block(rows: list[tuple[bool, bool, float | None]]) -> dict:
     }
 
 
+def aggregated(g) -> dict:
+    """Блок метрик из строки SQL-агрегата (`model_metrics`): то же, что `block` по строкам; `None` — решений нет."""
+    if g is None:
+        return block([])
+    tp, fp, fn = g.tp, g.fp, g.fn
+    lead_time = None
+    if g.lead_q is not None:
+        p10, p50, p90 = g.lead_q
+        lead_time = {"min_s": g.lead_min, "p10_s": p10, "p50_s": p50, "p90_s": p90, "max_s": g.lead_max}
+    return {
+        "decisions": g.decisions,
+        "positives": tp + fn,
+        "alerts": tp + fp,
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "tn": g.decisions - tp - fp - fn,
+        "precision": _ratio(tp, tp + fp),
+        "recall": _ratio(tp, tp + fn),
+        "f1": _ratio(2 * tp, 2 * tp + fp + fn),
+        "lead_time": lead_time,
+    }
+
+
+async def base_primary(session: AsyncSession) -> str | None:
+    """Основная версия событийной модели в базовой истории (режим «Вся история»): та же, что у новых прогонов, если
+    у базы есть решения всех её частей (решения истории пишет ML, `outcome_source = 'history'`); иначе `None` — все
+    решения базы, как раньше. Версии в P/R не смешиваются."""
+    configured = settings.primary_alarm_model
+    for version in chain_of(configured) or [configured]:
+        found = await session.scalar(
+            text(
+                "SELECT EXISTS (SELECT 1 FROM predictions WHERE run_id IS NULL AND model = :m AND model_version = :v)"
+            ),
+            {"m": TASK, "v": version},
+        )
+        if not found:
+            return None
+    return configured
+
+
 def closing_now(now: dt.datetime, outcomes_until: dt.datetime | None) -> dt.datetime:
     """«Сейчас» метрик прогона: его часы или конец досчёта по журналу (`outcomes_until`), что позже. Прогноз закрыт и
     входит в метрики, когда у него есть исход и горизонт истёк к этому моменту; журнал фильтрует исходы так же."""
@@ -102,6 +144,8 @@ async def model_metrics(
         row = (await session.execute(sql, {"run": run_id})).first()
         if row is not None:
             outcomes_until, primary = row
+    elif model == TASK and not model_version:
+        primary = await base_primary(session)
     now = closing_now(now, outcomes_until)
     version = model_version or (primary if model == TASK else None)
     params = {"run": run_id, "model": model, "now": now, "since": since, "until": until, "version": version}
@@ -114,16 +158,38 @@ async def model_metrics(
     )
     if paired:
         period += f" AND {paired_sql('predictions.')}"
-    rows = (
+    # sensor type — only for the daily breakdown: there the many rows get a hash join; on the few event decisions the
+    # planner expected one row and scanned the whole directory per decision (2 s for 7.5k decisions of history)
+    daily = model == DAILY
+    types_column = "ch.sensor_type" if daily else "NULL::text"
+    types_join = "JOIN channels ch ON ch.id = predictions.channel_id" if daily else ""
+    # closed decisions aggregated in SQL in one pass — all, by channel history, by model and by sensor type: the
+    # history scope holds ~730k daily decisions, loading them row by row took seconds
+    groups = (
         await session.execute(
             text(
                 f"""
-                SELECT alert, outcome = 'fault' AS fault, seen_channel, outcome_source = 'history' AS history,
-                    extract(epoch FROM outcome_at - decision_time) AS lead_s, model_version,
-                    (SELECT c.sensor_type FROM channels c WHERE c.id = predictions.channel_id) AS sensor_type
-                FROM predictions
-                WHERE {_RUN} AND model = :model AND {_VERSION} AND status = 'scored' AND alert IS NOT NULL
-                    AND outcome IS NOT NULL AND horizon_end <= :now {period}
+                WITH c AS (
+                    SELECT alert, outcome = 'fault' AS fault, seen_channel, outcome_source = 'history' AS history,
+                        extract(epoch FROM outcome_at - decision_time)::float8 AS lead_s, model_version,
+                        {types_column} AS sensor_type
+                    FROM predictions {types_join}
+                    WHERE {_RUN} AND model = :model AND {_VERSION} AND status = 'scored' AND alert IS NOT NULL
+                        AND outcome IS NOT NULL AND horizon_end <= :now {period}
+                )
+                SELECT GROUPING(seen_channel) AS g_seen, GROUPING(model_version) AS g_version,
+                    GROUPING(sensor_type) AS g_type, seen_channel, model_version, sensor_type,
+                    count(*) AS decisions,
+                    count(*) FILTER (WHERE alert AND fault) AS tp,
+                    count(*) FILTER (WHERE alert AND NOT fault) AS fp,
+                    count(*) FILTER (WHERE NOT alert AND fault) AS fn,
+                    count(*) FILTER (WHERE history) AS history,
+                    min(lead_s) FILTER (WHERE alert AND fault) AS lead_min,
+                    max(lead_s) FILTER (WHERE alert AND fault) AS lead_max,
+                    percentile_cont(ARRAY[0.1, 0.5, 0.9]) WITHIN GROUP (ORDER BY lead_s)
+                        FILTER (WHERE alert AND fault AND lead_s IS NOT NULL) AS lead_q
+                FROM c
+                GROUP BY GROUPING SETS ((), (seen_channel), (model_version), (sensor_type))
                 """
             ),
             params,
@@ -151,21 +217,13 @@ async def model_metrics(
         )
     ).one()
 
-    def pick(seen: bool | None) -> list[tuple]:
-        return [
-            (r.alert, bool(r.fault), float(r.lead_s) if r.lead_s is not None else None)
-            for r in rows
-            if seen is None or r.seen_channel is seen
-        ]
+    total = next((g for g in groups if g.g_seen and g.g_version and g.g_type), None)
+    seen = {g.seen_channel: g for g in groups if not g.g_seen and g.seen_channel is not None}
 
-    def by(key: str) -> dict[str, dict]:
-        groups: dict[str, list[tuple]] = {}
-        for r in rows:
-            lead = float(r.lead_s) if r.lead_s is not None else None
-            groups.setdefault(getattr(r, key) or "—", []).append((r.alert, bool(r.fault), lead))
-        return {k: block(v) for k, v in sorted(groups.items())}
+    def by(rows: list) -> dict[str, dict]:
+        return {k: aggregated(g) for k, g in sorted(rows, key=lambda kg: kg[0])}
 
-    closed = block(pick(None))
+    closed = aggregated(total)
     horizon = [round(float(h), 3) for h in stats.horizon] if stats.horizon else None
     return {
         "model": model,
@@ -176,7 +234,7 @@ async def model_metrics(
         "open_fault": stats.open_fault,
         "horizon_hours": horizon,
         "note": _note(closed["decisions"], stats.open, stats.open_fault, horizon, outcomes_until),
-        "history": sum(1 for r in rows if r.history),
+        "history": total.history if total else 0,
         "outcomes_until": outcomes_until,
         # для сводки прогона (`live`): все тревоги модели, сбывшиеся из них и решения без исхода — без учёта
         # конца горизонта, нижняя граница точности в интерфейсе
@@ -184,10 +242,10 @@ async def model_metrics(
         "alerts_confirmed": stats.alerts_confirmed,
         "outcome_open": stats.outcome_open,
         "all": closed,
-        "seen": block(pick(True)),
-        "unseen": block(pick(False)),
-        "by_version": by("model_version") if model == DAILY else None,
-        "by_sensor_type": by("sensor_type") if model == DAILY else None,
+        "seen": aggregated(seen.get(True)),
+        "unseen": aggregated(seen.get(False)),
+        "by_version": by([(g.model_version or "—", g) for g in groups if not g.g_version]) if model == DAILY else None,
+        "by_sensor_type": by([(g.sensor_type or "—", g) for g in groups if not g.g_type]) if model == DAILY else None,
     }
 
 

@@ -31,6 +31,8 @@ import type {
   ModelCompare,
   ModelInfo,
   ModelName,
+  DatasetHistory,
+  HistorySummary,
   ModelsResponse,
   ObjectDetail,
   ObjectNode,
@@ -55,10 +57,10 @@ type Extra<T> = Omit<UseQueryOptions<T, Error, T, readonly unknown[]>, 'queryKey
 
 /** Query of a run-scoped resource. */
 function useRunQuery<T>(resource: string, path: string, params: QueryParams = {}, extra: Extra<T> = {}) {
-  const { runId, runKey, ready } = useRun()
+  const { runParam, runKey, ready } = useRun()
   return useQuery({
     queryKey: [resource, runKey, path, params] as const,
-    queryFn: () => apiGet<T>(path, { ...params, run: runId }),
+    queryFn: () => apiGet<T>(path, { ...params, run: runParam }),
     ...extra,
     enabled: ready && (extra.enabled ?? true),
   })
@@ -197,6 +199,14 @@ export function useExternalModels(dataset: string | null | undefined): ModelInfo
 
 export const useDashboardSummary = () =>
   useRunQuery<DashboardSummary>('dashboard-summary', '/dashboard/summary', {}, { refetchInterval: 30_000 })
+
+/** «Все данные»: each dataset's base run by month; not run-scoped, the bases change only when a dataset is loaded. */
+export const useDatasetsHistory = (enabled = true) =>
+  useQuery({ queryKey: ['datasets-history'], queryFn: () => apiGet<DatasetHistory[]>('/dashboard/datasets-history'), staleTime: 600_000, enabled })
+
+/** «Вся история»: not run-scoped — always the hackathon base; the base changes only when the journal is loaded. */
+export const useHistorySummary = (enabled = true) =>
+  useQuery({ queryKey: ['dashboard-history'], queryFn: () => apiGet<HistorySummary>('/dashboard/history'), staleTime: 600_000, enabled })
 
 export const useDashboardRisk = () =>
   useRunQuery<DashboardRisk>('dashboard-risk', '/dashboard/risk', {}, { refetchInterval: 60_000 })

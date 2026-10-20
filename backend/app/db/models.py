@@ -441,6 +441,8 @@ class WorkOrderEvent(Base):
 ACCESS_STATUSES = ("candidate", "open", "closed", "dismissed")
 ACCESS_END_REASONS = ("disarmed", "quiet", "run_end")
 ACCESS_RESOLUTIONS = ("works", "intrusion", "false_alarm")
+ACCESS_VERDICTS = ("reaction", "own")  # модель доступа: нужна реакция / вероятно свой
+ACCESS_DECIDERS = ("model", "rule")
 
 
 class AccessIncident(Base):
@@ -455,6 +457,10 @@ class AccessIncident(Base):
         ),
         CheckConstraint(
             f"resolution IS NULL OR {_in('resolution', ACCESS_RESOLUTIONS)}", name="access_incidents_resolution_check"
+        ),
+        CheckConstraint(f"verdict IS NULL OR {_in('verdict', ACCESS_VERDICTS)}", name="access_incidents_verdict_check"),
+        CheckConstraint(
+            f"decided_by IS NULL OR {_in('decided_by', ACCESS_DECIDERS)}", name="access_incidents_decided_check"
         ),
         Index(
             "access_incidents_uq",
@@ -488,6 +494,13 @@ class AccessIncident(Base):
     priority: Mapped[str | None] = mapped_column(Text)
     work_order_id: Mapped[int | None] = mapped_column(ForeignKey("work_orders.id", ondelete="SET NULL"))
     resolution: Mapped[str | None] = mapped_column(Text)  # разбор диспетчером
+    # модель доступа (lct-8f): «нужна реакция» / «вероятно свой» при первом открытии, оценка, кто решил, почему не она
+    verdict: Mapped[str | None] = mapped_column(Text)
+    score: Mapped[float | None] = mapped_column(Float)
+    threshold: Mapped[float | None] = mapped_column(Float)
+    model_version: Mapped[str | None] = mapped_column(Text)
+    decided_by: Mapped[str | None] = mapped_column(Text)
+    model_note: Mapped[str | None] = mapped_column(Text)
     comment: Mapped[str | None] = mapped_column(Text)
     updated_at: Mapped[dt.datetime] = mapped_column(TS, server_default=text("now()"))
 

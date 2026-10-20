@@ -581,7 +581,8 @@ class ModelInfo(BaseModel):
     model: ModelName
     version: str
     # each_channel — отдельные модели типов (#243), chain — связка событийных версий
-    family: Literal["v3", "baseline", "external", "each_channel", "chain"]
+    # access — модель доступа «свой или нужна реакция» (lct-8f)
+    family: Literal["v3", "baseline", "external", "each_channel", "chain", "access"]
     title: str
     loaded: bool
     active: bool  # скорит задачу по умолчанию; у событийной — основная версия новых прогонов (15.2)
@@ -608,6 +609,11 @@ class ModelInfo(BaseModel):
     # внешние модели: как закрывается исход (`label_in_horizon`…) и какие метки разметки — положительные
     outcome: str | None = None
     positive_labels: list[str] | None = None
+    # модель доступа: 90% интервалы P и R проверки, ориентир — правило на тех же решениях, ограничения для «Моделей»
+    offline_ci90: dict[str, list[float]] | None = None
+    offline_rule: OfflineMetrics | None = None
+    offline_rule_label: str | None = None
+    limitations: list[str] | None = None
 
 
 class RoutingOffline(BaseModel):
@@ -854,6 +860,15 @@ class AccessIncident(BaseModel):
     comment: str | None
     updated_at: dt.datetime
     source_note: str
+    # модель доступа (lct-8f): при первом открытии — «нужна реакция» (охрану не снимут за 5 мин) или «вероятно свой»;
+    # прокси «свой или чужой», не обнаружение проникновения. null — модель не оценивала (база, до выкатки, сбой)
+    verdict: Literal["reaction", "own"] | None = None
+    score: float | None = None
+    threshold: float | None = None
+    model_version: str | None = None
+    # кто завёл инцидент: model — сразу по оценке, rule — через 5 мин без снятия охраны; у кандидата — null
+    decided_by: Literal["model", "rule"] | None = None
+    model_note: str | None = None  # почему модель не решала: ml_unavailable, not_scored
 
 
 class AccessOpening(BaseModel):
@@ -877,6 +892,7 @@ class AccessIncidentDetail(AccessIncident):
 
 
 class AccessCounts(BaseModel):
+    candidate: int = 0  # «вероятно свой» по модели доступа — ждём снятия охраны
     open: int
     closed: int
     dismissed: int
@@ -1040,6 +1056,66 @@ class ObjectRisk(BaseModel):
 class DashboardRisk(BaseModel):
     top: list[Channel]
     by_object: list[ObjectRisk]
+
+
+class HistoryMonth(BaseModel):
+    """Месяц журнала хакатона (по Москве): дымовые тревоги и ППР, начавшиеся неисправности, инциденты вскрытия."""
+
+    month: dt.date
+    smoke_alarms: int
+    ppr_alarms: int
+    ppr_share: float | None
+    faults_started: int
+    faults_equipment: int  # без дымовых датчиков
+    access_incidents: int
+    access_high: int
+
+
+class HistoryObject(BaseModel):
+    """Проблемный объект за год до конца данных: неисправности, дымовые тревоги вне ППР, вскрытия под охраной."""
+
+    object_id: int
+    object_name: str
+    faults: int
+    faults_equipment: int
+    fault_channels: int
+    alarms: int
+    alarms_out_of_ppr: int
+    access: int
+
+
+class DatasetHistoryMonth(BaseModel):
+    month: dt.date
+    events: int
+    alarm_events: int  # события с флагом тревоги
+    decisions: int  # решения моделей набора на его основе, если записаны
+    alerts: int
+
+
+class DatasetHistory(BaseModel):
+    """Режим «Все данные»: история внешнего набора — его прогон-основа по месяцам, своя шкала времени."""
+
+    dataset: str
+    run_id: int
+    from_: dt.datetime = Field(alias="from")
+    to: dt.datetime | None
+    objects: int
+    channels: int
+    months: list[DatasetHistoryMonth]
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class HistorySummary(BaseModel):
+    """Режим «Вся история»: базовая история хакатона без прогона — только агрегаты."""
+
+    from_: dt.date | None = Field(alias="from")
+    to: dt.datetime
+    months: list[HistoryMonth]
+    top_from: dt.datetime
+    top_objects: list[HistoryObject]
+
+    model_config = ConfigDict(populate_by_name=True)
 
 
 # --- заявки -------------------------------------------------------------------------------------------------------

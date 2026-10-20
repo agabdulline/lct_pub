@@ -471,7 +471,7 @@ export type ModelInfo = {
    * `each_channel` — the ML developer's separate daily model of one channel type (#243); `chain` — the owner's chain of
    * event-model versions (`v3>baseline-v0`, lct-95).
    */
-  family: 'v3' | 'baseline' | 'external' | 'each_channel' | 'chain'
+  family: 'v3' | 'baseline' | 'external' | 'each_channel' | 'chain' | 'access'
   /** A chain of event-model versions (`v3>baseline-v0`): its parts in priority order. */
   chain?: string[] | null
   title: string
@@ -498,6 +498,11 @@ export type ModelInfo = {
   synthetic?: boolean | null
   trigger?: string | null
   eval_scheme?: string | null
+  /** Access model: 90% intervals of P and R, the guard system's rule on the same decisions, limitations. */
+  offline_ci90?: Record<string, number[]> | null
+  offline_rule?: OfflineMetrics | null
+  offline_rule_label?: string | null
+  limitations?: string[] | null
 }
 
 /** Offline result of a route or of the mix of daily models on the rows common with v0 (`ml/reports/daily-routing`). */
@@ -545,6 +550,12 @@ export type ModelsResponse = {
 // ---------- Dashboard
 
 export type LivePR = Schemas['LiveMetrics']
+
+/** GET /dashboard/history — «Вся история»: the hackathon journal by month (Moscow) and the problem objects of its last year. */
+export type HistorySummary = Schemas['HistorySummary']
+export type HistoryMonth = Schemas['HistoryMonth']
+/** GET /dashboard/datasets-history — «Все данные»: each dataset's base run by month, its own time scale. */
+export type DatasetHistory = Schemas['DatasetHistory']
 
 /** GET /dashboard/summary */
 export type DashboardSummary = {
@@ -1081,7 +1092,10 @@ export type AccessFlags = {
 
 /**
  * Opened under guard: a door or hatch opened while the sub-object is armed and the guard was not taken off within
- * 5 minutes. A label of the guard rules, not a confirmed intrusion (`source_note`). No model verdict.
+ * 5 minutes. A label of the guard rules, not a confirmed intrusion (`source_note`). The access model (lct-8f) scores the
+ * first opening at once: «нужна реакция» opens the incident at once, «вероятно свой» keeps the candidate in the feed
+ * without a work order; 5 min without disarming — the rule opens it. A proxy «own or not» by whether the guard is taken
+ * off, not intrusion detection.
  */
 export type AccessIncident = {
   id: number
@@ -1112,8 +1126,17 @@ export type AccessIncident = {
   resolution: AccessResolution | null
   comment: string | null
   updated_at: Iso
-  /** «Метка правил охраны, не подтверждённое проникновение». */
+  /** «Метка правил охраны, не подтверждённое проникновение», or the model's: a proxy, not intrusion detection. */
   source_note: string
+  /** The access model at the first opening: `reaction` — the guard will not be taken off in 5 min, `own` — likely staff. */
+  verdict?: 'reaction' | 'own' | null
+  score?: number | null
+  threshold?: number | null
+  model_version?: string | null
+  /** Who opened the incident: the model at once or the rule after 5 min; `null` — a candidate. */
+  decided_by?: 'model' | 'rule' | null
+  /** Why the model did not decide: `ml_unavailable`, `not_scored`. */
+  model_note?: string | null
 }
 
 export type AccessOpening = {
@@ -1133,7 +1156,8 @@ export type GuardEvent = { ts: Iso; value: string }
 /** GET /access-incidents/{id}: openings in time and the guard transitions from arming till the end. */
 export type AccessIncidentDetail = AccessIncident & { opening_events: AccessOpening[]; guard_events: GuardEvent[] }
 
-export type AccessIncidentPage = Page<AccessIncident> & { counts: { open: number; closed: number; dismissed: number } }
+/** `candidate` — «вероятно свой» by the access model, waiting for the guard to be taken off. */
+export type AccessIncidentPage = Page<AccessIncident> & { counts: { candidate: number; open: number; closed: number; dismissed: number } }
 
 /** PATCH /access-incidents/{id}: the dispatcher's review; the work order is not touched. */
 export type AccessIncidentPatch = { resolution?: AccessResolution | null; comment?: string | null }

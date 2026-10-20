@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 
-from app import history
+from app import access, history
 from app.config import settings
 from app.models import load_all, load_compare, load_routing
 from app.scoring import (
@@ -82,6 +82,25 @@ class ExternalScoreRequest(BaseModel):
     targets: list[int] | None = None  # узлы, агрегаты или каналы; None — все цели набора
     events: list[ExternalEvent] | None = None  # у моделей с target = event (vast_gate): принятые события
     explain: bool = False
+
+
+class AccessPoint(BaseModel):
+    """Точка решения модели доступа — первое открытие кандидата правила (backend, access.md §4)."""
+
+    sub_object_id: int
+    channel_id: int
+    start_ts: datetime
+    is_alarm: bool
+    hatch: bool
+    armed_since: datetime | None = None
+    guard_faulty: bool = False
+    guard_channel_id: int
+    opener_ids: list[int]
+
+
+class AccessScoreRequest(BaseModel):
+    run_id: int | None = None
+    points: list[AccessPoint]
 
 
 class ReloadRequest(BaseModel):
@@ -361,6 +380,46 @@ def _external_events(model, req: ExternalScoreRequest, decision_time, history_sp
         "model": model.label,
         "dataset": dataset,
         "decision_time": decision_time.tz_convert(tz).isoformat(),
+        "results": results,
+        "elapsed_ms": round((time.perf_counter() - started) * 1000),
+    }
+
+
+@app.post("/v1/access/score", response_model=None)
+def access_score(req: AccessScoreRequest) -> dict | JSONResponse:
+    """Модель доступа: «нужна реакция» (охрану не снимут за 5 мин) или «вероятно свой» при открытии под охраной —
+    прокси «свой или чужой» по тому, снимут ли охрану, а не обнаружение проникновения. Признаки — `ml.access.features`
+    по истории представления прогона."""
+    model = scoring_model("access_open")
+    if model is None:
+        return error(503, "access_model_missing", "Нет модели доступа со скорингом")
+    if not req.points:
+        return {"model": model.label, "threshold": model.threshold, "results": [], "elapsed_ms": 0}
+    started = time.perf_counter()
+    points = pd.DataFrame([p.model_dump() for p in req.points])
+    for col in ("start_ts", "armed_since"):
+        points[col] = pd.to_datetime(points[col], utc=True)
+    try:
+        past, guard, openers = history.access_inputs(req.run_id, points)
+    except (SQLAlchemyError, OSError) as e:
+        return error(503, "db_unavailable", f"Рабочая база недоступна: {str(e)[:200]}")
+    x = access.features(points, past, guard, openers)
+    scores = access.score(model, x)
+    tz = ZoneInfo(settings.timezone)
+    results = [
+        {
+            "sub_object_id": int(p.sub_object_id),
+            "start_ts": p.start_ts.tz_convert(tz).isoformat(),
+            "status": "scored",
+            "score": s,
+            "threshold": model.threshold,
+            "alert": s >= model.threshold,
+        }
+        for p, s in zip(points.itertuples(), scores, strict=True)
+    ]
+    return {
+        "model": model.label,
+        "threshold": model.threshold,
         "results": results,
         "elapsed_ms": round((time.perf_counter() - started) * 1000),
     }

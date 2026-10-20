@@ -6,6 +6,11 @@
 их вперёд: кандидат → инцидент или «снято после открытия», инцидент → закрыт. Сверка с `access_incidents` по
 (подобъект, начало): новое — вставка, изменения — обновление, перевод в инцидент — заявка `access_open_armed`
 и `access_incident.created`, остальное — `access_incident.updated` (одно на инцидент за такт).
+
+Модель доступа (lct-8f) решает раньше правила: кандидата оценивают один раз, при первом открытии. «Нужна реакция» —
+инцидент и заявка сразу, в момент «начало + окно волны» (`decide`), — он не зависит от тактов. «Вероятно свой» —
+кандидат в ленте без заявки; не сняли охрану за 5 мин — инцидент заводит правило. Модель ускоряет, правило страхует:
+«вероятно свой» инцидент не подавляет. Вердикт хранится в инциденте и накладывается на каждый пересчёт движка.
 """
 
 import datetime as dt
@@ -32,6 +37,7 @@ from app.domain.access import (
     rules,
 )
 from app.domain.access_feed import incidents_by_ids
+from app.domain.ml_client import MlClient, MlUnavailable
 from app.domain.notify import Notification
 from app.domain.runs import run_source
 from app.domain.work_orders import _due, config, work_orders_by_ids
@@ -45,6 +51,7 @@ LOCK_SECONDS = 60
 PENDING_SECONDS = 120  # safety net: if the pending task is lost, the key expires and a new one can be queued
 GUARD_LOOKBACK = dt.timedelta(days=60)  # переходы охраны до старта прогона: состояние и начало охраны
 
+_MODEL_FIELDS = ("verdict", "score", "threshold", "model_version", "decided_by", "model_note")
 _FIELDS = (
     "status",
     "qualified_ts",
@@ -59,6 +66,7 @@ _FIELDS = (
     "guard_faulty",
     "repeated",
     "priority",
+    *_MODEL_FIELDS,
 )
 
 
@@ -262,6 +270,62 @@ async def _order(session: AsyncSession, run_id: int, sub: SubObject, inc: Incide
     return existing, []
 
 
+def _point(sub: SubObject, inc: Incident) -> dict:
+    """Точка решения модели доступа — первое открытие кандидата (`ml.access.features`, `POST /v1/access/score`)."""
+    first = inc.openings[0]
+    return {
+        "sub_object_id": inc.sub_object_id,
+        "channel_id": first.channel_id,
+        "start_ts": inc.start_ts.isoformat(),
+        "is_alarm": first.is_alarm,
+        "hatch": sub.openers[first.channel_id][1],
+        "armed_since": inc.armed_since.isoformat() if inc.armed_since else None,
+        "guard_faulty": inc.guard_faulty,
+        "guard_channel_id": sub.guard_channel_id,
+        "opener_ids": sorted(sub.openers),
+    }
+
+
+async def score_new(
+    run: Run, subs: dict[int, SubObject], incidents: list[Incident], ml: MlClient | None = None
+) -> dict:
+    """Оценка модели доступа для ещё не оценённых кандидатов — одним запросом. Сервис недоступен — `model_note`
+    `ml_unavailable`, без повторов: через 5 мин решит правило."""
+    if not incidents:
+        return {}
+    key = {(i.sub_object_id, i.start_ts.isoformat()): (i.sub_object_id, i.start_ts) for i in incidents}
+    try:
+        body = await (ml or MlClient()).score_access(run.id, [_point(subs[i.sub_object_id], i) for i in incidents])
+    except MlUnavailable as e:
+        log.warning("модель доступа недоступна для прогона %s: %s", run.id, e)
+        return {k: {"model_note": "ml_unavailable"} for k in key.values()}
+    out = {}
+    for res in body["results"]:
+        ts = dt.datetime.fromisoformat(res["start_ts"])
+        out[(res["sub_object_id"], ts)] = {
+            "verdict": "reaction" if res["alert"] else "own",
+            "score": res["score"],
+            "threshold": res["threshold"],
+            "model_version": body["model"],
+        }
+    return {k: out.get(k, {"model_note": "not_scored"}) for k in key.values()}
+
+
+def decide(inc: Incident, model: dict | None, r: AccessRules) -> str | None:
+    """Наложить вердикт модели на результат движка и вернуть, кто решил. «Нужна реакция» — инцидент с момента
+    «начало + окно волны» (открытие классифицировано): кандидат → инцидент, «снято после открытия» → инцидент, закрытый
+    снятием (ложная тревога модели, видна в ленте). Иначе инцидент — по правилу, кандидат ещё ничей."""
+    if model and model.get("verdict") == "reaction":
+        at = inc.start_ts + r.burst_window
+        if inc.status == "candidate":
+            inc.status = "open"
+        elif inc.status == "dismissed":
+            inc.status = "closed"
+        inc.qualified_ts = min(at, inc.qualified_ts) if inc.qualified_ts else at
+        return "model"
+    return "rule" if inc.status in ("open", "closed") else None
+
+
 def _values(inc: Incident) -> dict:
     return {
         "status": inc.status,
@@ -293,12 +357,27 @@ async def sync_run(session: AsyncSession, run: Run, final: bool = False) -> tupl
             await session.execute(text("SELECT * FROM access_incidents WHERE run_id = :run"), {"run": run.id})
         ).all()
     }
+    r = rules()
+    models = {
+        k: {f: getattr(row, f) for f in _MODEL_FIELDS if f != "decided_by"}
+        for k, row in existing.items()
+        if row.verdict or row.model_note
+    }
+
+    # оцениваются только новые кандидаты: решённое до модели (прогон шёл до выкатки) задним числом не меняется
+    def unscored(k: tuple) -> bool:
+        return k not in models and (k not in existing or existing[k].status == "candidate")
+
+    fresh = [i for i in incidents if unscored((i.sub_object_id, i.start_ts))]
+    models |= await score_new(run, subs, fresh)
     notes: list[Notification] = []
     created_ids, updated_ids = [], []
     summary = {"incidents": 0, "created": 0, "updated": 0}
     now = dt.datetime.now(dt.UTC)
     for inc in incidents:
-        values = _values(inc)
+        model = models.get((inc.sub_object_id, inc.start_ts))
+        decided_by = decide(inc, model, r)
+        values = _values(inc) | {f: (model or {}).get(f) for f in _MODEL_FIELDS} | {"decided_by": decided_by}
         row = existing.get((inc.sub_object_id, inc.start_ts))
         if row is None:
             new = AccessIncident(
@@ -338,14 +417,18 @@ async def sync_run(session: AsyncSession, run: Run, final: bool = False) -> tupl
             notes += order_notes
             created_ids.append(incident_id)
             summary["created"] += 1
-        elif inc.status in ("open", "closed") or (was is not None and was.status != inc.status):
+        elif (
+            inc.status in ("open", "closed")
+            or (was is not None and was.status != inc.status)
+            or (was is None and values["verdict"] == "own")  # «вероятно свой» — строка ленты без заявки
+        ):
             updated_ids.append(incident_id)
             summary["updated"] += 1
     summary["incidents"] = len(incidents)
     for item in await incidents_by_ids(session, run.id, created_ids):
         notes.append(Notification(run.id, "access_incident.created", item))
     for item in await incidents_by_ids(session, run.id, updated_ids):
-        if item["status"] in ("open", "closed", "dismissed"):
+        if item["status"] in ("open", "closed", "dismissed") or item["verdict"] == "own":
             notes.append(Notification(run.id, "access_incident.updated", item))
     return summary, notes
 

@@ -2,14 +2,33 @@
 
 from fastapi import APIRouter
 
-from app.api.deps import RunCtx, Session
+from app.api.deps import RunContext, RunCtx, Session
 from app.api.errors import ApiError
-from app.domain.views import aggregate, by_sensor_type, by_sub_object, channel_views, object_tree
+from app.db.models import HACKATHON
+from app.domain.views import ChannelView, aggregate, by_sensor_type, by_sub_object, channel_views, object_tree
 from app.schemas.api import Graph, ObjectDetail, ObjectNode
 
 router = APIRouter(tags=["объекты"])
 
 NO_GROUP = "без группы"
+
+
+async def scope_views(session, ctx: RunContext) -> dict[int, ChannelView]:
+    """Каналы с состоянием в представлении экрана. «Все данные» (`?run=all`): хакатон — по базе на конец его данных,
+    каждый набор — по своему прогону-основе на его конец; времена источников не смешиваются."""
+    if not ctx.all_data:
+        return await channel_views(session, ctx.run_id, ctx.now, ctx.source)
+    views = await channel_views(session, None, ctx.now, HACKATHON)
+    for run in ctx.dataset_runs:
+        dataset = (run.params or {}).get("dataset")
+        if dataset:
+            views |= await channel_views(session, run.id, run.sim_now or run.sim_end or run.sim_start, dataset)
+    return views
+
+
+def _tree_source(ctx: RunContext) -> str | None:
+    """Справочник экрана: «Все данные» — все наборы, иначе только набор прогона."""
+    return None if ctx.all_data else ctx.source
 
 
 def _channels_under(tree, groups, object_id: int) -> list:
@@ -19,8 +38,8 @@ def _channels_under(tree, groups, object_id: int) -> list:
 @router.get("/objects", response_model=list[ObjectNode])
 async def objects(ctx: RunCtx, session: Session) -> list[dict]:
     """Дерево район → объекты → подобъекты с агрегатами: каналы, тревоги, риск, неисправности, статус."""
-    tree = await object_tree(session, ctx.source)
-    groups = by_sub_object(await channel_views(session, ctx.run_id, ctx.now, ctx.source))
+    tree = await object_tree(session, _tree_source(ctx))
+    groups = by_sub_object(await scope_views(session, ctx))
 
     def node(object_id: int) -> dict:
         o = tree.objects[object_id]
@@ -30,15 +49,18 @@ async def objects(ctx: RunCtx, session: Session) -> list[dict]:
             "children": [node(c) for c in tree.children.get(object_id, [])],
         }
 
+    if ctx.all_data:  # «Все данные»: корень каждого набора — хакатон первым
+        roots = [o["id"] for o in tree.objects.values() if o["parent_id"] is None]
+        return [node(r) for r in sorted(roots, key=lambda r: (tree.objects[r]["source"] != HACKATHON, r))]
     return [node(tree.district_id)] if tree.district_id else []
 
 
 @router.get("/objects/{object_id}", response_model=ObjectDetail)
 async def object_detail(object_id: int, ctx: RunCtx, session: Session) -> dict:
-    tree = await object_tree(session, ctx.source)
+    tree = await object_tree(session, _tree_source(ctx))
     if object_id not in tree.objects:
         raise ApiError(404, "object_not_found", f"объект {object_id} не найден")
-    groups = by_sub_object(await channel_views(session, ctx.run_id, ctx.now, ctx.source))
+    groups = by_sub_object(await scope_views(session, ctx))
     channels = _channels_under(tree, groups, object_id)
     subs = sorted(tree.sub_objects_under(object_id) - {object_id}, key=lambda i: tree.objects[i]["name"])
     return {
@@ -73,8 +95,8 @@ def _node(kind: str, node_id: str, label: str, parent: str | None, agg, source: 
 @router.get("/graph", response_model=Graph)
 async def graph(ctx: RunCtx, session: Session) -> dict:
     """Обзор: район, объекты, подобъекты с агрегатами; рёбра иерархии. Каналы — в `/graph/{sub_object_id}`."""
-    tree = await object_tree(session, ctx.source)
-    groups = by_sub_object(await channel_views(session, ctx.run_id, ctx.now, ctx.source))
+    tree = await object_tree(session, _tree_source(ctx))
+    groups = by_sub_object(await scope_views(session, ctx))
     nodes, edges = [], []
     for o in tree.objects.values():
         node_id = f"{o['level']}:{o['id']}"
@@ -98,11 +120,11 @@ async def graph(ctx: RunCtx, session: Session) -> dict:
 @router.get("/graph/{sub_object_id}", response_model=Graph)
 async def sub_object_graph(sub_object_id: int, ctx: RunCtx, session: Session) -> dict:
     """Раскрытый подобъект: группы по тегу и каналы; рёбра подобъект → группа → канал."""
-    tree = await object_tree(session, ctx.source)
+    tree = await object_tree(session, _tree_source(ctx))
     sub = tree.objects.get(sub_object_id)
     if sub is None or sub["level"] != "sub_object":
         raise ApiError(404, "sub_object_not_found", f"подобъект {sub_object_id} не найден")
-    channels = by_sub_object(await channel_views(session, ctx.run_id, ctx.now, ctx.source)).get(sub_object_id, [])
+    channels = by_sub_object(await scope_views(session, ctx)).get(sub_object_id, [])
     by_group: dict[str, list] = {}
     for c in sorted(channels, key=lambda c: (c.picket_number is None, c.picket_number or 0, c.name)):
         by_group.setdefault(c.tag_group or NO_GROUP, []).append(c)

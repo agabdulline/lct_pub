@@ -43,7 +43,8 @@ JOIN channels c ON c.id = a.channel_id
 JOIN objects so ON so.id = c.object_id
 JOIN objects o ON o.id = a.object_id
 LEFT JOIN alarm_episodes e ON e.id = a.episode_id
-LEFT JOIN predictions p ON p.id = a.prediction_id
+-- решение вердикта — только этого прогона: у базовой тревоги в ленте прогона ссылка на решение истории не в счёт
+LEFT JOIN predictions p ON p.id = a.prediction_id AND p.run_id IS NOT DISTINCT FROM :run
 """.replace("{scores}", scores_sql("a.id"))
     .replace("{task}", TASK)
     .replace("{sep}", CHAIN_SEP)

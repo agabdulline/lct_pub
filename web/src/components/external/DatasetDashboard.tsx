@@ -1,6 +1,5 @@
 import { BellRing, ClipboardList, FileText, Gauge, ScrollText } from 'lucide-react'
 
-import { DatasetBadge } from '@/components/domain/DatasetBadge'
 import { MetricCard } from '@/components/domain/MetricCard'
 import { QueryError } from '@/components/domain/QueryError'
 import { RunLink } from '@/components/domain/RunLink'
@@ -146,15 +145,6 @@ export function DatasetDashboard() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
-        <div className="space-y-1">
-          <h1 className="flex flex-wrap items-center gap-2 text-xl font-semibold">
-            Дашборд {run?.dataset && <DatasetBadge dataset={run.dataset} />}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Прогон внешнего набора: тревоги его моделей и их проверка по разметке набора — это не подтверждённые отказы. Моделей
-            хакатона здесь нет, их блоки не показываются.
-          </p>
-        </div>
         {simNow && <span className="text-xs text-muted-foreground">на {fmtDateTime(simNow)}</span>}
       </div>
 

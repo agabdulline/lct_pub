@@ -255,3 +255,11 @@ def external_units(dataset: str) -> pd.DataFrame:
     )
     with engine().connect() as conn:
         return pd.read_sql(sql, conn, params={"dataset": dataset})
+
+
+def access_inputs(run_id: int | None, points: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Модель доступа: прошлые кандидаты правила, снятия охраны и открытия подобъектов точек (`app.access.inputs`)."""
+    from app import access
+
+    with engine().connect() as conn:
+        return access.inputs(conn, run_id, points)
